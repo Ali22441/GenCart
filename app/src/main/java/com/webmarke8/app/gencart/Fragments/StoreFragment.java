@@ -4,6 +4,7 @@ package com.webmarke8.app.gencart.Fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,6 +57,8 @@ public class StoreFragment extends Fragment  implements SwipeRefreshLayout.OnRef
         RecyclerView.LayoutManager mLayoutManager;
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvAllCategories.setLayoutManager(mLayoutManager);
+        rvAllCategories.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+
         LinearLayoutManager linearLayoutManage  = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvAllCategories.setHasFixedSize(true);
         mAdapter = new StoreRecyclerViewAdapter(getActivity(), StoreList);

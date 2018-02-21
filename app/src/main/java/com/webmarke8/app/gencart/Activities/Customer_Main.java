@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.webmarke8.app.gencart.Adapters.BottomNavigationViewHelper;
 import com.webmarke8.app.gencart.Fragments.Chat_Fragment;
@@ -22,6 +23,8 @@ public class Customer_Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_customer__main);
 
 
@@ -31,12 +34,8 @@ public class Customer_Main extends AppCompatActivity {
         mTransactiont.commit();
 
 
-
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
-
-
-
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener

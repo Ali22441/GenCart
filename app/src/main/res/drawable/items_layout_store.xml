@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
         android:layout_width="220dp"
@@ -11,17 +11,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/_15sdp"
-            android:paddingRight="@dimen/_15sdp">
+            android:orientation="vertical">
 
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:layout_margin="2dp"
-                app:cardCornerRadius="8dp">
-
+                app:cardCornerRadius="8dp"
+                android:layout_margin="5dp"
+                android:elevation="10dp">
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -33,21 +31,19 @@
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
                         android:src="@drawable/images" />
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/rounded"
-                        android:padding="@dimen/_1sdp"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingRight="@dimen/_5sdp"
+                        android:layout_marginLeft="100dp"
+                        android:layout_marginTop="130dp"
                         android:text="10 miles"
+                        android:background="#fff"
                         android:textColor="#86C65F"
-                        android:textSize="16dp" />
+                        android:textSize="16dp"
+                        />
 
                 </RelativeLayout>
+
 
             </android.support.v7.widget.CardView>
 
@@ -55,55 +51,58 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="2dp">
-
+                >
                 <TextView
-                    android:id="@+id/textViewTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:text="Levi's Outlet Store"
                     android:textColor="#464646"
+                    android:id="@+id/textViewTitle"
                     android:textSize="16dp"
                     android:textStyle="bold" />
 
 
+
             </LinearLayout>
+
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffffff"
-                android:orientation="horizontal"
-                android:padding="2dp">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_2sdp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
                     android:text="Rating:"
-                    android:textColor="#464646"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textColor="#464646" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
                     android:text="4.5/5"
-                    android:textColor="#464646"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textColor="#464646" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:gravity="end"
+                    android:layout_marginTop="5dp"
+                    android:gravity="right"
                     android:text="Open"
-                    android:textColor="#86C65F"
-                    android:textSize="@dimen/_12sdp" />
+                    android:textColor="#86C65F" />
             </LinearLayout>
-
+<!--            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="#777D7F"/>-->
 
         </LinearLayout>
 

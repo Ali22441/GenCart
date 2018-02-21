@@ -7,62 +7,80 @@
     tools:context="com.webmarke8.app.gencart.Fragments.StoreFragment">
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="@dimen/_5sdp"
-        android:focusable="false"
-        android:orientation="horizontal"
-        android:padding="5dp">
+        android:layout_height="150dp"
+        android:background="@drawable/background_store"
+        android:gravity="bottom|center"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/TextSearch"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rounded_white"
-            android:hint="Witch item you are looking for?"
-            android:lines="1"
-            android:paddingEnd="5dp"
-            android:paddingStart="10dp"
-            android:textSize="12sp" />
 
-        <RelativeLayout
-            android:id="@+id/Search"
-            android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/search_round">
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stores"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_17sdp"
+            android:textStyle="bold" />
 
-            <Button
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/ic_search"
-                android:elevation="0dp"
-                android:gravity="center"
-                android:textAllCaps="false" />
-        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="@dimen/_5sdp"
+            android:focusable="false"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/_20sdp"
+            android:paddingRight="@dimen/_20sdp">
+
+            <EditText
+                android:id="@+id/TextSearch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_white"
+                android:lines="1"
+                android:paddingStart="10dp"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:id="@+id/Search"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/search_round">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/searchicon"
+                    android:elevation="0dp"
+                    android:gravity="center"
+                    android:textAllCaps="false"
+                    android:tint="@android:color/white" />
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefreshLayout"
         android:layout_width="match_parent"
-        android:background="@color/Background_activity"
+        android:background="#f4f4f4"
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
             android:layout_width="match_parent"
-
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_5sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:background="@color/Background_activity">
+            android:background="#f4f4f4"
+            >
 
         </android.support.v7.widget.RecyclerView>
     </android.support.v4.widget.SwipeRefreshLayout>
