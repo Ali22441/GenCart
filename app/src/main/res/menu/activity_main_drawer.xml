@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/Home"
+            android:title="Home" />
+        <item
+            android:id="@+id/Order"
+            android:title="Order" />
+        <item
+            android:id="@+id/Profile"
+            android:title="Profile" />
+        <item
+            android:id="@+id/Chat"
+            android:title="My Cart" />
+        <item
+            android:id="@+id/Logout"
+            android:title="Log Out" />
+
+        <item
+            android:id="@+id/Rest"
+            android:title="TestResturentDesign" />
+    </group>
+
+
+</menu>

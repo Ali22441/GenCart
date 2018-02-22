@@ -1,120 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_5sdp"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
     android:orientation="horizontal"
-    android:weightSum="5">
+    android:weightSum="3">
 
-
-    <LinearLayout
-        android:id="@+id/single_item"
-        android:padding="@dimen/_3sdp"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="5">
+        card_view:cardCornerRadius="0dp"
+        card_view:cardElevation="7dp">
 
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="3">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:orientation="vertical"
-                android:layout_weight="3">
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center|left"
+                android:orientation="vertical">
+
+
                 <TextView
-                    android:id="@+id/name"
+                    android:id="@+id/sequence"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Spray"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="#000"
-                    android:textSize="20sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Spray Details Total"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="10dp"
-                    android:textColor="#898b8a"/>
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_toRightOf="@id/sequence"
+                    android:text="Mr Person's Store"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_15sdp"
+                    android:textStyle="bold" />
+
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:gravity="center"
                     android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/location"/>
+
                     <TextView
-                        android:id="@+id/address"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Mr. Ali store"
-                        android:layout_marginTop="10dp"
-                        android:textColor="#898b8a"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:id="@+id/price"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="200 SR"
-                        android:layout_marginTop="10dp"
-                        android:textColor="#6fc751"
-                        android:textStyle="bold"/>
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_weight="1"
+                        android:text="Mild scent  for vhoe.." />
+
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="45dp"
-                        android:orientation="horizontal">
-                        <ImageView
-                            android:id="@+id/minus"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:padding="@dimen/_5sdp"
-                            android:src="@drawable/minus"/>
-                        <TextView
-                            android:id="@+id/vlaue"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:layout_marginTop="10dp"
-                            android:textColor="#898b8a"/>
-                        <ImageView
-                            android:id="@+id/add"
-                            android:layout_width="40dp"
-                            android:padding="@dimen/_5sdp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/plus"/>
-                    </LinearLayout>
+                        android:layout_weight="1">
 
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/minus_icon" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:gravity="center"
+                            android:text="2" />
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/plus_icon" />
+                    </LinearLayout>
                 </LinearLayout>
 
-            </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"
-            android:gravity="end">
+            </LinearLayout>
+
 
             <ImageView
-                android:layout_width="140dp"
-                android:layout_height="150dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:src="@drawable/pepsi" />
         </LinearLayout>
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

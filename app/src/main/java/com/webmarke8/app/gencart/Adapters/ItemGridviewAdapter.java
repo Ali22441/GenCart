@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -90,9 +92,8 @@ public class ItemGridviewAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
 
             viewHolder.image1 = (ImageView) convertView.findViewById(R.id.image);
-//            viewHolder.Price = (TextView) convertView.findViewById(R.id.Price);
-//            viewHolder.addToCart = convertView.findViewById(R.id.AddToCatrd);
-//            viewHolder.COndition = convertView.findViewById(R.id.Condition);
+            viewHolder.Click = (LinearLayout) convertView.findViewById(R.id.Click);
+
 
             convertView.setTag(viewHolder);
 
@@ -101,43 +102,16 @@ public class ItemGridviewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-//        final Product CProduct = (Product) getItem(position);
 
-
-
-        viewHolder.image1.setOnClickListener(new View.OnClickListener() {
+        viewHolder.Click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                scrollView.fullScroll(ScrollView.FOCUS_UP);
-
-
-                Fragment fragment = null;
-                Class fragmentClass = null;
-
-                fragmentClass = ProductDetails.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                    Bundle bundle = new Bundle();
-//                    bundle.putSerializable("Product", CProduct);
-                    fragment.setArguments(bundle);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.Details, fragment).commit();
-
-                frameLayout.setVisibility(View.VISIBLE);
+                ProductDetail();
 
             }
         });
-//        viewHolder.addToCart.setTag(CProduct);
-//        viewHolder.addToCart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+
 
         return convertView;
     }
@@ -146,26 +120,28 @@ public class ItemGridviewAdapter extends BaseAdapter {
         ImageView image1;
         TextView Price;
         public TextView addToCart;
+        LinearLayout Click;
     }
 
 
+    public void ProductDetail() {
+        final Dialog dialog = new Dialog(context);
+        // inflate the layout
+        dialog.setContentView(R.layout.dialog_product_details);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-//    public void OutOFStock() {
-//        final Dialog dialog = new Dialog(context);
-//        // inflate the layout
-//        dialog.setContentView(R.layout.item_product);
-//        // Set the dialog text -- this is better done in the XML
-//        final LinearLayout Click = (LinearLayout) dialog.findViewById(R.id.Click);
-//        Click.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                dialog.hide();
-//
-//            }
-//        });
-//        dialog.show();
-//    }
+        // Set the dialog text -- this is better done in the XML
+        final ImageView Cross = (ImageView) dialog.findViewById(R.id.Cross);
+        Cross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.hide();
+
+            }
+        });
+        dialog.show();
+    }
 //
 //    public void LowQuantity(String Availablle) {
 //        final Dialog dialog = new Dialog(context);

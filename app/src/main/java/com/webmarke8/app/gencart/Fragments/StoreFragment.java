@@ -10,9 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 
-import com.webmarke8.app.gencart.Adapters.StoreRecyclerViewAdapter;
+import com.webmarke8.app.gencart.Activities.MainActivity;
+import com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView;
+import com.webmarke8.app.gencart.Adapters.ItemGridviewAdapter;
+import com.webmarke8.app.gencart.Adapters.StoreGridviewAdapter;
+import com.webmarke8.app.gencart.Objects.Product;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
 
@@ -21,15 +27,15 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StoreFragment extends Fragment  implements SwipeRefreshLayout.OnRefreshListener {
+public class StoreFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
 
-    RecyclerView rvAllCategories;
-    private RecyclerView.Adapter mAdapter;
+    private ExpandableHeightGridView Gridview;
+    private StoreGridviewAdapter GridViewAdapter;
     List<Store> StoreList;
-
     SwipeRefreshLayout mSwipeRefreshLayout;
-    ProgressBar progressBar;
+
+    FrameLayout frameLayout;
 
 
     public StoreFragment() {
@@ -42,8 +48,8 @@ public class StoreFragment extends Fragment  implements SwipeRefreshLayout.OnRef
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_store, container, false);
-        rvAllCategories = view.findViewById(R.id.rv);
-        
+
+        frameLayout = (FrameLayout) view.findViewById(R.id.container1);
 
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.SwipeRefreshLayout);
@@ -54,18 +60,20 @@ public class StoreFragment extends Fragment  implements SwipeRefreshLayout.OnRef
                 android.R.color.holo_blue_dark);
 
 
-        RecyclerView.LayoutManager mLayoutManager;
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        rvAllCategories.setLayoutManager(mLayoutManager);
-        rvAllCategories.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        Gridview = (ExpandableHeightGridView) view.findViewById(R.id.gridview);
 
-        LinearLayoutManager linearLayoutManage  = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        rvAllCategories.setHasFixedSize(true);
-        mAdapter = new StoreRecyclerViewAdapter(getActivity(), StoreList);
-        rvAllCategories.setAdapter(mAdapter);
+        GridViewAdapter = new StoreGridviewAdapter(getActivity(), StoreList, frameLayout);
+        Gridview.setExpanded(true);
+        Gridview.setAdapter(GridViewAdapter);
+
+
+        view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).OpenOpenOrCloseDrawer();
+            }
+        });
         return view;
-
-
     }
 
     @Override

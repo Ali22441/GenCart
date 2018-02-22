@@ -1,46 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:weightSum="11">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#79da59"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/navigation"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_marginLeft="@dimen/_7sdp"
+        android:padding="@dimen/_2sdp"
+        android:src="@drawable/menue"
+        android:tint="@android:color/white" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar1"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#79da59"
-        android:minHeight="?attr/actionBarSize"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:minHeight="?attr/actionBarSize">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="30dp"
-                android:src="@drawable/back_arrow"/>
+                android:src="@drawable/back_arrow" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Profile"
                 android:layout_marginRight="50dp"
                 android:gravity="center"
-                android:textStyle="bold"
+                android:text="Profile"
+                android:textColor="#fff"
                 android:textSize="19sp"
-                android:textColor="#fff"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:weightSum="4"
-                android:orientation="horizontal">
-
-
-
-            </LinearLayout>
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -48,127 +51,222 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:background="#E9EAEC"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_weight="3.5">
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/image"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/pic"
-            app:civ_border_width="0.1dp"
-            app:civ_border_color="#FF000000"/>
+        android:orientation="vertical">
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:gravity="center"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_weight="3.5">
-        <android.support.v7.widget.CardView
-            card_view:cardElevation="7dp"
-            android:layout_gravity="center"
-            card_view:cardCornerRadius="3dp"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:padding="@dimen/_5sdp"
+            card_view:cardCornerRadius="7dp">
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:background="@drawable/layout_with_border3"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Name: "
-                        android:textStyle="bold"
-                        android:textColor="#000"
-                        android:textSize="19dp"/>
-                    <TextView
-                        android:id="@+id/name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Fazli Mola Jan"
-                        android:textStyle="bold"
-                        android:textColor="#000"
-                        android:textSize="19dp"
-                        android:layout_marginLeft="10dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Email:  "
-                        android:textColor="#000"
-                        android:textSize="19dp"/>
-                    <TextView
-                        android:id="@+id/email"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="fazal@gmail.com"
-                        android:textColor="#000"
-                        android:textSize="19dp"
-                        android:layout_marginLeft="10dp"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Phone: "
-                        android:textColor="#000"
-                        android:textSize="19dp"/>
-                    <TextView
-                        android:id="@+id/phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="03001234567"
-                        android:textColor="#000"
-                        android:textSize="19dp"
-                        android:layout_marginLeft="10dp"/>
-                </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:src="@drawable/profile_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:hint="Name:"
+                    android:textColorHint="#6e6262"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:hint="MR. Pasha"
+                    android:textColorHint="#6e6262"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="#fafbfd"
-        android:layout_marginLeft="60dp"
-        android:layout_marginRight="60dp"
-        android:orientation="vertical"
-        android:layout_weight="3">
-        <ImageView
-            android:id="@+id/edit_profile"
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view1"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:src="@drawable/edit_profile"/>
-        <ImageView
-            android:id="@+id/change_profile"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginTop="15dp"
+            card_view:cardCornerRadius="7dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="@dimen/_2sdp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/phone_icon" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:hint="Phone:"
+                    android:textColorHint="#6e6262"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:gravity="center"
+                    android:hint="03366645735"
+                    android:textColorHint="#6e6262"
+                    android:textSize="20dp" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/card_view2"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:src="@drawable/change_password"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|left"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginTop="15dp"
+            card_view:cardCornerRadius="7dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/capsuleboundary"
+                android:gravity="center|left"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:src="@drawable/address_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint="Address:"
+                        android:textAlignment="center"
+                        android:textColorHint="#6e6262" />
+
+                    <EditText
+                        android:id="@+id/EditTextAddress"
+                        android:layout_width="115dp"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:textAlignment="center"
+                        android:textColorHint="#6e6262" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="0dp"
+                        android:src="@drawable/detect_location" />
+
+                    <TextView
+                        android:id="@+id/EditTextDetectAddress"
+                        android:layout_width="170dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/capsuleboundary"
+                        android:gravity="center"
+                        android:text="Detect Address"
+                        android:textColorHint="#6e6262" />
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_110sdp"
+            android:layout_marginRight="@dimen/_110sdp"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btnUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:background="@drawable/update_button" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/_50sdp"
+            android:layout_marginRight="@dimen/_50sdp"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btnEditProfile"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:background="@drawable/edit_profile_button"
+                android:textColor="#000" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/_50sdp"
+            android:layout_marginRight="@dimen/_50sdp"
+            android:layout_marginTop="10dp">
+
+            <Button
+                android:id="@+id/btnChangePassword"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:background="@drawable/change_password" />
+
+        </LinearLayout>
     </LinearLayout>
+
 </LinearLayout>

@@ -8,21 +8,52 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="170dp"
         android:background="@drawable/background_store"
-        android:gravity="bottom|center"
+        android:gravity="left"
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/navigation"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginLeft="@dimen/_7sdp"
+            android:minHeight="?attr/actionBarSize"
+            android:padding="@dimen/_2sdp"
+            android:src="@drawable/menue"
+            android:tint="@android:color/white" />
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Amuk Store"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_17sdp"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/Back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/back_icon"
+                android:textAllCaps="false"
+                android:tint="@android:color/white" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Amuk Store"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_17sdp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,15 +83,29 @@
                     android:tint="@android:color/white" />
             </RelativeLayout>
 
-            <EditText
-                android:id="@+id/TextSearch"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@drawable/rounded_white"
-                android:lines="1"
-                android:paddingStart="10dp"
-                android:textSize="12sp" />
+                android:orientation="vertical"
+                android:padding="@dimen/_5sdp">
+
+                <EditText
+                    android:id="@+id/TextSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:lines="1"
+                    android:paddingStart="10dp"
+                    android:textSize="12sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:src="@drawable/search_edittext_bottom"
+                    android:tint="@android:color/white" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/Search"

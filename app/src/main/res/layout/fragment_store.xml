@@ -1,89 +1,174 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.webmarke8.app.gencart.Fragments.StoreFragment">
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/background_store"
-        android:gravity="bottom|center"
+        android:layout_height="match_parent"
         android:orientation="vertical">
-
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Stores"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_17sdp"
-            android:textStyle="bold" />
-
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="@dimen/_5sdp"
-            android:focusable="false"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/_20sdp"
-            android:paddingRight="@dimen/_20sdp">
+            android:layout_height="170dp"
+            android:background="@drawable/background_store"
+            android:gravity="left"
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/TextSearch"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/rounded_white"
-                android:lines="1"
-                android:paddingStart="10dp"
-                android:textSize="12sp" />
-
-            <RelativeLayout
-                android:id="@+id/Search"
+            <ImageView
+                android:id="@+id/navigation"
                 android:layout_width="45dp"
-                android:layout_height="match_parent"
-                android:background="@drawable/search_round">
+                android:layout_height="45dp"
+                android:layout_marginLeft="@dimen/_7sdp"
+                android:layout_marginTop="@dimen/_7sdp"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/menue"
+                android:tint="@android:color/white" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/searchicon"
+                    android:layout_marginLeft="@dimen/_20sdp"
                     android:elevation="0dp"
                     android:gravity="center"
+                    android:padding="@dimen/_2sdp"
+                    android:src="@drawable/back_icon"
                     android:textAllCaps="false"
-                    android:tint="@android:color/white" />
-            </RelativeLayout>
+                    android:tint="@android:color/white"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Stores"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_17sdp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_margin="@dimen/_5sdp"
+                android:focusable="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/_20sdp"
+                android:paddingRight="@dimen/_20sdp">
+
+                <RelativeLayout
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/search_round">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:elevation="0dp"
+                        android:gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/filtericon"
+                        android:textAllCaps="false"
+                        android:tint="@android:color/white" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    android:padding="@dimen/_5sdp">
+
+                    <EditText
+                        android:id="@+id/TextSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/transparent"
+                        android:lines="1"
+                        android:paddingStart="10dp"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3dp"
+                        android:src="@drawable/search_edittext_bottom"
+                        android:tint="@android:color/white" />
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/Search"
+                    android:layout_width="45dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/search_round">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:elevation="0dp"
+                        android:gravity="center"
+                        android:padding="@dimen/_2sdp"
+                        android:src="@drawable/searchicon"
+                        android:textAllCaps="false"
+                        android:tint="@android:color/white" />
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/SwipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ScrollView
+                android:id="@+id/Scroll"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="7"
+                android:background="#f4f4f4"
+                android:paddingTop="10dp">
+
+
+                <com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView
+                    android:id="@+id/gridview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="#f4f4f4"
+                    android:horizontalSpacing="@dimen/_5sdp"
+                    android:isScrollContainer="false"
+                    android:numColumns="2"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="@dimen/_5sdp" />
+
+            </ScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/SwipeRefreshLayout"
-        android:layout_width="match_parent"
-        android:background="#f4f4f4"
-        android:layout_height="wrap_content">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar1"
-            android:background="#f4f4f4"
-            >
-
-        </android.support.v7.widget.RecyclerView>
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-</LinearLayout>
+</FrameLayout>
