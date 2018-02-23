@@ -24,15 +24,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
-import com.webmarke8.app.gencart.Fragments.ProductDetails;
-import com.webmarke8.app.gencart.Fragments.ProfileFragment;
-import com.webmarke8.app.gencart.Objects.Product;
+
+import com.webmarke8.app.gencart.Objects.ProductStore;
+import com.webmarke8.app.gencart.Objects.Products;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
 
@@ -46,18 +40,20 @@ import java.util.List;
 public class ItemGridviewAdapter extends BaseAdapter {
 
     private Context context;
-    private List<com.webmarke8.app.gencart.Objects.Product> Product;
+    private ProductStore productStore;
+    Products[] productsList;
 
     private FrameLayout frameLayout;
     private ScrollView scrollView;
     private MyApplication myApp;
-    private int StockQty;
 
-    public ItemGridviewAdapter(Context context, List<Product> Product, FrameLayout FrameLayout, ScrollView scrollView) {
-        this.Product = Product;
+
+    public ItemGridviewAdapter(Context context, ProductStore productStore, FrameLayout FrameLayout, ScrollView scrollView) {
+        this.productStore = productStore;
         this.context = context;
         this.frameLayout = FrameLayout;
         this.scrollView = scrollView;
+        productsList = productStore.getProducts();
     }
 
     public void setMyApp(Application myApp) {
@@ -66,12 +62,12 @@ public class ItemGridviewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 20;
+        return productsList.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return Product.get(position);
+        return productsList[position];
     }
 
     @Override

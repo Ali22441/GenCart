@@ -85,6 +85,7 @@
                 android:textStyle="bold" />
 
             <ImageView
+                android:id="@+id/Open"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
                 android:layout_marginLeft="30dp"

@@ -47,6 +47,19 @@ public class MyOrders extends Fragment {
         rvAllCategories.setAdapter(mAdapter);
 
 
+
+        view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new StoreFragment(), "Home").commit();
+
+            }
+        });
+
+
         return view;
 
     }

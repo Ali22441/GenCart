@@ -40,7 +40,7 @@
                 android:layout_height="44dp"
                 android:layout_marginLeft="@dimen/_30sdp"
                 android:layout_marginRight="@dimen/_80sdp"
-                android:background="@drawable/button_add_location_manullu"
+                android:background="@drawable/reound_button_location_manually"
                 android:gravity="center"
                 android:padding="@dimen/_5sdp"
                 android:text="Add Location manually"
@@ -55,17 +55,74 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:background="#FFFFFF"
         android:orientation="vertical">
 
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/map"
-            tools:context=".MapsActivity"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3.5"
+            tools:context=".MapsActivity" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/layout_bottom_line"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="Share Your Location"
+                android:textColor="#8a8a8a"
+                android:textSize="@dimen/_15sdp"
+                android:textStyle="bold" />
+
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:lines="2"
+                        android:padding="@dimen/_3sdp"
+                        android:text="Location, Location, Location"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/ShareLocation"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="end"
+                        android:src="@drawable/share_location" />
+
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+        </LinearLayout>
     </LinearLayout>
 
 

@@ -1,7 +1,6 @@
 package com.webmarke8.app.gencart.Adapters;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,27 +13,24 @@ import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-
+import com.squareup.picasso.Picasso;
 import com.webmarke8.app.gencart.Fragments.ItemFragment;
-import com.webmarke8.app.gencart.Fragments.ProductDetails;
-import com.webmarke8.app.gencart.Objects.Product;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
-import com.webmarke8.app.gencart.Session.MyApplication;
+import com.webmarke8.app.gencart.Utils.ServerData;
 
 import java.util.List;
 
 public class StoreGridviewAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Store> Product;
+    private List<Store> StoreList;
 
     FrameLayout frameLayout;
 
-    public StoreGridviewAdapter(Context context, List<Store> Product, FrameLayout frameLayout) {
-        this.Product = Product;
+    public StoreGridviewAdapter(Context context, List<Store> StoreList, FrameLayout frameLayout) {
+        this.StoreList = StoreList;
         this.context = context;
         this.frameLayout = frameLayout;
     }
@@ -42,12 +38,12 @@ public class StoreGridviewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return 20;
+        return this.StoreList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return Product.get(position);
+        return StoreList.get(position);
     }
 
     @Override
@@ -59,25 +55,51 @@ public class StoreGridviewAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
 
-        ViewHolder viewHolder = null;
+        ViewHolder Holder = null;
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.item_store, null);
 
-            viewHolder = new ViewHolder();
+            Holder = new ViewHolder();
 
-            viewHolder.Click = (LinearLayout) convertView.findViewById(R.id.Click);
+            Holder.Click = (LinearLayout) convertView.findViewById(R.id.Click);
+            Holder.StoreImage = (ImageView) convertView.findViewById(R.id.StoreImage);
+            Holder.StoreName = (TextView) convertView.findViewById(R.id.StoreName);
+            Holder.StoreDistance = (TextView) convertView.findViewById(R.id.Distance);
+            Holder.StoreStatus = (TextView) convertView.findViewById(R.id.Status);
+            Holder.StoreRatting = (TextView) convertView.findViewById(R.id.Ratting);
 
-            convertView.setTag(viewHolder);
+
+            convertView.setTag(Holder);
 
         } else {
 
-            viewHolder = (ViewHolder) convertView.getTag();
+            Holder = (ViewHolder) convertView.getTag();
         }
 
 
-        viewHolder.Click.setOnClickListener(new View.OnClickListener() {
+        Picasso.with(context)
+                .load(ServerData.UrlImage + StoreList.get(position).getLogo())
+                .placeholder(R.drawable.error_image)
+                .error(R.drawable.error_image)
+                .into(Holder.StoreImage);
+
+        Holder.StoreName.setText(StoreList.get(position).getName());
+        String[] Split = StoreList.get(position).getDistance().split("\\.");
+
+        Holder.StoreDistance.setText(Split[0] + " miles");
+
+        if (StoreList.get(position).getStatus().equals("1")) {
+
+            Holder.StoreStatus.setText("Open");
+
+        } else {
+
+            Holder.StoreStatus.setText("Close");
+        }
+
+        Holder.Click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -88,7 +110,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                     Bundle bundle = new Bundle();
-//                    bundle.putSerializable("Product", CProduct);
+                    bundle.putSerializable("Product", StoreList.get(position));
                     fragment.setArguments(bundle);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -105,6 +127,8 @@ public class StoreGridviewAdapter extends BaseAdapter {
 
     private class ViewHolder {
         LinearLayout Click;
+        ImageView StoreImage;
+        TextView StoreName, StoreStatus, StoreDistance, StoreRatting;
     }
 
 }

@@ -16,6 +16,8 @@
             android:layout_height="170dp"
             android:background="@drawable/background_store"
             android:gravity="left"
+            android:scaleY="1"
+            android:scaleX="1"
             android:orientation="vertical">
 
             <ImageView

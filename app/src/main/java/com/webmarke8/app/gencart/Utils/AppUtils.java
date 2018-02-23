@@ -2,6 +2,7 @@ package com.webmarke8.app.gencart.Utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -23,12 +25,17 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
+
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -154,16 +161,15 @@ public class AppUtils {
     }
 
 
-
     /**
      * Utility function for decoding an image resource. The decoded bitmap will
      * be optimized for further scaling to the requested destination dimensions
      * and scaling logic.
      *
-     * @param res The resources object containing the image data
-     * @param resId The resource id of the image data
-     * @param dstWidth Width of destination area
-     * @param dstHeight Height of destination area
+     * @param res          The resources object containing the image data
+     * @param resId        The resource id of the image data
+     * @param dstWidth     Width of destination area
+     * @param dstHeight    Height of destination area
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Decoded bitmap
      */
@@ -179,6 +185,7 @@ public class AppUtils {
 
         return unscaledBitmap;
     }
+
     public static Bitmap decodeFile(String path, int dstWidth, int dstHeight,
                                     ScalingLogic scalingLogic) {
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -196,9 +203,9 @@ public class AppUtils {
      * Utility function for creating a scaled version of an existing bitmap
      *
      * @param unscaledBitmap Bitmap to scale
-     * @param dstWidth Wanted width of destination bitmap
-     * @param dstHeight Wanted height of destination bitmap
-     * @param scalingLogic Logic to use to avoid image stretching
+     * @param dstWidth       Wanted width of destination bitmap
+     * @param dstHeight      Wanted height of destination bitmap
+     * @param scalingLogic   Logic to use to avoid image stretching
      * @return New scaled bitmap object
      */
     public static Bitmap createScaledBitmap(Bitmap unscaledBitmap, int dstWidth, int dstHeight,
@@ -218,11 +225,11 @@ public class AppUtils {
     /**
      * ScalingLogic defines how scaling should be carried out if source and
      * destination image has different aspect ratio.
-     *
+     * <p>
      * CROP: Scales the image the minimum amount while making sure that at least
      * one of the two dimensions fit inside the requested destination area.
      * Parts of the source image will be cropped to realize this.
-     *
+     * <p>
      * FIT: Scales the image the minimum amount while making sure both
      * dimensions fit inside the requested destination area. The resulting
      * destination dimensions might be adjusted to a smaller size than
@@ -236,18 +243,18 @@ public class AppUtils {
      * Calculate optimal down-sampling factor given the dimensions of a source
      * image, the dimensions of a destination area and a scaling logic.
      *
-     * @param srcWidth Width of source image
-     * @param srcHeight Height of source image
-     * @param dstWidth Width of destination area
-     * @param dstHeight Height of destination area
+     * @param srcWidth     Width of source image
+     * @param srcHeight    Height of source image
+     * @param dstWidth     Width of destination area
+     * @param dstHeight    Height of destination area
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Optimal down scaling sample size for decoding
      */
     public static int calculateSampleSize(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
                                           ScalingLogic scalingLogic) {
         if (scalingLogic == ScalingLogic.FIT) {
-            final float srcAspect = (float)srcWidth / (float)srcHeight;
-            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            final float srcAspect = (float) srcWidth / (float) srcHeight;
+            final float dstAspect = (float) dstWidth / (float) dstHeight;
 
             if (srcAspect > dstAspect) {
                 return srcWidth / dstWidth;
@@ -255,8 +262,8 @@ public class AppUtils {
                 return srcHeight / dstHeight;
             }
         } else {
-            final float srcAspect = (float)srcWidth / (float)srcHeight;
-            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            final float srcAspect = (float) srcWidth / (float) srcHeight;
+            final float dstAspect = (float) dstWidth / (float) dstHeight;
 
             if (srcAspect > dstAspect) {
                 return srcHeight / dstHeight;
@@ -269,26 +276,26 @@ public class AppUtils {
     /**
      * Calculates source rectangle for scaling bitmap
      *
-     * @param srcWidth Width of source image
-     * @param srcHeight Height of source image
-     * @param dstWidth Width of destination area
-     * @param dstHeight Height of destination area
+     * @param srcWidth     Width of source image
+     * @param srcHeight    Height of source image
+     * @param dstWidth     Width of destination area
+     * @param dstHeight    Height of destination area
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Optimal source rectangle
      */
     public static Rect calculateSrcRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
                                         ScalingLogic scalingLogic) {
         if (scalingLogic == ScalingLogic.CROP) {
-            final float srcAspect = (float)srcWidth / (float)srcHeight;
-            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            final float srcAspect = (float) srcWidth / (float) srcHeight;
+            final float dstAspect = (float) dstWidth / (float) dstHeight;
 
             if (srcAspect > dstAspect) {
-                final int srcRectWidth = (int)(srcHeight * dstAspect);
+                final int srcRectWidth = (int) (srcHeight * dstAspect);
                 final int srcRectLeft = (srcWidth - srcRectWidth) / 2;
                 return new Rect(srcRectLeft, 0, srcRectLeft + srcRectWidth, srcHeight);
             } else {
-                final int srcRectHeight = (int)(srcWidth / dstAspect);
-                final int scrRectTop = (int)(srcHeight - srcRectHeight) / 2;
+                final int srcRectHeight = (int) (srcWidth / dstAspect);
+                final int scrRectTop = (int) (srcHeight - srcRectHeight) / 2;
                 return new Rect(0, scrRectTop, srcWidth, scrRectTop + srcRectHeight);
             }
         } else {
@@ -299,23 +306,23 @@ public class AppUtils {
     /**
      * Calculates destination rectangle for scaling bitmap
      *
-     * @param srcWidth Width of source image
-     * @param srcHeight Height of source image
-     * @param dstWidth Width of destination area
-     * @param dstHeight Height of destination area
+     * @param srcWidth     Width of source image
+     * @param srcHeight    Height of source image
+     * @param dstWidth     Width of destination area
+     * @param dstHeight    Height of destination area
      * @param scalingLogic Logic to use to avoid image stretching
      * @return Optimal destination rectangle
      */
     public static Rect calculateDstRect(int srcWidth, int srcHeight, int dstWidth, int dstHeight,
                                         ScalingLogic scalingLogic) {
         if (scalingLogic == ScalingLogic.FIT) {
-            final float srcAspect = (float)srcWidth / (float)srcHeight;
-            final float dstAspect = (float)dstWidth / (float)dstHeight;
+            final float srcAspect = (float) srcWidth / (float) srcHeight;
+            final float dstAspect = (float) dstWidth / (float) dstHeight;
 
             if (srcAspect > dstAspect) {
-                return new Rect(0, 0, dstWidth, (int)(dstWidth / srcAspect));
+                return new Rect(0, 0, dstWidth, (int) (dstWidth / srcAspect));
             } else {
-                return new Rect(0, 0, (int)(dstHeight * srcAspect), dstHeight);
+                return new Rect(0, 0, (int) (dstHeight * srcAspect), dstHeight);
             }
         } else {
             return new Rect(0, 0, dstWidth, dstHeight);
@@ -324,8 +331,7 @@ public class AppUtils {
 
     //Compress Image
 
-    public static Bitmap ShrinkBitmap(String file, int width, int height)
-    {
+    public static Bitmap ShrinkBitmap(String file, int width, int height) {
         BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
         bmpFactoryOptions.inJustDecodeBounds = true;
         Bitmap bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
@@ -333,14 +339,10 @@ public class AppUtils {
         int heightRatio = (int) Math.ceil(bmpFactoryOptions.outHeight / (float) height);
         int widthRatio = (int) Math.ceil(bmpFactoryOptions.outWidth / (float) width);
 
-        if(heightRatio > 1 || widthRatio > 1)
-        {
-            if(heightRatio > widthRatio)
-            {
+        if (heightRatio > 1 || widthRatio > 1) {
+            if (heightRatio > widthRatio) {
                 bmpFactoryOptions.inSampleSize = heightRatio;
-            }
-            else
-            {
+            } else {
                 bmpFactoryOptions.inSampleSize = widthRatio;
             }
         }
@@ -349,7 +351,6 @@ public class AppUtils {
         bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
         return bitmap;
     }
-
 
 
     public static void StartActivity(Context context, Class className) {
@@ -452,18 +453,12 @@ public class AppUtils {
     }
 
 
-
-
     public static String nameFirstLatterCapitalize(String name) {
 
         String name1 = name;
         name1 = name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase();
         return name1;
     }
-
-
-
-
 
 
     public static void showSnackBar(final View coordinatorLayout, String msg) {
@@ -519,6 +514,7 @@ public class AppUtils {
         //  return new SimpleDateFormat("MM/dd/yyyy").format(d).toString();
         return new SimpleDateFormat("dd/MM/yyyy").format(d).toString();
     }
+
     public static boolean isConnected() {
         ConnectivityManager
                 cm = (ConnectivityManager) MyApplication.getInstance().getApplicationContext()
@@ -526,5 +522,15 @@ public class AppUtils {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         return activeNetwork != null
                 && activeNetwork.isConnectedOrConnecting();
+    }
+
+
+    public static Dialog LoadingSpinner(Context mContext) {
+        Dialog pd = new Dialog(mContext, android.R.style.Theme_Black);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.progress, null);
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        pd.setContentView(view);
+        return pd;
     }
 }

@@ -44,6 +44,21 @@ public class Resturent_Fragemt extends Fragment {
 
         rvAllCategories = view.findViewById(R.id.rv);
         rvHorizental = view.findViewById(R.id.rv_horizental);
+
+
+
+
+        view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new StoreFragment(), "Home").commit();
+
+            }
+        });
+
         RecyclerView.LayoutManager recyclerViewLayoutManager;
 
 /*        recyclerViewLayoutManager = new GridLayoutManager(this, 3);

@@ -6,8 +6,7 @@ import java.io.Serializable;
  * Created by GeeksEra on 2/16/2018.
  */
 
-public class Store  implements Serializable{
-
+public class ProductStore implements Serializable {
     private String logo;
 
     private String place_id;
@@ -18,11 +17,13 @@ public class Store  implements Serializable{
 
     private String status;
 
+    private Shelves[] shelves;
+
     private String zipcode;
 
-    private String id;
+    private Departments[] departments;
 
-    private String distance;
+    private String id;
 
     private String updated_at;
 
@@ -34,9 +35,13 @@ public class Store  implements Serializable{
 
     private String slug;
 
+    private Products[] products;
+
     private String banner;
 
-    public String getLogo() {
+    public String
+
+    getLogo() {
         return logo;
     }
 
@@ -76,6 +81,14 @@ public class Store  implements Serializable{
         this.status = status;
     }
 
+    public Shelves[] getShelves() {
+        return shelves;
+    }
+
+    public void setShelves(Shelves[] shelves) {
+        this.shelves = shelves;
+    }
+
     public String getZipcode() {
         return zipcode;
     }
@@ -84,20 +97,20 @@ public class Store  implements Serializable{
         this.zipcode = zipcode;
     }
 
+    public Departments[] getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(Departments[] departments) {
+        this.departments = departments;
+    }
+
     public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getDistance() {
-        return distance;
-    }
-
-    public void setDistance(String distance) {
-        this.distance = distance;
     }
 
     public String getUpdated_at() {
@@ -140,11 +153,26 @@ public class Store  implements Serializable{
         this.slug = slug;
     }
 
-    public String getBanner() {
+    public Products[] getProducts() {
+        return products;
+    }
+
+    public void setProducts(Products[] products) {
+        this.products = products;
+    }
+
+    public String
+
+    getBanner() {
         return banner;
     }
 
     public void setBanner(String banner) {
         this.banner = banner;
+    }
+
+    @Override
+    public String toString() {
+        return "ClassPojo [logo = " + logo + ", place_id = " + place_id + ", phone = " + phone + ", lat_long = " + lat_long + ", status = " + status + ", shelves = " + shelves + ", zipcode = " + zipcode + ", departments = " + departments + ", id = " + id + ", updated_at = " + updated_at + ", address = " + address + ", name = " + name + ", created_at = " + created_at + ", slug = " + slug + ", products = " + products + ", banner = " + banner + "]";
     }
 }

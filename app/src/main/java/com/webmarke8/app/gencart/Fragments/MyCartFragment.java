@@ -56,6 +56,18 @@ public class MyCartFragment extends Fragment {
         });
 
 
+        view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, new StoreFragment(), "Home").commit();
+
+            }
+        });
+
+
         view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,7 +84,7 @@ public class MyCartFragment extends Fragment {
                     e.printStackTrace();
                 }
                 FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container, fragment, "Location").commit();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment, "CheckOut").commit();
 
             }
         });
