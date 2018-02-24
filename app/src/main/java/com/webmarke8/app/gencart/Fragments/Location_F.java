@@ -17,6 +17,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.R;
 
 import java.util.Map;
@@ -51,6 +52,26 @@ public class Location_F extends Fragment implements OnMapReadyCallback {
 
             }
         });
+
+
+        view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim).remove(getFragmentManager().findFragmentById(R.id.container)).commit();
+
+            }
+        });
+
+
+        view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).OpenOpenOrCloseDrawer();
+            }
+        });
+
+
         return view;
 
 

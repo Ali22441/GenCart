@@ -4,8 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.webmarke8.app.gencart.Objects.Cart;
+import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.Objects.Customer;
 import com.webmarke8.app.gencart.Objects.Owner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import br.vince.easysave.EasySave;
 
@@ -21,6 +26,9 @@ public class MyApplication extends Application {
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
     private static final String IS_LOGIN = "IsLoggedIn";
+
+
+    List<CartGroup> CartGroupList = new ArrayList<>();
 
 
     private static MyApplication mInstance;
@@ -98,5 +106,50 @@ public class MyApplication extends Application {
 
     }
 
+    public void AddCartItem(Cart Item, String StoreName) {
+
+        boolean Exit = false;
+        for (CartGroup cartGroup : CartGroupList
+                ) {
+
+            if (cartGroup.getName().equals(StoreName)) {
+                cartGroup.getProductList().add(Item);
+                Exit = true;
+            }
+        }
+        if (!Exit)
+
+        {
+            CartGroup cartGroup = new CartGroup();
+            cartGroup.setName(StoreName);
+            cartGroup.getProductList().add(Item);
+            CartGroupList.add(cartGroup);
+        }
+    }
+
+    public List<CartGroup> getCartGroupList() {
+        return CartGroupList;
+    }
+
+    public void setCartGroupList(List<CartGroup> cartGroupList) {
+        CartGroupList = cartGroupList;
+    }
+
+    public void IncreaseQuantity(String ProdutId, String StoreName, String DepartmentID) {
+
+        for (CartGroup cartGroup : CartGroupList
+                ) {
+
+            if (cartGroup.getName().equals(StoreName)) {
+                for (Cart cart : cartGroup.getProductList()
+                        ) {
+
+                    if (cart.getProductiD().equals(ProdutId) && cart.getDeparmtmentId().equals(DepartmentID)) {
+                        cart.setQuantity(cart.getQuantity() + 1);
+                    }
+                }
+            }
+        }
+    }
 
 }

@@ -22,7 +22,7 @@
                 android:src="@drawable/store_icon_cart" />
 
             <TextView
-                android:id="@+id/heading"
+                android:id="@+id/Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

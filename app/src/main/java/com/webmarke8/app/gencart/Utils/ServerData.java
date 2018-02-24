@@ -6,7 +6,7 @@ package com.webmarke8.app.gencart.Utils;
 
 public class ServerData {
 
-    public static String Server = "http://webmarke8.com/gincart/api/";
+    public static String Server = "http://ihtiajati.com/gencart/api/";
 
 
     public static String CustomerLogin = Server + "login";
@@ -19,7 +19,7 @@ public class ServerData {
     public static String GetStoresByID = Server + "get_store/";
 
 
-    public static String UrlImage = "http://webmarke8.com/gincart/storage/";
+    public static String UrlImage = "http://ihtiajati.com/gencart/storage/";
 
 
 }

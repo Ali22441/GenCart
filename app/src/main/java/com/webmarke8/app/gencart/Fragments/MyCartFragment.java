@@ -16,9 +16,11 @@ import com.webmarke8.app.gencart.Adapters.CartAdapter;
 import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 
 /**
@@ -28,10 +30,12 @@ public class MyCartFragment extends Fragment {
 
 
     private LinkedHashMap<String, CartGroup> subjects = new LinkedHashMap<String, CartGroup>();
-    private ArrayList<CartGroup> deptList = new ArrayList<CartGroup>();
+    private List<CartGroup> CartList = new ArrayList<CartGroup>();
 
     private CartAdapter listAdapter;
     private ExpandableListView simpleExpandableListView;
+
+    MyApplication myApplication;
 
 
     public MyCartFragment() {
@@ -61,8 +65,7 @@ public class MyCartFragment extends Fragment {
             public void onClick(View v) {
 
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new StoreFragment(), "Home").commit();
+                ((MainActivity) getActivity()).ShowHome();
 
             }
         });
@@ -90,11 +93,15 @@ public class MyCartFragment extends Fragment {
         });
 
 
-        loadData();
+
+//        loadData();
+        myApplication=(MyApplication)getActivity().getApplicationContext();
+
+        CartList=myApplication.getCartGroupList();
         //get reference of the ExpandableListView
         simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
         // create the adapter by passing your ArrayList data
-        listAdapter = new CartAdapter(getActivity(), deptList);
+        listAdapter = new CartAdapter(getActivity(), CartList);
         // attach the adapter to the expandable list view
         simpleExpandableListView.setAdapter(listAdapter);
 
@@ -148,7 +155,7 @@ public class MyCartFragment extends Fragment {
             headerInfo = new CartGroup();
             headerInfo.setName(department);
             subjects.put(department, headerInfo);
-            deptList.add(headerInfo);
+            CartList.add(headerInfo);
         }
 
         //get the children for the group
@@ -164,7 +171,7 @@ public class MyCartFragment extends Fragment {
         headerInfo.setProductList(productList);
 
         //find the group position inside the list
-        groupPosition = deptList.indexOf(headerInfo);
+        groupPosition = CartList.indexOf(headerInfo);
         return groupPosition;
     }
 

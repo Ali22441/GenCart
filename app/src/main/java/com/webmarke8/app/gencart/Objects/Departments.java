@@ -1,10 +1,12 @@
 package com.webmarke8.app.gencart.Objects;
 
+import java.io.Serializable;
+
 /**
  * Created by GeeksEra on 2/23/2018.
  */
 
-public class Departments {
+public class Departments  implements Serializable {
 
     private String id;
 

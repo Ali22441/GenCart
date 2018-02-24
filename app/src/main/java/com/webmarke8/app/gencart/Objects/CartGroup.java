@@ -1,11 +1,12 @@
 package com.webmarke8.app.gencart.Objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by Manzoor Hussain on 2/22/2018.
  */
-public class CartGroup {
+public class CartGroup implements Serializable {
 
     private String name;
     private ArrayList<Cart> list = new ArrayList<Cart>();

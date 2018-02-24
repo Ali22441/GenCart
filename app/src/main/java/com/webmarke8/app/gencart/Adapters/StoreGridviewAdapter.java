@@ -110,7 +110,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
                 try {
                     fragment = (Fragment) fragmentClass.newInstance();
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("Product", StoreList.get(position));
+                    bundle.putSerializable("Store", StoreList.get(position));
                     fragment.setArguments(bundle);
                 } catch (Exception e) {
                     e.printStackTrace();

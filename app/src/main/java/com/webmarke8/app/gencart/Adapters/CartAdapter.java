@@ -10,8 +10,10 @@ import android.widget.TextView;
 import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Manzoor Hussain on 2/22/2018.
@@ -20,11 +22,14 @@ import java.util.ArrayList;
 public class CartAdapter extends BaseExpandableListAdapter {
 
     private Context context;
-    private ArrayList<CartGroup> deptList;
+    private List<CartGroup> deptList;
 
-    public CartAdapter(Context context, ArrayList<CartGroup> deptList) {
+    MyApplication myApplication;
+
+    public CartAdapter(Context context, List<CartGroup> deptList) {
         this.context = context;
         this.deptList = deptList;
+        myApplication = (MyApplication) context.getApplicationContext();
     }
 
     @Override
@@ -39,19 +44,38 @@ public class CartAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+    public View getChildView(final int groupPosition, int childPosition, boolean isLastChild,
                              View view, ViewGroup parent) {
 
-        Cart detailInfo = (Cart) getChild(groupPosition, childPosition);
+        final Cart detailInfo = (Cart) getChild(groupPosition, childPosition);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.item_cart, null);
         }
 
-//        TextView sequence = (TextView) view.findViewById(R.id.sequence);
-//        sequence.setText(detailInfo.getSequence().trim() + ". ");
-//        TextView childItem = (TextView) view.findViewById(R.id.childItem);
-//       childItem.setText(detailInfo.getName().trim());
+        TextView Description = (TextView) view.findViewById(R.id.Description);
+        Description.setText(detailInfo.getProductDescription());
+        TextView ProductName = (TextView) view.findViewById(R.id.ProductName);
+        ProductName.setText(detailInfo.getProductName());
+        final TextView Quantity = (TextView) view.findViewById(R.id.Quantity);
+        Quantity.setText(String.valueOf(detailInfo.getQuantity()));
+
+        view.findViewById(R.id.Decrease).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        final View finalView = view;
+        view.findViewById(R.id.Increase).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) + 1));
+                myApplication.IncreaseQuantity(detailInfo.getProductiD(), deptList.get(groupPosition).getName(), detailInfo.getDeparmtmentId());
+
+            }
+        });
 
         return view;
     }
@@ -89,8 +113,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
             view = inf.inflate(R.layout.item_cart_group, null);
         }
 
-        TextView heading = (TextView) view.findViewById(R.id.heading);
-        heading.setText(headerInfo.getName().trim());
+        TextView Name = (TextView) view.findViewById(R.id.Name);
+        Name.setText(headerInfo.getName().trim());
 
         return view;
     }

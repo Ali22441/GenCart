@@ -41,8 +41,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
 
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new StoreFragment(), "Home").commit();
+                ((MainActivity) getActivity()).ShowHome();
 
             }
         });

@@ -90,10 +90,18 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onClick(View v) {
 
-                getFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim).remove(getFragmentManager().findFragmentById(R.id.container1)).commit();
-
+                ((MainActivity) getActivity()).ShowHome();
             }
         });
+
+
+        view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).OpenOpenOrCloseDrawer();
+            }
+        });
+
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.SwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -108,18 +116,14 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Detail = (FrameLayout) view.findViewById(R.id.Details);
         Detail.setVisibility(View.GONE);
         Gridview = (ExpandableHeightGridView) view.findViewById(R.id.gridview);
+//
+//        GridViewAdapter = new ItemGridviewAdapter(getActivity(), productStore, Detail, Scroll);
+//        GridViewAdapter.setMyApp(getActivity().getApplication());
+//        Gridview.setExpanded(true);
+//        Gridview.setAdapter(GridViewAdapter);
 
-        GridViewAdapter = new ItemGridviewAdapter(getActivity(), productStore, Detail, Scroll);
-        GridViewAdapter.setMyApp(getActivity().getApplication());
-        Gridview.setExpanded(true);
-        Gridview.setAdapter(GridViewAdapter);
+        GetStores();
 
-        view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).OpenOpenOrCloseDrawer();
-            }
-        });
 
         return view;
     }
@@ -128,6 +132,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public void onRefresh() {
         mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setRefreshing(false);
+        GetStores();
 
         // Fetching data from server
     }
@@ -137,8 +142,8 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         Progress.show();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                ServerData.GetStores, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET,
+                ServerData.GetStoresByID + store.getId(), new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
@@ -153,7 +158,9 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     ProductStore product = new ProductStore();
                     product = gson.fromJson(Object, ProductStore.class);
 
+                    productStore = product;
                     GridViewAdapter = new ItemGridviewAdapter(getActivity(), product, Detail, Scroll);
+                    GridViewAdapter.setMyApp(getActivity().getApplication());
                     Gridview.setExpanded(true);
                     Gridview.setAdapter(GridViewAdapter);
 
@@ -190,7 +197,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("origin", "33.525550,73.112831");
                 return map;
             }
 

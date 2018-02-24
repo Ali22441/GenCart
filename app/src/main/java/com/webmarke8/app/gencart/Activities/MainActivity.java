@@ -1,9 +1,11 @@
 package com.webmarke8.app.gencart.Activities;
 
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -62,6 +64,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import q.rorbin.badgeview.QBadgeView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
@@ -138,7 +142,7 @@ public class MainActivity extends AppCompatActivity
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
                                         .replace(R.id.container, new MyCartFragment(), "MyCartFragment").commit();
-                                Bandge(3);
+
 
                                 break;
                             case R.id.Profile:
@@ -149,7 +153,7 @@ public class MainActivity extends AppCompatActivity
                             case R.id.Chat:
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.container, new Chat_Fragment(), "Chat").commit();
+                                        .replace(R.id.container, new Chat_Fragment(), "Chat_Fragment").commit();
                                 break;
 
                         }
@@ -158,10 +162,12 @@ public class MainActivity extends AppCompatActivity
                 });
 
 
+        Bandge(2);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
 
     }
 
@@ -183,18 +189,39 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
 
-        if (id == R.id.Order) {
+        if (id == R.id.MOrder) {
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MyOrders()).commit();
+                    .replace(R.id.container, new MyOrders(), "Orders").commit();
 
         }
-        if (id == R.id.Rest) {
-            frameLayout.setVisibility(View.VISIBLE);
+        if (id == R.id.MChat) {
 
+            frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new Resturent_Fragemt()).commit();
+                    .replace(R.id.container, new Chat_Fragment(), "Chat_Fragment").commit();
+
+        }
+        if (id == R.id.MHome) {
+
+            frameLayout.setVisibility(View.GONE);
+
+
+        }
+        if (id == R.id.MMyCart) {
+
+            frameLayout.setVisibility(View.VISIBLE);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, new MyCartFragment(), "MyCartFragment").commit();
+
+        }
+        if (id == R.id.MProfile) {
+
+            frameLayout.setVisibility(View.VISIBLE);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, new ProfileFragment(), "ProfileFragment").commit();
+
         }
 
 
@@ -216,8 +243,8 @@ public class MainActivity extends AppCompatActivity
     public void ShowHome() {
 
         frameLayout.setVisibility(View.GONE);
-
     }
+
 
     @Override
     public void onRefresh() {
@@ -319,17 +346,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void Bandge(int Number) {
-
-
-        View v = bottomNavigationView.getChildAt(2);
-        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
-
-        View badge = LayoutInflater.from(this)
-                .inflate(R.layout.cart_bandage, bottomNavigationView, false);
-
-        TextView Num = (TextView) badge.findViewById(R.id.Number);
-        Num.setText(String.valueOf(Number));
-
-        itemView.addView(badge);
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
+        new QBadgeView(this).bindTarget(v).setBadgeNumber(Number).setBadgeBackgroundColor(R.color.green).setShowShadow(true);
     }
 }

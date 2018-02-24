@@ -1,5 +1,7 @@
 package com.webmarke8.app.gencart.Objects;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -7,6 +9,7 @@ import java.io.Serializable;
  */
 
 public class ProductStore implements Serializable {
+
     private String logo;
 
     private String place_id;
@@ -39,9 +42,7 @@ public class ProductStore implements Serializable {
 
     private String banner;
 
-    public String
-
-    getLogo() {
+    public String getLogo() {
         return logo;
     }
 
@@ -171,8 +172,4 @@ public class ProductStore implements Serializable {
         this.banner = banner;
     }
 
-    @Override
-    public String toString() {
-        return "ClassPojo [logo = " + logo + ", place_id = " + place_id + ", phone = " + phone + ", lat_long = " + lat_long + ", status = " + status + ", shelves = " + shelves + ", zipcode = " + zipcode + ", departments = " + departments + ", id = " + id + ", updated_at = " + updated_at + ", address = " + address + ", name = " + name + ", created_at = " + created_at + ", slug = " + slug + ", products = " + products + ", banner = " + banner + "]";
-    }
 }

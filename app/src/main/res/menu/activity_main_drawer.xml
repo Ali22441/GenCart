@@ -5,25 +5,30 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/Home"
+            android:id="@+id/MHome"
+            android:icon="@drawable/home_menu"
             android:title="Home" />
         <item
-            android:id="@+id/Order"
+            android:id="@+id/MOrder"
+            android:icon="@drawable/orders"
             android:title="Order" />
         <item
-            android:id="@+id/Profile"
+            android:id="@+id/MProfile"
+            android:icon="@drawable/profile_menu"
             android:title="Profile" />
         <item
-            android:id="@+id/Chat"
+            android:id="@+id/MChat"
+            android:icon="@drawable/chat_menu"
+            android:title="Chat" />
+        <item
+            android:id="@+id/MMyCart"
+            android:icon="@drawable/cart"
             android:title="My Cart" />
         <item
-            android:id="@+id/Logout"
+            android:id="@+id/MLogout"
+            android:icon="@drawable/log_out"
             android:title="Log Out" />
 
-        <item
-            android:id="@+id/Rest"
-            android:title="TestResturentDesign" />
     </group>
-
 
 </menu>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Adapters.Categories_ResturentAdapter;
 import com.webmarke8.app.gencart.Adapters.ResturentAdapter;
 import com.webmarke8.app.gencart.Objects.Store;
@@ -53,11 +54,18 @@ public class Resturent_Fragemt extends Fragment {
             public void onClick(View v) {
 
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new StoreFragment(), "Home").commit();
+                ((MainActivity) getActivity()).ShowHome();
 
             }
         });
+
+        view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).OpenOpenOrCloseDrawer();
+            }
+        });
+
 
         RecyclerView.LayoutManager recyclerViewLayoutManager;
 

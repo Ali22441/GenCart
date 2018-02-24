@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "577543331405",
+    "firebase_url": "https://gencart-fea02.firebaseio.com",
+    "project_id": "gencart-fea02",
+    "storage_bucket": "gencart-fea02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577543331405:android:dccb0bd6c158ea61",
+        "android_client_info": {
+          "package_name": "com.webmarke8.app.gencart"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577543331405-0p45btn8ptkd7qg7545oebouhqa723e2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvdV5X0TgUKMdf2bYQ01HypsCJS6oRe84"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
