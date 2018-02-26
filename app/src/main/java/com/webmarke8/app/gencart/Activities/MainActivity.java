@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.Home:
-                                frameLayout.setVisibility(View.GONE);
+                                ShowHome();
 //                                getSupportFragmentManager().beginTransaction()
 //                                        .replace(R.id.container, new StoreFragment(),"Home").commit();
                                 break;
@@ -223,7 +224,6 @@ public class MainActivity extends AppCompatActivity
                     .replace(R.id.container, new ProfileFragment(), "ProfileFragment").commit();
 
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -346,9 +346,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void Bandge(int Number) {
+
         BottomNavigationMenuView bottomNavigationMenuView =
                 (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
         View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
-        new QBadgeView(this).bindTarget(v).setBadgeNumber(Number).setBadgeBackgroundColor(R.color.green).setShowShadow(true);
+        new QBadgeView(this).bindTarget(v).setBadgeNumber(Number).setBadgeBackgroundColor(R.color.transprent).setShowShadow(true).setBadgePadding(7, true);
     }
 }

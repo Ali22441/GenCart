@@ -47,8 +47,6 @@ public class Resturent_Fragemt extends Fragment {
         rvHorizental = view.findViewById(R.id.rv_horizental);
 
 
-
-
         view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,9 +73,6 @@ public class Resturent_Fragemt extends Fragment {
         RecyclerView.LayoutManager mLayoutManager;
         mLayoutManager = new LinearLayoutManager(getActivity());
         rvAllCategories.setLayoutManager(mLayoutManager);
-
-        int numberOfColumns = 3;
-        //   rvAllCategories.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
 
         LinearLayoutManager linearLayoutManager
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);

@@ -152,4 +152,32 @@ public class MyApplication extends Application {
         }
     }
 
+    public boolean DecreaseQuantity(String ProdutId, String StoreName, String DepartmentID) {
+
+        int length = 0;
+        for (CartGroup cartGroup : CartGroupList
+                ) {
+
+            if (cartGroup.getName().equals(StoreName)) {
+                for (Cart cart : cartGroup.getProductList()
+                        ) {
+                    length++;
+
+                    if (cart.getProductiD().equals(ProdutId) && cart.getDeparmtmentId().equals(DepartmentID)) {
+                        if (cart.getProductiD().equals(1)) {
+
+                            cartGroup.getProductList().remove(length);
+                            return false;
+
+                        } else {
+                            cart.setQuantity(cart.getQuantity() - 1);
+
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
 }

@@ -14,10 +14,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
 import com.webmarke8.app.gencart.Fragments.ItemFragment;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.ServerData;
 
 import java.util.List;
@@ -70,7 +72,6 @@ public class StoreGridviewAdapter extends BaseAdapter {
             Holder.StoreStatus = (TextView) convertView.findViewById(R.id.Status);
             Holder.StoreRatting = (TextView) convertView.findViewById(R.id.Ratting);
 
-
             convertView.setTag(Holder);
 
         } else {
@@ -81,7 +82,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
 
         Picasso.with(context)
                 .load(ServerData.UrlImage + StoreList.get(position).getLogo())
-                .placeholder(R.drawable.error_image)
+                .transform(AppUtils.GetTransForm())
                 .error(R.drawable.error_image)
                 .into(Holder.StoreImage);
 

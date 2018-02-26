@@ -26,12 +26,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.ProductStore;
 import com.webmarke8.app.gencart.Objects.Products;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
+import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.ServerData;
 
 import org.json.JSONException;
@@ -112,8 +116,8 @@ public class ItemGridviewAdapter extends BaseAdapter {
 
         Picasso.with(context)
                 .load(ServerData.UrlImage + productsList[position].getImage())
-                .placeholder(R.drawable.error_image)
                 .error(R.drawable.error_image)
+                .transform(AppUtils.GetTransForm())
                 .into(viewHolder.image1);
         viewHolder.Price.setText(productsList[position].getPrice() + " SAR");
         viewHolder.Name.setText(productsList[position].getName());
@@ -150,6 +154,8 @@ public class ItemGridviewAdapter extends BaseAdapter {
                 } else {
                     myApp.IncreaseQuantity(productsList[position].getId(), productStore.getName(), productsList[position].getDepartment_id());
                 }
+
+                ((MainActivity)context).Bandge(myApp.getCartGroupList().size());
             }
         });
         viewHolder.Decrease.setOnClickListener(new View.OnClickListener() {
@@ -158,6 +164,9 @@ public class ItemGridviewAdapter extends BaseAdapter {
 
                 if (!finalViewHolder.Quantity.getText().equals("0"))
                     finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) - 1));
+
+                myApp.DecreaseQuantity(productsList[position].getId(), productStore.getName(), productsList[position].getDepartment_id());
+                ((MainActivity)context).Bandge(myApp.getCartGroupList().size());
 
 
             }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.R;
@@ -64,6 +65,12 @@ public class CartAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
+
+                myApplication.DecreaseQuantity(detailInfo.getProductiD(), deptList.get(groupPosition).getName(), detailInfo.getDeparmtmentId());
+                notifyDataSetChanged();
+                ((MainActivity) context).Bandge(myApplication.getCartGroupList().size());
+
+
             }
         });
         final View finalView = view;
@@ -73,6 +80,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
                 Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) + 1));
                 myApplication.IncreaseQuantity(detailInfo.getProductiD(), deptList.get(groupPosition).getName(), detailInfo.getDeparmtmentId());
+                notifyDataSetChanged();
+                ((MainActivity) context).Bandge(myApplication.getCartGroupList().size());
 
             }
         });

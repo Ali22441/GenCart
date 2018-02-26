@@ -57,8 +57,6 @@ public class Customer_Signup extends AppCompatActivity {
     CallbackManager callbackManager;
     TwitterAuthClient mTwitterAuthClient;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +65,8 @@ public class Customer_Signup extends AppCompatActivity {
         setContentView(R.layout.activity_customer__signup);
 
 
-        callbackManager = CallbackManager.Factory.create();
-        mTwitterAuthClient= new TwitterAuthClient();
+            callbackManager = CallbackManager.Factory.create();
+            mTwitterAuthClient= new TwitterAuthClient();
 
 
 

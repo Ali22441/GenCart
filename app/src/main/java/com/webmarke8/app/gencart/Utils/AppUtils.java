@@ -33,6 +33,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
+import com.squareup.picasso.Transformation;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
 
@@ -532,5 +534,14 @@ public class AppUtils {
         pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         pd.setContentView(view);
         return pd;
+    }
+
+    public static Transformation GetTransForm() {
+        return new RoundedTransformationBuilder()
+                .borderColor(Color.TRANSPARENT)
+                .borderWidthDp(3)
+                .cornerRadiusDp(10)
+                .oval(false)
+                .build();
     }
 }
