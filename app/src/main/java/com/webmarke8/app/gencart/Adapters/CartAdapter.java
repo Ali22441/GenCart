@@ -65,7 +65,6 @@ public class CartAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-
                 myApplication.DecreaseQuantity(detailInfo.getProductiD(), deptList.get(groupPosition).getName(), detailInfo.getDeparmtmentId());
                 notifyDataSetChanged();
                 ((MainActivity) context).Bandge(myApplication.getCartGroupList().size());

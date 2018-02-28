@@ -9,7 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="170dp"
-        android:background="@drawable/background_store"
+        android:background="@drawable/store_background"
         android:gravity="left"
         android:orientation="vertical">
 
@@ -150,19 +150,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp">
-
-                    <FrameLayout
-                        android:id="@+id/Details"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
 
                 <com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView
                     android:id="@+id/gridview"

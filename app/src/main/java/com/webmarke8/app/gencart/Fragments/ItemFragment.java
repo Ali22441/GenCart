@@ -4,6 +4,7 @@ package com.webmarke8.app.gencart.Fragments;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,6 +92,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void onClick(View v) {
 
                 ((MainActivity) getActivity()).ShowHome();
+
             }
         });
 
@@ -116,11 +118,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Detail = (FrameLayout) view.findViewById(R.id.Details);
         Detail.setVisibility(View.GONE);
         Gridview = (ExpandableHeightGridView) view.findViewById(R.id.gridview);
-//
-//        GridViewAdapter = new ItemGridviewAdapter(getActivity(), productStore, Detail, Scroll);
-//        GridViewAdapter.setMyApp(getActivity().getApplication());
-//        Gridview.setExpanded(true);
-//        Gridview.setAdapter(GridViewAdapter);
 
         GetStores();
 
@@ -142,16 +139,16 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         Progress.show();
 
+        String Url = ServerData.GetStoresByID + store.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
-                ServerData.GetStoresByID + store.getId(), new Response.Listener<String>() {
+                Url, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
 
-
                 try {
                     Gson gson = new Gson();
-                    JSONObject jsonObject = new JSONObject(response);
+                    JSONObject jsonObject = new JSONObject(StaticData.DummyResponse);
                     String Object = jsonObject.getString("success");
 
 
@@ -159,7 +156,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     product = gson.fromJson(Object, ProductStore.class);
 
                     productStore = product;
-                    GridViewAdapter = new ItemGridviewAdapter(getActivity(), product, Detail, Scroll);
+                    GridViewAdapter = new ItemGridviewAdapter(getActivity(), product, Scroll);
                     GridViewAdapter.setMyApp(getActivity().getApplication());
                     Gridview.setExpanded(true);
                     Gridview.setAdapter(GridViewAdapter);
@@ -202,6 +199,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
+
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
                 headers.put("Authorization", StaticData.DummyAuthentication);

@@ -32,7 +32,7 @@
                 android:id="@+id/store_image"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:src="@drawable/add_location_icon" />
+                android:src="@drawable/address_icon" />
 
             <TextView
                 android:id="@+id/name"
@@ -59,7 +59,7 @@
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
                 android:layout_marginRight="@dimen/_7sdp"
                 android:background="@drawable/button_border_layout"
                 android:text="ok"
@@ -67,7 +67,7 @@
 
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
                 android:background="@drawable/button_border_layout"
                 android:text="Cencel"
                 android:textColor="#40d466" />

@@ -5,15 +5,7 @@ import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
-import android.media.Image;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +15,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.ProductStore;
@@ -38,28 +27,19 @@ import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.ServerData;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
-
 public class ItemGridviewAdapter extends BaseAdapter {
 
     private Context context;
     private ProductStore productStore;
     Products[] productsList;
 
-    private FrameLayout frameLayout;
     private ScrollView scrollView;
     private MyApplication myApp;
 
 
-    public ItemGridviewAdapter(Context context, ProductStore productStore, FrameLayout FrameLayout, ScrollView scrollView) {
+    public ItemGridviewAdapter(Context context, ProductStore productStore, ScrollView scrollView) {
         this.productStore = productStore;
         this.context = context;
-        this.frameLayout = FrameLayout;
         this.scrollView = scrollView;
         productsList = productStore.getProducts();
         myApp = (MyApplication) context.getApplicationContext();
@@ -155,7 +135,7 @@ public class ItemGridviewAdapter extends BaseAdapter {
                     myApp.IncreaseQuantity(productsList[position].getId(), productStore.getName(), productsList[position].getDepartment_id());
                 }
 
-                ((MainActivity)context).Bandge(myApp.getCartGroupList().size());
+                ((MainActivity) context).Bandge(myApp.getCartGroupList().size());
             }
         });
         viewHolder.Decrease.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +146,7 @@ public class ItemGridviewAdapter extends BaseAdapter {
                     finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) - 1));
 
                 myApp.DecreaseQuantity(productsList[position].getId(), productStore.getName(), productsList[position].getDepartment_id());
-                ((MainActivity)context).Bandge(myApp.getCartGroupList().size());
+                ((MainActivity) context).Bandge(myApp.getCartGroupList().size());
 
 
             }
@@ -205,13 +185,13 @@ public class ItemGridviewAdapter extends BaseAdapter {
 
         Picasso.with(context)
                 .load(ServerData.UrlImage + products.getImage())
-                .placeholder(R.drawable.error_image)
                 .error(R.drawable.error_image)
                 .into(image1);
         Price.setText(products.getPrice() + " SAR");
         Name.setText(products.getName());
         Quantity.setText(QuantityNOw);
         Details.setText(products.getDescription());
+
 
 
         Increase.setOnClickListener(new View.OnClickListener() {

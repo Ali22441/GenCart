@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity
         StoreList = new ArrayList<>();
         Progress = AppUtils.LoadingSpinner(this);
 
-        frameLayout1 = (FrameLayout) findViewById(R.id.container1);
+        frameLayout = (FrameLayout) findViewById(R.id.containerForFragments);
 
 
         GetStores();
@@ -122,8 +122,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        frameLayout = (FrameLayout) findViewById(R.id.container);
-
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
@@ -142,19 +140,19 @@ public class MainActivity extends AppCompatActivity
                             case R.id.MyCart:
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.container, new MyCartFragment(), "MyCartFragment").commit();
+                                        .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").commit();
 
 
                                 break;
                             case R.id.Profile:
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.container, new ProfileFragment(), "Profile").commit();
+                                        .replace(R.id.containerForFragments, new ProfileFragment(), "Profile").commit();
                                 break;
                             case R.id.Chat:
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.container, new Chat_Fragment(), "Chat_Fragment").commit();
+                                        .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").commit();
                                 break;
 
                         }
@@ -194,14 +192,14 @@ public class MainActivity extends AppCompatActivity
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MyOrders(), "Orders").commit();
+                    .replace(R.id.containerForFragments, new MyOrders(), "Orders").commit();
 
         }
         if (id == R.id.MChat) {
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new Chat_Fragment(), "Chat_Fragment").commit();
+                    .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").commit();
 
         }
         if (id == R.id.MHome) {
@@ -214,14 +212,14 @@ public class MainActivity extends AppCompatActivity
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new MyCartFragment(), "MyCartFragment").commit();
+                    .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").commit();
 
         }
         if (id == R.id.MProfile) {
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new ProfileFragment(), "ProfileFragment").commit();
+                    .replace(R.id.containerForFragments, new ProfileFragment(), "ProfileFragment").commit();
 
         }
 
@@ -243,6 +241,7 @@ public class MainActivity extends AppCompatActivity
     public void ShowHome() {
 
         frameLayout.setVisibility(View.GONE);
+        findViewById(R.id.container1).setVisibility(View.VISIBLE);
     }
 
 

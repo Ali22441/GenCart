@@ -17,8 +17,11 @@
 
         <ImageView
             android:id="@+id/Image"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:scaleType="fitCenter"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:src="@drawable/pepsi" />
 
 

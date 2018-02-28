@@ -215,11 +215,11 @@
 
                 <ImageView
                     android:id="@+id/NewDelivery"
-                    android:layout_width="wrap_content"
-                    android:layout_height="65dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
                     android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
                     android:alpha="0.9"
                     android:background="@drawable/add_new_address"
                     android:tint="@android:color/white" />
@@ -235,7 +235,7 @@
                 <ImageView
                     android:id="@+id/Checkout"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="55dp"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/_90sdp"
                     android:layout_marginRight="@dimen/_90sdp"

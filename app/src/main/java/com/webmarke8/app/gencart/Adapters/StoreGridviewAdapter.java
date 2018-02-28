@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.webmarke8.app.gencart.Fragments.ItemFragment;
+import com.webmarke8.app.gencart.Fragments.Resturent_Fragemt;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Utils.AppUtils;
@@ -83,6 +84,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
         Picasso.with(context)
                 .load(ServerData.UrlImage + StoreList.get(position).getLogo())
                 .transform(AppUtils.GetTransForm())
+                .placeholder(R.drawable.progress)
                 .error(R.drawable.error_image)
                 .into(Holder.StoreImage);
 
@@ -91,7 +93,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
 
         Holder.StoreDistance.setText(Split[0] + " miles");
 
-        if (StoreList.get(position).getStatus().equals("1")) {
+        if (StoreList.get(position).getStatus().equals(true)) {
 
             Holder.StoreStatus.setText("Open");
 
@@ -104,20 +106,44 @@ public class StoreGridviewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                Fragment fragment = null;
-                Class fragmentClass = null;
 
-                fragmentClass = ItemFragment.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("Store", StoreList.get(position));
-                    fragment.setArguments(bundle);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (StoreList.get(position).getType().toLowerCase().contains("store")) {
+                    Fragment fragment = null;
+                    Class fragmentClass = null;
+
+                    fragmentClass = ItemFragment.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Store", StoreList.get(position));
+                        fragment.setArguments(bundle);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "Items").commit();
+
+                    frameLayout.setVisibility(View.VISIBLE);
+                } else {
+
+                    Fragment fragment = null;
+                    Class fragmentClass = null;
+
+                    fragmentClass = Resturent_Fragemt.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("Store", StoreList.get(position));
+                        fragment.setArguments(bundle);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "Items").commit();
+
+                    frameLayout.setVisibility(View.VISIBLE);
+
                 }
-                FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container1, fragment, "Items").commit();
 
 
             }

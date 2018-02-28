@@ -12,8 +12,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -30,6 +32,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +44,7 @@ import com.webmarke8.app.gencart.Session.MyApplication;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 
 public class AppUtils {
@@ -539,9 +543,41 @@ public class AppUtils {
     public static Transformation GetTransForm() {
         return new RoundedTransformationBuilder()
                 .borderColor(Color.TRANSPARENT)
-                .borderWidthDp(3)
-                .cornerRadiusDp(10)
+                .borderWidthDp(2)
+                .cornerRadiusDp(1)
                 .oval(false)
                 .build();
+    }
+
+
+    public static void scaleImage(ImageView view,Context context) {
+        Drawable drawing = view.getDrawable();
+        if (drawing == null) {
+            return;
+        }
+        Bitmap bitmap = ((BitmapDrawable) drawing).getBitmap();
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int xBounding = ((View) view.getParent()).getWidth();//EXPECTED WIDTH
+        int yBounding = ((View) view.getParent()).getHeight();//EXPECTED HEIGHT
+
+        float xScale = ((float) xBounding) / width;
+        float yScale = ((float) yBounding) / height;
+
+        Matrix matrix = new Matrix();
+        matrix.postScale(xScale, yScale);
+
+        Bitmap scaledBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true);
+        width = scaledBitmap.getWidth();
+        height = scaledBitmap.getHeight();
+        BitmapDrawable result = new BitmapDrawable(context.getResources(), scaledBitmap);
+
+        view.setImageDrawable(result);
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        params.width = width;
+        params.height = height;
+        view.setLayoutParams(params);
     }
 }

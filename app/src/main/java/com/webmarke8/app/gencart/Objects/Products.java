@@ -1,12 +1,10 @@
 package com.webmarke8.app.gencart.Objects;
 
-import java.io.Serializable;
-
 /**
- * Created by GeeksEra on 2/23/2018.
+ * Created by GeeksEra on 2/27/2018.
  */
 
-public class Products  implements Serializable {
+public class Products {
     private String promo_price;
 
     private String status;
@@ -14,6 +12,8 @@ public class Products  implements Serializable {
     private String department_id;
 
     private String brand_id;
+
+    private String category_id;
 
     private String image;
 
@@ -43,7 +43,9 @@ public class Products  implements Serializable {
 
     private String quantity;
 
-    public String getPromo_price() {
+    public String
+
+    getPromo_price() {
         return promo_price;
     }
 
@@ -73,6 +75,14 @@ public class Products  implements Serializable {
 
     public void setBrand_id(String brand_id) {
         this.brand_id = brand_id;
+    }
+
+    public String getCategory_id() {
+        return category_id;
+    }
+
+    public void setCategory_id(String category_id) {
+        this.category_id = category_id;
     }
 
     public String getImage() {
@@ -189,6 +199,6 @@ public class Products  implements Serializable {
 
     @Override
     public String toString() {
-        return "ClassPojo [promo_price = " + promo_price + ", status = " + status + ", department_id = " + department_id + ", brand_id = " + brand_id + ", image = " + image + ", store_id = " + store_id + ", total_sale = " + total_sale + ", id = " + id + ", unit = " + unit + ", updated_at = " + updated_at + ", price = " + price + ", tax = " + tax + ", description = " + description + ", name = " + name + ", created_at = " + created_at + ", shelf_id = " + shelf_id + ", slug = " + slug + ", quantity = " + quantity + "]";
+        return "ClassPojo [promo_price = " + promo_price + ", status = " + status + ", department_id = " + department_id + ", brand_id = " + brand_id + ", category_id = " + category_id + ", image = " + image + ", store_id = " + store_id + ", total_sale = " + total_sale + ", id = " + id + ", unit = " + unit + ", updated_at = " + updated_at + ", price = " + price + ", tax = " + tax + ", description = " + description + ", name = " + name + ", created_at = " + created_at + ", shelf_id = " + shelf_id + ", slug = " + slug + ", quantity = " + quantity + "]";
     }
 }

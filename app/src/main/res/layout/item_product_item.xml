@@ -51,29 +51,46 @@
                             android:src="@drawable/pepsi_2" />
 
 
-                        <TextView
-                            android:id="@+id/Price"
-                            android:layout_width="60dp"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="20dp"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentEnd="true"
-                            android:background="@drawable/text_background"
-                            android:gravity="center"
-                            android:text="2 SR"
-                            android:textColor="#fff"
-                            android:textStyle="bold" />
+                            android:gravity="end">
+
+
+                            <TextView
+                                android:id="@+id/Price"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:layout_marginRight="@dimen/_5sdp"
+                                android:background="@drawable/textview_gradient"
+                                android:gravity="end"
+                                android:paddingLeft="@dimen/_4sdp"
+                                android:paddingRight="@dimen/_4sdp"
+                                android:text="200SAR"
+                                android:textColor="#fff"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
                     </RelativeLayout>
 
                     <TextView
                         android:id="@+id/Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_1sdp"
+                        android:layout_marginRight="@dimen/_1sdp"
+                        android:gravity="center"
+                        android:lines="1"
+                        android:maxHeight="@dimen/_100sdp"
+                        android:maxLength="100"
                         android:text="Pepsi Ten Small"
                         android:textColor="#3c3a3b" />
 
                     <View
                         android:layout_width="wrap_content"
-                        android:layout_height="1.5dp"
+                        android:layout_height="2dp"
                         android:layout_marginTop="1dp"
                         android:background="#f6f6f6" />
 
@@ -93,16 +110,17 @@
                             <ImageView
                                 android:id="@+id/Decrease"
                                 android:layout_width="40dp"
-                                android:layout_height="28dp"
+                                android:layout_height="25dp"
                                 android:padding="5dp"
                                 android:scaleType="center"
-                                android:src="@drawable/minus_icon" />
+                                android:src="@drawable/minus" />
 
                             <TextView
                                 android:id="@+id/Quantity"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
+                                android:maxLength="3"
                                 android:padding="5dp"
                                 android:text="0"
                                 android:textColor="#000"
@@ -111,10 +129,10 @@
                             <ImageView
                                 android:id="@+id/Increase"
                                 android:layout_width="40dp"
-                                android:layout_height="28dp"
+                                android:layout_height="25dp"
                                 android:padding="5dp"
                                 android:scaleType="center"
-                                android:src="@drawable/plus_icon" />
+                                android:src="@drawable/plusiconproduct" />
                         </LinearLayout>
 
                     </LinearLayout>
