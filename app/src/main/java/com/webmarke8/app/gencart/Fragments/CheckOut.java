@@ -49,7 +49,7 @@ public class CheckOut extends Fragment {
 
 
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim)
-                        .replace(R.id.container, new MyCartFragment(), "MyCartFragment").commit();
+                        .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").commit();
 
             }
         });
@@ -70,7 +70,7 @@ public class CheckOut extends Fragment {
                     e.printStackTrace();
                 }
                 FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim).replace(R.id.container, fragment, "Location").commit();
+                fragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim).replace(R.id.containerForFragments, fragment, "Location").commit();
 
             }
         });

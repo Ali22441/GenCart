@@ -23,10 +23,10 @@ import java.util.List;
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
     List<Chat_Object> MyMessageList;
     Context context;
-    TextView senderMessage, ReceiverMessage;
-    LinearLayout linearLayout, linearLayoutMessageSide;
-    ImageView imageView;
-    TextView textViewTime;
+    TextView senderMessage;
+    TextView SenderName, ReciverName, SenderTime, ReciverTime;
+    ImageView Sender, Reciver;
+    LinearLayout messageLayout;
 
     public ChatAdapter(List<Chat_Object> list, Context context) {
         this.MyMessageList = list;
@@ -56,21 +56,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
 
         if (sender.equals(email)) {
 
-
-            // senderMessage.setBackgroundResource(R.drawable.messagebgsend);
-            linearLayoutMessageSide.setBackgroundResource(R.drawable.send_message_background);
-            senderMessage.setPadding(25, 5, 40, 15);
+            senderMessage.setBackgroundResource(R.drawable.sender_layout);
             senderMessage.setTextColor(Color.parseColor("#FDFEFC"));
-
-            linearLayout.setGravity(Gravity.RIGHT);
+            messageLayout.setGravity(Gravity.RIGHT);
+            Reciver.setVisibility(View.INVISIBLE);
+            ReciverName.setVisibility(View.INVISIBLE);
+            ReciverTime.setVisibility(View.INVISIBLE);
         } else {
-            senderMessage.setPadding(45, 5, 25, 15);
             senderMessage.setTextColor(Color.parseColor("#6A6A6A"));
-            linearLayoutMessageSide.setBackgroundResource(R.drawable.send_message_background);
-            linearLayout.setGravity(Gravity.LEFT);
+            senderMessage.setBackgroundResource(R.drawable.reciver_layout);
+            messageLayout.setGravity(Gravity.LEFT);
+            Sender.setVisibility(View.INVISIBLE);
+            SenderName.setVisibility(View.INVISIBLE);
+            SenderTime.setVisibility(View.INVISIBLE);
+
 
         }
-
 
     }
 
@@ -109,11 +110,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
 
         public MyHoder(View itemView) {
             super(itemView);
+
             senderMessage = itemView.findViewById(R.id.txtsenderMessage);
-            linearLayout = itemView.findViewById(R.id.messageLayout);
-            linearLayoutMessageSide = itemView.findViewById(R.id.messageSideChange);
-            imageView = itemView.findViewById(R.id.profile_image);
-            textViewTime = itemView.findViewById(R.id.Txttime);
+            SenderName = (TextView) itemView.findViewById(R.id.NameSender);
+            ReciverName = (TextView) itemView.findViewById(R.id.NameReciver);
+            SenderTime = (TextView) itemView.findViewById(R.id.TimeSender);
+            ReciverTime = (TextView) itemView.findViewById(R.id.TimeReciver);
+            Sender = (ImageView) itemView.findViewById(R.id.ImageSender);
+            Reciver = (ImageView) itemView.findViewById(R.id.ImageReciver);
+            messageLayout = (LinearLayout) itemView.findViewById(R.id.messageLayout);
 
 
         }

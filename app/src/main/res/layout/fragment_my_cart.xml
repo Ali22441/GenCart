@@ -38,8 +38,9 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
                     android:orientation="vertical">
 
                     <ImageView
@@ -56,8 +57,9 @@
                 </LinearLayout>
 
                 <TextView
-                    android:layout_width="200dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:text="My Cart"
                     android:textColor="#fff"
@@ -65,31 +67,16 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.4"
                     android:gravity="center"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:text="Sub Total: 800 SAR"
                     android:textColor="#fff"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:weightSum="4">
-
-                    <android.support.design.widget.TabLayout
-                        android:id="@+id/tab_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/colorPrimary"
-                        android:elevation="6dp"
-                        android:minHeight="?attr/actionBarSize"
-                        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-                </LinearLayout>
 
             </LinearLayout>
 
@@ -113,7 +100,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/_10sdp"
         android:src="@drawable/checkout_button_new" />
 
 </RelativeLayout>

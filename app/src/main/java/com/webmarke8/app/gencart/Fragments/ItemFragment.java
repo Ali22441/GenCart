@@ -59,21 +59,15 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     private ItemGridviewAdapter GridViewAdapter;
     ProductStore productStore;
     Dialog Progress;
-
-
     Store store;
-
-
     FrameLayout Detail;
     ScrollView Scroll;
-
     SwipeRefreshLayout mSwipeRefreshLayout;
 
 
     public ItemFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,7 +89,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             }
         });
-
 
         view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,8 +113,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         Gridview = (ExpandableHeightGridView) view.findViewById(R.id.gridview);
 
         GetStores();
-
-
         return view;
     }
 
@@ -130,8 +121,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         mSwipeRefreshLayout.setRefreshing(true);
         mSwipeRefreshLayout.setRefreshing(false);
         GetStores();
-
-        // Fetching data from server
     }
 
 
@@ -145,7 +134,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public void onResponse(String response) {
-
                 try {
                     Gson gson = new Gson();
                     JSONObject jsonObject = new JSONObject(StaticData.DummyResponse);
@@ -165,8 +153,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                     Log.d("GetCartError", e.getMessage());
                 }
-
-
                 Progress.dismiss();
 
 

@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -18,12 +19,16 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
@@ -44,6 +49,8 @@ import com.webmarke8.app.gencart.Session.MyApplication;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 
 
@@ -550,7 +557,7 @@ public class AppUtils {
     }
 
 
-    public static void scaleImage(ImageView view,Context context) {
+    public static void scaleImage(ImageView view, Context context) {
         Drawable drawing = view.getDrawable();
         if (drawing == null) {
             return;
@@ -579,5 +586,44 @@ public class AppUtils {
         params.width = width;
         params.height = height;
         view.setLayoutParams(params);
+    }
+
+    public static boolean getLocationPermission(Activity activity) {
+
+        if (ContextCompat.checkSelfPermission(activity.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    1);
+            return false;
+        }
+    }
+
+
+    public static String getCompleteAddressString(double LATITUDE, double LONGITUDE, Activity activity) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(activity, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.d("GetCart", strReturnedAddress.toString());
+            } else {
+                Log.d("GetCart", "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d("GetCart", "Canont get Address!");
+        }
+        return strAdd;
     }
 }

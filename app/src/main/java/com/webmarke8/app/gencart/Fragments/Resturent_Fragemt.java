@@ -31,11 +31,9 @@ public class Resturent_Fragemt extends Fragment {
     private RecyclerView.Adapter mAdapterHorizental;
     List<Store> models;
 
-
     public Resturent_Fragemt() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

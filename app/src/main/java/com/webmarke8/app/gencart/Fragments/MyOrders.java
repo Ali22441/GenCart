@@ -27,7 +27,6 @@ public class MyOrders extends Fragment {
     private RecyclerView.Adapter mAdapter;
     List<Order> models;
 
-
     public MyOrders() {
         // Required empty public constructor
     }
@@ -58,7 +57,6 @@ public class MyOrders extends Fragment {
         view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
 
                 ((MainActivity) getActivity()).ShowHome();
 

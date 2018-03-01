@@ -70,6 +70,8 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_chat_, container, false);
 
+        recycle = (RecyclerView) view.findViewById(R.id.recycle);
+
         view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +172,6 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
     public void LoadMessages(View view) {
 
 
-        recycle = (RecyclerView) view.findViewById(R.id.recycle);
         database = FirebaseDatabase.getInstance();
         // myRef = database.getReference("Messages");
 

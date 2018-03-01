@@ -49,6 +49,7 @@ public class MyCartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
 
+
         // add data for displaying in expandable list view
 
 
@@ -58,7 +59,6 @@ public class MyCartFragment extends Fragment {
                 ((MainActivity) getActivity()).OpenOpenOrCloseDrawer();
             }
         });
-
 
         view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,17 +87,16 @@ public class MyCartFragment extends Fragment {
                     e.printStackTrace();
                 }
                 FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container, fragment, "CheckOut").commit();
+                fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").commit();
 
             }
         });
 
 
-
 //        loadData();
-        myApplication=(MyApplication)getActivity().getApplicationContext();
+        myApplication = (MyApplication) getActivity().getApplicationContext();
 
-        CartList=myApplication.getCartGroupList();
+        CartList = myApplication.getCartGroupList();
         //get reference of the ExpandableListView
         simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
         // create the adapter by passing your ArrayList data

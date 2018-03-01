@@ -2,6 +2,7 @@ package com.webmarke8.app.gencart.Activities;
 
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
@@ -9,6 +10,7 @@ import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -51,6 +53,7 @@ import com.webmarke8.app.gencart.Fragments.MyOrders;
 import com.webmarke8.app.gencart.Fragments.ProfileFragment;
 import com.webmarke8.app.gencart.Fragments.Resturent_Fragemt;
 import com.webmarke8.app.gencart.Fragments.StoreFragment;
+import com.webmarke8.app.gencart.Manifest;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Utils.AppUtils;
@@ -90,6 +93,9 @@ public class MainActivity extends AppCompatActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+
+
+        GetLocationPermission();
 
 
         StoreList = new ArrayList<>();
@@ -252,10 +258,19 @@ public class MainActivity extends AppCompatActivity
         GetStores();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (Progress != null && Progress.isShowing()) {
+            Progress.cancel();
+        }
+    }
 
     private void GetStores() {
 
-        Progress.show();
+        if (Progress != null && !Progress.isShowing()) {
+            Progress.show();
+        }
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
@@ -350,5 +365,14 @@ public class MainActivity extends AppCompatActivity
                 (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
         View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
         new QBadgeView(this).bindTarget(v).setBadgeNumber(Number).setBadgeBackgroundColor(R.color.transprent).setShowShadow(true).setBadgePadding(7, true);
+    }
+
+    public void GetLocationPermission() {
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return;
+        } else {
+            // Write you code here if permission already given.
+        }
     }
 }

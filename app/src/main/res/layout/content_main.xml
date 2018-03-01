@@ -42,7 +42,8 @@
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginLeft="@dimen/_7sdp"
-                    android:layout_marginTop="@dimen/_17sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:minHeight="?attr/actionBarSize"
                     android:padding="@dimen/_2sdp"
                     android:src="@drawable/menue"
                     android:tint="@android:color/white" />
