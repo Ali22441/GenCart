@@ -4,6 +4,7 @@ package com.webmarke8.app.gencart.Fragments;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
@@ -22,6 +23,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+//import com.ahmadrosid.lib.drawroutemap.DrawMarker;
+//import com.ahmadrosid.lib.drawroutemap.DrawRouteMaps;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -154,9 +158,8 @@ public class Location_F extends Fragment implements OnMapReadyCallback {
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        // Do other setup activities here too, as described elsewhere in this tutorial.
 
-        // Turn on the My Location layer and the related control on the map.
+
         updateLocationUI();
 
         // Get the current location of the device and set the position of the map.
@@ -251,6 +254,10 @@ public class Location_F extends Fragment implements OnMapReadyCallback {
                                         new LatLng(mLastKnownLocation.getLatitude(),
                                                 mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
 
+
+                                LatLng origin = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+                                LatLng destination = new LatLng(33.5204652, 73.0801742);
+                                DrawPath(origin,destination);
                                 LocationAddress.setText(getCompleteAddressString(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()));
                             }
                         } else {
@@ -288,5 +295,20 @@ public class Location_F extends Fragment implements OnMapReadyCallback {
             Log.d("GetCart", "Canont get Address!");
         }
         return strAdd;
+    }
+
+    public void DrawPath(LatLng origin,LatLng destination) {
+
+//        DrawRouteMaps.getInstance(getActivity())
+//                .draw(origin, destination, mMap);
+//        DrawMarker.getInstance(getActivity()).draw(mMap, origin, R.drawable.personchat, "Driver");
+//        DrawMarker.getInstance(getActivity()).draw(mMap, destination, R.drawable.location_map, "UserLocation");
+//
+//        LatLngBounds bounds = new LatLngBounds.Builder()
+//                .include(origin)
+//                .include(destination).build();
+//        Point displaySize = new Point();
+//        getActivity().getWindowManager().getDefaultDisplay().getSize(displaySize);
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, displaySize.x, 250, 30));
     }
 }

@@ -15,11 +15,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.Objects.Order;
+import com.webmarke8.app.gencart.Objects.Products;
 import com.webmarke8.app.gencart.R;
 
 import java.util.ArrayList;
@@ -193,14 +192,14 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         }
 
         //get the children for the group
-        ArrayList<Cart> productList = headerInfo.getProductList();
+        ArrayList<Products> productList = headerInfo.getProductList();
         //size of the children list
         int listSize = productList.size();
         //add to the counter
         listSize++;
 
         //create a new child and add that to the group
-        Cart detailInfo = new Cart();
+        Products detailInfo = new Products();
         productList.add(detailInfo);
         headerInfo.setProductList(productList);
 

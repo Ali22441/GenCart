@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class CartGroup implements Serializable {
 
     private String name;
-    private ArrayList<Cart> list = new ArrayList<Cart>();
+    private ArrayList<Products> ProductList = new ArrayList<Products>();
 
     public String getName() {
         return name;
@@ -19,12 +19,11 @@ public class CartGroup implements Serializable {
         this.name = name;
     }
 
-    public ArrayList<Cart> getProductList() {
-        return list;
+    public ArrayList<Products> getProductList() {
+        return ProductList;
     }
 
-    public void setProductList(ArrayList<Cart> productList) {
-        this.list = productList;
+    public void setProductList(ArrayList<Products> productList) {
+        ProductList = productList;
     }
-
 }

@@ -7,7 +7,7 @@
     android:gravity="center">
 
     <android.support.v7.widget.CardView
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/layout_gradient">
 
@@ -16,7 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="@dimen/_2sdp">
-
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -31,12 +30,12 @@
                     <ImageView
                         android:id="@+id/StoreImage"
                         android:layout_width="match_parent"
-                        android:layout_height="220dp"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:scaleType="centerInside"
                         android:adjustViewBounds="true"
+                        android:scaleType="centerInside"
                         android:src="@drawable/images" />
 
                     <TextView
@@ -49,7 +48,7 @@
                         android:background="@drawable/rounded"
                         android:paddingBottom="@dimen/_2sdp"
                         android:paddingLeft="@dimen/_5sdp"
-                        android:paddingRight="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_10sdp"
                         android:paddingTop="@dimen/_2sdp"
                         android:text="10 miles"
                         android:textColor="#86C65F"
@@ -71,6 +70,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
+                    android:maxLines="1"
+                    android:maxWidth="@dimen/_130sdp"
+                    android:paddingLeft="@dimen/_5sdp"
                     android:text="Levi's Outlet Store"
                     android:textColor="#464646"
                     android:textSize="16dp"
@@ -78,8 +80,6 @@
 
 
             </LinearLayout>
-
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,8 +107,8 @@
                     android:id="@+id/Status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
                     android:gravity="end"
+                    android:paddingRight="@dimen/_10sdp"
                     android:text="Open"
                     android:textColor="#86C65F"
                     android:textSize="@dimen/_12sdp" />

@@ -13,8 +13,8 @@
         android:layout_marginStart="10dp"
         android:background="@drawable/notification_bandage"
         android:gravity="center"
-        android:padding="@dimen/_3sdp"
-        android:text="9+"
+        android:text=" 9 "
+        android:padding="3dp"
         android:textColor="@android:color/white"
         android:textSize="11sp" />
 </FrameLayout>

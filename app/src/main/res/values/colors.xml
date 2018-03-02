@@ -6,4 +6,6 @@
     <color name="green">#79da59</color>
     <color name="Background_activity">#d6d6d6</color>
     <color name="transprent">#11000000</color>
+    <color name="colorRouteLine">#79da59</color>
+
 </resources>

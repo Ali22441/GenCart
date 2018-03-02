@@ -9,11 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Adapters.CartAdapter;
-import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
@@ -37,6 +36,8 @@ public class MyCartFragment extends Fragment {
 
     MyApplication myApplication;
 
+    TextView AllStoreItemPrice;
+
 
     public MyCartFragment() {
         // Required empty public constructor
@@ -49,7 +50,7 @@ public class MyCartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
 
-
+        AllStoreItemPrice=(TextView)view.findViewById(R.id.AllStoreItemPrice);
         // add data for displaying in expandable list view
 
 
@@ -100,7 +101,7 @@ public class MyCartFragment extends Fragment {
         //get reference of the ExpandableListView
         simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
         // create the adapter by passing your ArrayList data
-        listAdapter = new CartAdapter(getActivity(), CartList);
+        listAdapter = new CartAdapter(getActivity(), CartList,AllStoreItemPrice);
         // attach the adapter to the expandable list view
         simpleExpandableListView.setAdapter(listAdapter);
 
@@ -141,50 +142,5 @@ public class MyCartFragment extends Fragment {
         }
     }
 
-
-    //here we maintain our products in various departments
-    private int addProduct(String department, String product) {
-
-        int groupPosition = 0;
-
-        //check the hash map if the group already exists
-        CartGroup headerInfo = subjects.get(department);
-        //add the group if doesn't exists
-        if (headerInfo == null) {
-            headerInfo = new CartGroup();
-            headerInfo.setName(department);
-            subjects.put(department, headerInfo);
-            CartList.add(headerInfo);
-        }
-
-        //get the children for the group
-        ArrayList<Cart> productList = headerInfo.getProductList();
-        //size of the children list
-        int listSize = productList.size();
-        //add to the counter
-        listSize++;
-
-        //create a new child and add that to the group
-        Cart detailInfo = new Cart();
-        productList.add(detailInfo);
-        headerInfo.setProductList(productList);
-
-        //find the group position inside the list
-        groupPosition = CartList.indexOf(headerInfo);
-        return groupPosition;
-    }
-
-    private void loadData() {
-
-        addProduct("Mr.Person's Grocery Store", "Spray");
-        addProduct("Mr.Person's Grocery Store", "Spray");
-
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-
-    }
 
 }

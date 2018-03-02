@@ -5,10 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.TextView;
 
-import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.CartGroup;
+import com.webmarke8.app.gencart.Objects.Products;
 import com.webmarke8.app.gencart.R;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class MyOrderDetailsAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        ArrayList<Cart> productList = deptList.get(groupPosition).getProductList();
+        ArrayList<Products> productList = deptList.get(groupPosition).getProductList();
         return productList.get(childPosition);
     }
 
@@ -42,7 +41,7 @@ public class MyOrderDetailsAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
                              View view, ViewGroup parent) {
 
-        Cart detailInfo = (Cart) getChild(groupPosition, childPosition);
+        Products detailInfo = (Products) getChild(groupPosition, childPosition);
         if (view == null) {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.item_order_dialog, null);
@@ -59,7 +58,7 @@ public class MyOrderDetailsAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        ArrayList<Cart> productList = deptList.get(groupPosition).getProductList();
+        ArrayList<Products> productList = deptList.get(groupPosition).getProductList();
         return productList.size();
 
     }

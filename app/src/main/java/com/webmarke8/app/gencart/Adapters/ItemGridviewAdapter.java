@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.webmarke8.app.gencart.Activities.MainActivity;
-import com.webmarke8.app.gencart.Objects.Cart;
 import com.webmarke8.app.gencart.Objects.ProductStore;
 import com.webmarke8.app.gencart.Objects.Products;
 import com.webmarke8.app.gencart.R;
@@ -94,6 +92,8 @@ public class ItemGridviewAdapter extends BaseAdapter {
         }
 
 
+        viewHolder.Quantity.setText(myApp.getInCartQuantity(productsList[position].getId()));
+
         Picasso.with(context)
                 .load(ServerData.UrlImage + productsList[position].getImage())
                 .error(R.drawable.error_image)
@@ -122,31 +122,33 @@ public class ItemGridviewAdapter extends BaseAdapter {
                 finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) + 1));
 
                 if (finalViewHolder.Quantity.getText().equals("1")) {
-                    Cart cart = new Cart();
-                    cart.setDeparmtmentId(productsList[position].getDepartment_id());
-                    cart.setProductDescription(productsList[position].getDescription());
-                    cart.setProductiD(productsList[position].getId());
-                    cart.setProductName(productsList[position].getName());
-                    cart.setStoreId(productsList[position].getStore_id());
-                    cart.setQuantity(Integer.valueOf(finalViewHolder.Quantity.getText().toString()));
 
-                    myApp.AddCartItem(cart, productStore.getName());
+                    myApp.AddCartItem(productsList[position], productStore.getName());
                 } else {
-                    myApp.IncreaseQuantity(productsList[position].getId(), productStore.getName(), productsList[position].getDepartment_id());
+                    myApp.IncreaseQuantity(productsList[position].getId(), productStore.getName());
                 }
 
-                ((MainActivity) context).Bandge(myApp.getCartGroupList().size());
+                ((MainActivity) context).Bandge(myApp.getCartQuantity());
             }
         });
         viewHolder.Decrease.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (!finalViewHolder.Quantity.getText().equals("0"))
+                if (!finalViewHolder.Quantity.getText().equals("0")) {
+
                     finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) - 1));
 
-                myApp.DecreaseQuantity(productsList[position].getId(), productStore.getName(), productsList[position].getDepartment_id());
-                ((MainActivity) context).Bandge(myApp.getCartGroupList().size());
+                    if (!myApp.DecreaseQuantity(productsList[position].getId(), productStore.getName())) {
+
+
+                    }
+
+                    ((MainActivity) context).Bandge(myApp.getCartQuantity());
+
+                } else {
+
+                }
 
 
             }
@@ -186,12 +188,12 @@ public class ItemGridviewAdapter extends BaseAdapter {
         Picasso.with(context)
                 .load(ServerData.UrlImage + products.getImage())
                 .error(R.drawable.error_image)
+                .transform(AppUtils.GetTransForm())
                 .into(image1);
         Price.setText(products.getPrice() + " SAR");
         Name.setText(products.getName());
         Quantity.setText(QuantityNOw);
         Details.setText(products.getDescription());
-
 
 
         Increase.setOnClickListener(new View.OnClickListener() {
@@ -201,16 +203,9 @@ public class ItemGridviewAdapter extends BaseAdapter {
                 Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) + 1));
 
                 if (Quantity.getText().equals("1")) {
-                    Cart cart = new Cart();
-                    cart.setDeparmtmentId(products.getDepartment_id());
-                    cart.setProductDescription(products.getDescription());
-                    cart.setProductiD(products.getId());
-                    cart.setProductName(products.getName());
-                    cart.setStoreId(products.getStore_id());
-                    cart.setQuantity(Integer.valueOf(Quantity.getText().toString()));
-
-                    myApp.AddCartItem(cart, productStore.getName());
+                    myApp.AddCartItem(products, productStore.getName());
                 }
+                notifyDataSetChanged();
 
 
             }
@@ -222,9 +217,12 @@ public class ItemGridviewAdapter extends BaseAdapter {
 
                 if (!Quantity.getText().equals("0")) {
                     Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) - 1));
+                    myApp.DecreaseQuantity(products.getId(), productStore.getName());
+
+                    ((MainActivity) context).Bandge(myApp.getCartQuantity());
 
                 }
-
+                notifyDataSetChanged();
             }
         });
         // Set the dialog text -- this is better done in the XML

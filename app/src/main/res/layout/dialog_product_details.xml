@@ -116,7 +116,7 @@
                 android:paddingRight="@dimen/_10sdp"
                 android:text="200 SR"
                 android:textColor="#6fc751"
-                android:textSize="@dimen/_15sdp"
+                android:textSize="@dimen/_12sdp"
                 android:textStyle="bold" />
 
         </LinearLayout>

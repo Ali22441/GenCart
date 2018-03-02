@@ -5,6 +5,19 @@ package com.webmarke8.app.gencart.Objects;
  */
 
 public class Products {
+
+
+
+    int QuantityInCart;
+
+    public int getQuantityInCart() {
+        return QuantityInCart;
+    }
+
+    public void setQuantityInCart(int quantityInCart) {
+        QuantityInCart = quantityInCart;
+    }
+
     private String promo_price;
 
     private String status;

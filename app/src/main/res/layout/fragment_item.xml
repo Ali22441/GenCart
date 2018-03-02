@@ -45,14 +45,29 @@
                 android:tint="@android:color/white" />
 
             <TextView
-                android:id="@+id/name"
-                android:layout_width="match_parent"
+                android:id="@+id/StoreName"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:text="Amuk Store"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/_17sdp"
                 android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:elevation="0dp"
+                android:gravity="center"
+                android:padding="@dimen/_2sdp"
+                android:src="@drawable/back_icon"
+                android:textAllCaps="false"
+                android:tint="@android:color/white"
+                android:visibility="invisible" />
 
         </LinearLayout>
 

@@ -1,13 +1,15 @@
 package com.webmarke8.app.gencart.Session;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.webmarke8.app.gencart.Objects.Cart;
+import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.Objects.Customer;
 import com.webmarke8.app.gencart.Objects.Owner;
+import com.webmarke8.app.gencart.Objects.Products;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,12 +55,10 @@ public class MyApplication extends Application {
         editor.commit();
     }
 
-
     public void logoutUser() {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
-
     }
 
     public boolean isLoggedIn() {
@@ -106,23 +106,22 @@ public class MyApplication extends Application {
 
     }
 
-    public void AddCartItem(Cart Item, String StoreName) {
+    public void AddCartItem(Products products, String StoreName) {
 
+        products.setQuantityInCart(1);
         boolean Exit = false;
         for (CartGroup cartGroup : CartGroupList
                 ) {
 
             if (cartGroup.getName().equals(StoreName)) {
-                cartGroup.getProductList().add(Item);
+                cartGroup.getProductList().add(products);
                 Exit = true;
             }
         }
-        if (!Exit)
-
-        {
+        if (!Exit) {
             CartGroup cartGroup = new CartGroup();
             cartGroup.setName(StoreName);
-            cartGroup.getProductList().add(Item);
+            cartGroup.getProductList().add(products);
             CartGroupList.add(cartGroup);
         }
     }
@@ -135,49 +134,117 @@ public class MyApplication extends Application {
         CartGroupList = cartGroupList;
     }
 
-    public void IncreaseQuantity(String ProdutId, String StoreName, String DepartmentID) {
+    public void IncreaseQuantity(String ProdutId, String StoreName) {
 
         for (CartGroup cartGroup : CartGroupList
                 ) {
 
             if (cartGroup.getName().equals(StoreName)) {
-                for (Cart cart : cartGroup.getProductList()
+                for (Products products : cartGroup.getProductList()
                         ) {
 
-                    if (cart.getProductiD().equals(ProdutId) && cart.getDeparmtmentId().equals(DepartmentID)) {
-                        cart.setQuantity(cart.getQuantity() + 1);
+                    if (products.getId().equals(ProdutId)) {
+                        products.setQuantityInCart(products.getQuantityInCart() + 1);
                     }
                 }
             }
         }
     }
 
-    public boolean DecreaseQuantity(String ProdutId, String StoreName, String DepartmentID) {
+    boolean removeparentcheck = false;
+
+    public boolean DecreaseQuantity(String ProdutId, String StoreName) {
 
         int length = 0;
+        int removeparent = 0;
+
         for (CartGroup cartGroup : CartGroupList
                 ) {
 
+            removeparent++;
+
             if (cartGroup.getName().equals(StoreName)) {
-                for (Cart cart : cartGroup.getProductList()
+                for (Products products : cartGroup.getProductList()
                         ) {
                     length++;
 
-                    if (cart.getProductiD().equals(ProdutId) && cart.getDeparmtmentId().equals(DepartmentID)) {
-                        if (cart.getProductiD().equals(1)) {
+                    if (products.getId().equals(ProdutId)) {
+                        if (products.getQuantityInCart() == 1) {
 
-                            cartGroup.getProductList().remove(length);
+                            cartGroup.getProductList().remove(length - 1);
+
+                            if (cartGroup.getProductList().size() <= 0) {
+                                removeparentcheck = true;
+                            }
                             return false;
 
                         } else {
-                            cart.setQuantity(cart.getQuantity() - 1);
-
+                            products.setQuantityInCart(products.getQuantityInCart() - 1);
                         }
                     }
                 }
+            }
+            if (removeparentcheck) {
+                CartGroupList.remove(removeparent - 1);
             }
         }
         return true;
     }
 
+    public int getCartQuantity() {
+        int Quantity = 0;
+        for (CartGroup cartGroup : CartGroupList
+                ) {
+            for (Products products : cartGroup.getProductList()) {
+                Quantity++;
+            }
+        }
+
+        return Quantity;
+    }
+
+    public int getPriceOfAllStore() {
+        int Price = 0;
+        for (CartGroup cartGroup : CartGroupList
+                ) {
+
+            for (Products products : cartGroup.getProductList()) {
+
+                Price = Price + Integer.parseInt(products.getPrice());
+            }
+        }
+        return Price;
+    }
+
+    public int getPriceOfSingleStore(String StoreName) {
+        int Price = 0;
+        for (CartGroup cartGroup : CartGroupList
+                ) {
+
+            if (StoreName.equals(cartGroup.getName())) {
+                for (Products products : cartGroup.getProductList()) {
+
+                    Price = Price + Integer.parseInt(products.getPrice());
+                }
+            }
+        }
+        return Price;
+    }
+
+    public int getInCartQuantity(String ID) {
+
+        for (CartGroup cartGroup : CartGroupList
+                ) {
+
+
+            for (Products products : cartGroup.getProductList()) {
+
+                if (ID.equals(products.getId())) {
+                    return products.getQuantityInCart();
+                }
+            }
+
+        }
+        return 0;
+    }
 }

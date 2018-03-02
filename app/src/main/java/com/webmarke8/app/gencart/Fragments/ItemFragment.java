@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -63,6 +64,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     FrameLayout Detail;
     ScrollView Scroll;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    TextView StoreName;
 
 
     public ItemFragment() {
@@ -77,6 +79,9 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
         store = (Store) getArguments().getSerializable("Store");
+        StoreName = (TextView) view.findViewById(R.id.StoreName);
+
+        StoreName.setText(store.getName());
 
 
         Progress = AppUtils.LoadingSpinner(getActivity());
@@ -107,9 +112,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
         Scroll = (ScrollView) view.findViewById(R.id.Scroll);
-
-        Detail = (FrameLayout) view.findViewById(R.id.Details);
-        Detail.setVisibility(View.GONE);
         Gridview = (ExpandableHeightGridView) view.findViewById(R.id.gridview);
 
         GetStores();
@@ -135,10 +137,10 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onResponse(String response) {
                 try {
-                    Gson gson = new Gson();
-                    JSONObject jsonObject = new JSONObject(StaticData.DummyResponse);
-                    String Object = jsonObject.getString("success");
 
+                    Gson gson = new Gson();
+                    JSONObject jsonObject = new JSONObject(response);
+                    String Object = jsonObject.getString("success");
 
                     ProductStore product = new ProductStore();
                     product = gson.fromJson(Object, ProductStore.class);

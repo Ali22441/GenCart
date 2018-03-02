@@ -69,8 +69,6 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
             Sender.setVisibility(View.INVISIBLE);
             SenderName.setVisibility(View.INVISIBLE);
             SenderTime.setVisibility(View.INVISIBLE);
-
-
         }
 
     }

@@ -56,6 +56,7 @@ import com.webmarke8.app.gencart.Fragments.StoreFragment;
 import com.webmarke8.app.gencart.Manifest;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.ServerData;
 import com.webmarke8.app.gencart.Utils.StaticData;
@@ -82,9 +83,10 @@ public class MainActivity extends AppCompatActivity
     private StoreGridviewAdapter GridViewAdapter;
     List<Store> StoreList;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    FrameLayout frameLayout1;
     Dialog Progress;
+    TextView NumberBandage;
     BottomNavigationView bottomNavigationView;
+    MyApplication myApplication;
 
 
     @Override
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
+        myApplication = (MyApplication) getApplicationContext();
         GetLocationPermission();
 
 
@@ -167,12 +170,22 @@ public class MainActivity extends AppCompatActivity
                 });
 
 
-        Bandge(2);
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
+
+
+        BottomNavigationMenuView bottomNavigationMenuView =
+                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+        View v = bottomNavigationMenuView.getChildAt(1);
+        BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+        View badge = LayoutInflater.from(this)
+                .inflate(R.layout.cart_bandage, bottomNavigationMenuView, false);
+        NumberBandage = (TextView) badge.findViewById(R.id.Number);
+        NumberBandage.setVisibility(View.GONE);
+
+        itemView.addView(badge);
 
     }
 
@@ -359,13 +372,23 @@ public class MainActivity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+
     public void Bandge(int Number) {
 
-        BottomNavigationMenuView bottomNavigationMenuView =
-                (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(1); // number of menu from left
-        new QBadgeView(this).bindTarget(v).setBadgeNumber(Number).setBadgeBackgroundColor(R.color.transprent).setShowShadow(true).setBadgePadding(7, true);
+        if (Number==0)
+        {
+            NumberBandage.setVisibility(View.GONE);
+
+        }else {
+            NumberBandage.setText(" " + String.valueOf(Number) + " ");
+            NumberBandage.setVisibility(View.VISIBLE);
+
+        }
+
+
     }
+
+
 
     public void GetLocationPermission() {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
