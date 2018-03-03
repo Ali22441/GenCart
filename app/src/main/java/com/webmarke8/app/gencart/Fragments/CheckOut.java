@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Utils.AppUtils;
+import com.webmarke8.app.gencart.Utils.GPSTracker;
 
 
 /**
@@ -21,6 +24,9 @@ import com.webmarke8.app.gencart.R;
  */
 public class CheckOut extends Fragment {
 
+
+    TextView DetectAddress;
+    GPSTracker gpsTracker;
 
     public CheckOut() {
         // Required empty public constructor
@@ -33,6 +39,11 @@ public class CheckOut extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_check_out, container, false);
 
+        gpsTracker = new GPSTracker(getActivity());
+        DetectAddress = (TextView) view.findViewById(R.id.DetectAddress);
+
+        DetectAddress.setText(AppUtils.getCompleteAddressString(gpsTracker.getLatitude(), gpsTracker.getLongitude(), getActivity()));
+        gpsTracker.stopUsingGPS();
 
         view.findViewById(R.id.NewDelivery).setOnClickListener(new View.OnClickListener() {
             @Override

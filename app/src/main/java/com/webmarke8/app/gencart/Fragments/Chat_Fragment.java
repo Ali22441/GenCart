@@ -54,9 +54,7 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
     List<Chat_Object> AllMessagesList;
     RecyclerView recycle;
     String senderid = "hussain@gmail.com";
-
     GoogleMap map;
-
     FrameLayout MapLayout;
 
     public Chat_Fragment() {

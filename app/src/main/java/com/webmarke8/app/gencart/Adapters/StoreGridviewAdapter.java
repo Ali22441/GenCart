@@ -85,7 +85,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
                 .load(ServerData.UrlImage + StoreList.get(position).getLogo())
                 .transform(AppUtils.GetTransForm())
                 .placeholder(R.drawable.progress)
-                .error(R.drawable.error_image)
+                .error(R.drawable.picturestore)
                 .into(Holder.StoreImage);
 
         Holder.StoreName.setText(StoreList.get(position).getName());

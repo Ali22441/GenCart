@@ -9,7 +9,6 @@
     android:orientation="vertical"
     tools:context="com.webmarke8.app.gencart.Activities.MainActivity">
 
-
     <FrameLayout
         android:id="@+id/containerForFragments"
         android:layout_width="match_parent"
@@ -161,6 +160,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!--<include android:visibility="gone" layout="@layout/no_internet_layout"></include>-->
+
 
                 <ScrollView
                     android:id="@+id/Scroll"
@@ -187,11 +188,11 @@
                         android:verticalSpacing="@dimen/_5sdp" />
 
                 </ScrollView>
+
             </android.support.v4.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 
     </FrameLayout>
-
 
 </LinearLayout>

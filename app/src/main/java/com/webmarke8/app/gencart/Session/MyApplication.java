@@ -173,9 +173,6 @@ public class MyApplication extends Application {
 
                             cartGroup.getProductList().remove(length - 1);
 
-                            if (cartGroup.getProductList().size() <= 0) {
-                                removeparentcheck = true;
-                            }
                             return false;
 
                         } else {
@@ -210,7 +207,8 @@ public class MyApplication extends Application {
 
             for (Products products : cartGroup.getProductList()) {
 
-                Price = Price + Integer.parseInt(products.getPrice());
+                int withQuantity = Integer.parseInt(products.getPrice()) * products.getQuantityInCart();
+                Price = Price + withQuantity;
             }
         }
         return Price;
@@ -224,7 +222,9 @@ public class MyApplication extends Application {
             if (StoreName.equals(cartGroup.getName())) {
                 for (Products products : cartGroup.getProductList()) {
 
-                    Price = Price + Integer.parseInt(products.getPrice());
+                    int withQuantity = Integer.parseInt(products.getPrice()) * products.getQuantityInCart();
+
+                    Price = Price + withQuantity;
                 }
             }
         }
@@ -246,5 +246,15 @@ public class MyApplication extends Application {
 
         }
         return 0;
+    }
+
+    public void CheckingCartGroupItems() {
+
+        for (int i = 0; i < CartGroupList.size(); i++) {
+
+            if (CartGroupList.get(i).getProductList().size() == 0) {
+                CartGroupList.remove(i);
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
+import com.medialablk.easytoast.EasyToast;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.Objects.Products;
@@ -56,7 +57,6 @@ public class CartAdapter extends BaseExpandableListAdapter {
             LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.item_cart, null);
         }
-
         TextView Description = (TextView) view.findViewById(R.id.Description);
         Description.setText(products.getDescription());
         TextView ProductName = (TextView) view.findViewById(R.id.ProductName);
@@ -69,12 +69,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
 
 
-                if (Integer.parseInt(Quantity.getText().toString()) > 0) {
+                Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) - 1));
 
-                    myApplication.DecreaseQuantity(products.getId(), deptList.get(groupPosition).getName());
-                    Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) - 1));
+                if (!myApplication.DecreaseQuantity(products.getId(), deptList.get(groupPosition).getName())) {
                 }
-
+                myApplication.CheckingCartGroupItems();
                 deptList = myApplication.getCartGroupList();
                 notifyDataSetChanged();
                 ((MainActivity) context).Bandge(myApplication.getCartQuantity());
@@ -89,12 +88,18 @@ public class CartAdapter extends BaseExpandableListAdapter {
             public void onClick(View v) {
 
 
-                Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) + 1));
-                myApplication.IncreaseQuantity(products.getId(), deptList.get(groupPosition).getName());
-                deptList = myApplication.getCartGroupList();
-                notifyDataSetChanged();
-                ((MainActivity) context).Bandge(myApplication.getCartQuantity());
-                AllStoreItemPrice.setText("Sub Total: " + String.valueOf(myApplication.getPriceOfAllStore()) + " SAR");
+                if (!Quantity.getText().toString().equals(products.getQuantity())) {
+                    Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) + 1));
+                    myApplication.IncreaseQuantity(products.getId(), deptList.get(groupPosition).getName());
+                    deptList = myApplication.getCartGroupList();
+                    notifyDataSetChanged();
+                    ((MainActivity) context).Bandge(myApplication.getCartQuantity());
+                    AllStoreItemPrice.setText("Sub Total: " + String.valueOf(myApplication.getPriceOfAllStore()) + " SAR");
+
+                } else {
+                    EasyToast.error(context, "No more Quantity Available");
+
+                }
 
 
             }

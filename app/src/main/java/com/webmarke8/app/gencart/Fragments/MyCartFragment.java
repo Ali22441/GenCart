@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.medialablk.easytoast.EasyToast;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Adapters.CartAdapter;
 import com.webmarke8.app.gencart.Objects.CartGroup;
@@ -50,7 +51,7 @@ public class MyCartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_cart, container, false);
 
-        AllStoreItemPrice=(TextView)view.findViewById(R.id.AllStoreItemPrice);
+        AllStoreItemPrice = (TextView) view.findViewById(R.id.AllStoreItemPrice);
         // add data for displaying in expandable list view
 
 
@@ -75,20 +76,26 @@ public class MyCartFragment extends Fragment {
         view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Fragment fragment = null;
-                Class fragmentClass = null;
 
-                fragmentClass = CheckOut.class;
-                try {
-                    fragment = (Fragment) fragmentClass.newInstance();
-                    Bundle bundle = new Bundle();
+                if (myApplication.getCartGroupList().size() != 0) {
+                    Fragment fragment = null;
+                    Class fragmentClass = null;
+
+                    fragmentClass = CheckOut.class;
+                    try {
+                        fragment = (Fragment) fragmentClass.newInstance();
+                        Bundle bundle = new Bundle();
 //                    bundle.putSerializable("Product", CProduct);
-                    fragment.setArguments(bundle);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        fragment.setArguments(bundle);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").commit();
+                } else {
+                    EasyToast.error(getActivity(), "No Item in Cart");
                 }
-                FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").commit();
+
 
             }
         });
@@ -101,7 +108,7 @@ public class MyCartFragment extends Fragment {
         //get reference of the ExpandableListView
         simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
         // create the adapter by passing your ArrayList data
-        listAdapter = new CartAdapter(getActivity(), CartList,AllStoreItemPrice);
+        listAdapter = new CartAdapter(getActivity(), CartList, AllStoreItemPrice);
         // attach the adapter to the expandable list view
         simpleExpandableListView.setAdapter(listAdapter);
 

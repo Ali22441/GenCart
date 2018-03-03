@@ -16,6 +16,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 
+import com.medialablk.easytoast.EasyToast;
 import com.squareup.picasso.Picasso;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Objects.ProductStore;
@@ -92,11 +93,11 @@ public class ItemGridviewAdapter extends BaseAdapter {
         }
 
 
-        viewHolder.Quantity.setText(myApp.getInCartQuantity(productsList[position].getId()));
+        viewHolder.Quantity.setText(String.valueOf(myApp.getInCartQuantity(String.valueOf(productsList[position].getId()))));
 
         Picasso.with(context)
                 .load(ServerData.UrlImage + productsList[position].getImage())
-                .error(R.drawable.error_image)
+                .error(R.drawable.picturestore)
                 .transform(AppUtils.GetTransForm())
                 .into(viewHolder.image1);
         viewHolder.Price.setText(productsList[position].getPrice() + " SAR");
@@ -119,16 +120,25 @@ public class ItemGridviewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) + 1));
+                if (!productsList[position].getQuantity().equals(finalViewHolder.Quantity.getText().toString())) {
 
-                if (finalViewHolder.Quantity.getText().equals("1")) {
+                    finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) + 1));
 
-                    myApp.AddCartItem(productsList[position], productStore.getName());
+                    if (finalViewHolder.Quantity.getText().equals("1")) {
+
+                        myApp.AddCartItem(productsList[position], productStore.getName());
+                    } else {
+                        myApp.IncreaseQuantity(productsList[position].getId(), productStore.getName());
+                    }
+                    ((MainActivity) context).Bandge(myApp.getCartQuantity());
+
+
                 } else {
-                    myApp.IncreaseQuantity(productsList[position].getId(), productStore.getName());
+                    EasyToast.error(context, "No more Quantity Available");
+
                 }
 
-                ((MainActivity) context).Bandge(myApp.getCartQuantity());
+
             }
         });
         viewHolder.Decrease.setOnClickListener(new View.OnClickListener() {
@@ -140,13 +150,8 @@ public class ItemGridviewAdapter extends BaseAdapter {
                     finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) - 1));
 
                     if (!myApp.DecreaseQuantity(productsList[position].getId(), productStore.getName())) {
-
-
                     }
-
                     ((MainActivity) context).Bandge(myApp.getCartQuantity());
-
-                } else {
 
                 }
 
@@ -200,12 +205,21 @@ public class ItemGridviewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) + 1));
+                if (!products.getQuantity().equals(Quantity.getText().toString())) {
+                    Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) + 1));
 
-                if (Quantity.getText().equals("1")) {
-                    myApp.AddCartItem(products, productStore.getName());
+                    if (Quantity.getText().equals("1")) {
+
+                        myApp.AddCartItem(products, productStore.getName());
+                    } else {
+                        myApp.IncreaseQuantity(products.getId(), productStore.getName());
+                    }
+                    ((MainActivity) context).Bandge(myApp.getCartQuantity());
+
+                    notifyDataSetChanged();
+                } else {
+                    EasyToast.error(context, "No more Quantity Available");
                 }
-                notifyDataSetChanged();
 
 
             }
@@ -216,9 +230,11 @@ public class ItemGridviewAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 if (!Quantity.getText().equals("0")) {
-                    Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) - 1));
-                    myApp.DecreaseQuantity(products.getId(), productStore.getName());
 
+                    Quantity.setText(String.valueOf(Integer.parseInt(Quantity.getText().toString()) - 1));
+
+                    if (!myApp.DecreaseQuantity(products.getId(), productStore.getName())) {
+                    }
                     ((MainActivity) context).Bandge(myApp.getCartQuantity());
 
                 }

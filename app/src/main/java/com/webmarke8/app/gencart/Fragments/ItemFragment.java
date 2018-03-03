@@ -146,10 +146,16 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     product = gson.fromJson(Object, ProductStore.class);
 
                     productStore = product;
-                    GridViewAdapter = new ItemGridviewAdapter(getActivity(), product, Scroll);
-                    GridViewAdapter.setMyApp(getActivity().getApplication());
-                    Gridview.setExpanded(true);
-                    Gridview.setAdapter(GridViewAdapter);
+                    if (product.getProducts() != null) {
+                        GridViewAdapter = new ItemGridviewAdapter(getActivity(), product, Scroll);
+                        GridViewAdapter.setMyApp(getActivity().getApplication());
+                        Gridview.setExpanded(true);
+                        Gridview.setAdapter(GridViewAdapter);
+
+                    } else {
+                        //show no product at store
+                    }
+
 
                 } catch (JSONException e) {
 
@@ -165,18 +171,18 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     public void onErrorResponse(VolleyError error) {
                         Progress.dismiss();
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
 
                         } else if (error instanceof AuthFailureError) {
-                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();
                         } else if (error instanceof ServerError) {
-                            Toast.makeText(getActivity(), "Server Side Error!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Server Side Error!", Toast.LENGTH_SHORT).show();
                         } else if (error instanceof NetworkError) {
-                            Toast.makeText(getActivity(), "Network Error!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Network Error!", Toast.LENGTH_SHORT).show();
                         } else if (error instanceof ParseError) {
-                            Toast.makeText(getActivity(), "Parse Error!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "Parse Error!", Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
                     }
                 }) {
             @Override

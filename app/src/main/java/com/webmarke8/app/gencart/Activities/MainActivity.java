@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -316,7 +317,6 @@ public class MainActivity extends AppCompatActivity
                     Log.d("GetCartError", e.getMessage());
                 }
 
-
                 Progress.dismiss();
 
 
@@ -327,8 +327,9 @@ public class MainActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Progress.dismiss();
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            Toast.makeText(getApplicationContext(), "Communication Error!", Toast.LENGTH_SHORT).show();
-
+//                            LinearLayout MessageView = (LinearLayout) findViewById(R.id.MessageView);
+//                            Gridview.setEmptyView(MessageView);
+//                            Toast.makeText(getApplicationContext(), "Communication Error!", Toast.LENGTH_SHORT).show();
                         } else if (error instanceof AuthFailureError) {
                             Toast.makeText(getApplicationContext(), "Authentication Error!", Toast.LENGTH_SHORT).show();
                         } else if (error instanceof ServerError) {
@@ -360,6 +361,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public String getBodyContentType() {
+
                 return "application/x-www-form-urlencoded; charset=UTF-8";
             }
         };
@@ -375,11 +377,10 @@ public class MainActivity extends AppCompatActivity
 
     public void Bandge(int Number) {
 
-        if (Number==0)
-        {
+        if (Number == 0) {
             NumberBandage.setVisibility(View.GONE);
 
-        }else {
+        } else {
             NumberBandage.setText(" " + String.valueOf(Number) + " ");
             NumberBandage.setVisibility(View.VISIBLE);
 
@@ -387,7 +388,6 @@ public class MainActivity extends AppCompatActivity
 
 
     }
-
 
 
     public void GetLocationPermission() {
