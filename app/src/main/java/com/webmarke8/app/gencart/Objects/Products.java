@@ -1,11 +1,12 @@
 package com.webmarke8.app.gencart.Objects;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by GeeksEra on 2/27/2018.
  */
 
 public class Products {
-
 
 
     int QuantityInCart;
@@ -55,6 +56,7 @@ public class Products {
     private String slug;
 
     private String quantity;
+
 
     public String
 

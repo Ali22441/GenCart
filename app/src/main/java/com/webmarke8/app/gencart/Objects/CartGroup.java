@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class CartGroup implements Serializable {
 
     private String name;
+    private String StoreOrderPrice="10000";
     private ArrayList<Products> ProductList = new ArrayList<Products>();
 
     public String getName() {

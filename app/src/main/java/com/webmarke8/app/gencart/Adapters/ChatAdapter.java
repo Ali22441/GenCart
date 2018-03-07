@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.webmarke8.app.gencart.Objects.Chat_Object;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 
 import java.util.List;
 
@@ -27,10 +28,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
     TextView SenderName, ReciverName, SenderTime, ReciverTime;
     ImageView Sender, Reciver;
     LinearLayout messageLayout;
+    MyApplication myApplication;
 
     public ChatAdapter(List<Chat_Object> list, Context context) {
         this.MyMessageList = list;
         this.context = context;
+        myApplication = (MyApplication) context.getApplicationContext();
     }
 
     @Override
@@ -49,10 +52,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
 
         final Chat_Object mylist = MyMessageList.get(position);
         senderMessage.setText(mylist.getMessage().toString());
-        String sender = mylist.getSendermailid().toString();
+        String sender = mylist.getSenderEmail().toString();
+        String email = myApplication.getLoginSessionCustomer().getEmail();
 
-        String email = "hussain@gmail.com";
-
+        ReciverName.setText(mylist.getReciverName());
+        SenderName.setText(mylist.getSenderName());
+        SenderTime.setText(mylist.getSendTime());
+        ReciverTime.setText(mylist.getSendTime());
 
         if (sender.equals(email)) {
 

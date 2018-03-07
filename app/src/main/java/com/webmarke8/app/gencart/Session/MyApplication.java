@@ -40,6 +40,11 @@ public class MyApplication extends Application {
         mInstance = this;
         editor = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE);
+        CartGroupList = new EasySave(getApplicationContext()).retrieveList("Cart", CartGroup[].class);
+        if (CartGroupList==null)
+        {
+            CartGroupList=new ArrayList<>();
+        }
 
     }
 
@@ -90,7 +95,8 @@ public class MyApplication extends Application {
 
     public Customer getLoginSessionCustomer() {
 
-        return new EasySave(getApplicationContext()).retrieveModel("customer", Customer.class);
+//        return new EasySave(getApplicationContext()).retrieveModel("customer", Customer.class);
+        return new Customer();
 
     }
 
@@ -124,6 +130,8 @@ public class MyApplication extends Application {
             cartGroup.getProductList().add(products);
             CartGroupList.add(cartGroup);
         }
+
+        new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);
     }
 
     public List<CartGroup> getCartGroupList() {
@@ -149,6 +157,8 @@ public class MyApplication extends Application {
                 }
             }
         }
+        new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);
+
     }
 
     boolean removeparentcheck = false;
@@ -173,6 +183,8 @@ public class MyApplication extends Application {
 
                             cartGroup.getProductList().remove(length - 1);
 
+                            new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);
+
                             return false;
 
                         } else {
@@ -185,6 +197,8 @@ public class MyApplication extends Application {
                 CartGroupList.remove(removeparent - 1);
             }
         }
+        new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);
+
         return true;
     }
 
@@ -256,5 +270,7 @@ public class MyApplication extends Application {
                 CartGroupList.remove(i);
             }
         }
+        new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);
+
     }
 }

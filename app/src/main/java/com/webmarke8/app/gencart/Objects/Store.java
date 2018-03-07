@@ -6,14 +6,14 @@ import java.io.Serializable;
  * Created by GeeksEra on 2/16/2018.
  */
 
-public class Store  implements Serializable{
+public class Store implements Serializable {
 
 
     private String logo;
 
     private String place_id;
 
-    private String store_status;
+    private String store_status = "true";
 
     private String week_days;
 
@@ -23,7 +23,7 @@ public class Store  implements Serializable{
 
     private String closing_hours;
 
-    private String status;
+    private String status = "1";
 
     private String zipcode;
 
@@ -37,7 +37,7 @@ public class Store  implements Serializable{
 
     private String id;
 
-    private String distance;
+    private String distance = "10";
 
     private String updated_at;
 
@@ -53,225 +53,181 @@ public class Store  implements Serializable{
 
     private String banner;
 
-    public String getLogo ()
-    {
+    public String getLogo() {
         return logo;
     }
 
-    public void setLogo (String logo)
-    {
+    public void setLogo(String logo) {
         this.logo = logo;
     }
 
-    public String getPlace_id ()
-    {
+    public String getPlace_id() {
         return place_id;
     }
 
-    public void setPlace_id (String place_id)
-    {
+    public void setPlace_id(String place_id) {
         this.place_id = place_id;
     }
 
-    public String getStore_status ()
-    {
+    public String getStore_status() {
         return store_status;
     }
 
-    public void setStore_status (String store_status)
-    {
+    public void setStore_status(String store_status) {
         this.store_status = store_status;
     }
 
-    public String getWeek_days ()
-    {
+    public String getWeek_days() {
         return week_days;
     }
 
-    public void setWeek_days (String week_days)
-    {
+    public void setWeek_days(String week_days) {
         this.week_days = week_days;
     }
 
-    public String getPhone ()
-    {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone (String phone)
-    {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public String getLat_long ()
-    {
+    public String getLat_long() {
         return lat_long;
     }
 
-    public void setLat_long (String lat_long)
-    {
+    public void setLat_long(String lat_long) {
         this.lat_long = lat_long;
     }
 
-    public String getClosing_hours ()
-    {
+    public String getClosing_hours() {
         return closing_hours;
     }
 
-    public void setClosing_hours (String closing_hours)
-    {
+    public void setClosing_hours(String closing_hours) {
         this.closing_hours = closing_hours;
     }
 
-    public String getStatus ()
-    {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus (String status)
-    {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public String getZipcode ()
-    {
+    public String getZipcode() {
         return zipcode;
     }
 
-    public void setZipcode (String zipcode)
-    {
+    public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
     }
 
-    public String getStore_id ()
-    {
+    public String getStore_id() {
         return store_id;
     }
 
-    public void setStore_id (String store_id)
-    {
+    public void setStore_id(String store_id) {
         this.store_id = store_id;
     }
 
-    public String getWeekend_days ()
-    {
+    public String getWeekend_days() {
         return weekend_days;
     }
 
-    public void setWeekend_days (String weekend_days)
-    {
+    public void setWeekend_days(String weekend_days) {
         this.weekend_days = weekend_days;
     }
 
-    public String getType ()
-    {
+    public String getType() {
         return type;
     }
 
-    public void setType (String type)
-    {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public String getOpening_hours ()
-    {
+    public String getOpening_hours() {
         return opening_hours;
     }
 
-    public void setOpening_hours (String opening_hours)
-    {
+    public void setOpening_hours(String opening_hours) {
         this.opening_hours = opening_hours;
     }
 
-    public String getId ()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId (String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getDistance ()
-    {
+    public String getDistance() {
         return distance;
     }
 
-    public void setDistance (String distance)
-    {
+    public void setDistance(String distance) {
         this.distance = distance;
     }
 
-    public String getUpdated_at ()
-    {
+    public String getUpdated_at() {
         return updated_at;
     }
 
-    public void setUpdated_at (String updated_at)
-    {
+    public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
 
-    public String getAddress ()
-    {
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress (String address)
-    {
+    public void setAddress(String address) {
         this.address = address;
     }
 
-    public String getName ()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName (String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getCreated_at ()
-    {
+    public String getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at (String created_at)
-    {
+    public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public String getSlug ()
-    {
+    public String getSlug() {
         return slug;
     }
 
-    public void setSlug (String slug)
-    {
+    public void setSlug(String slug) {
         this.slug = slug;
     }
 
-    public String getRating ()
-    {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating (String rating)
-    {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
-    public String getBanner ()
-    {
+    public String getBanner() {
         return banner;
     }
 
-    public void setBanner (String banner)
-    {
+    public void setBanner(String banner) {
         this.banner = banner;
     }
 
-  
+
 }

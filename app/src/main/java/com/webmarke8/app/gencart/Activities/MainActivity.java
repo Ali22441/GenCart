@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -11,8 +12,12 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.method.BaseKeyListener;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +31,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -45,6 +56,7 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.medialablk.easytoast.EasyToast;
 import com.webmarke8.app.gencart.Adapters.BottomNavigationViewHelper;
 import com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView;
 import com.webmarke8.app.gencart.Adapters.StoreGridviewAdapter;
@@ -78,8 +90,12 @@ public class MainActivity extends AppCompatActivity
 
 
     FrameLayout frameLayout;
+    TextView TextSearch;
 
 
+    private int star = 0;
+    private int end = 10;
+    private int now = 1;
     private ExpandableHeightGridView Gridview;
     private StoreGridviewAdapter GridViewAdapter;
     List<Store> StoreList;
@@ -88,7 +104,8 @@ public class MainActivity extends AppCompatActivity
     TextView NumberBandage;
     BottomNavigationView bottomNavigationView;
     MyApplication myApplication;
-
+    List<Store> Backup = new ArrayList<>();
+    LayoutAnimationController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,9 +114,86 @@ public class MainActivity extends AppCompatActivity
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+        findViewById(R.id.RetryConection).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (GetLocationPermission()) {
+                    if (TextSearch.getText().toString().length() != 0)
+                        GetStores(true);
+                    else GetStores(false);
+                } else {
+
+                    ShowNoLocation();
+                }
+            }
+        });
+
+        findViewById(R.id.RetryLocation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (GetLocationPermission()) {
+                    if (AppUtils.isLocationEnabled(getApplicationContext())) {
+                        GetStores(false);
+                        HideNoLocation();
+                    } else {
+                        ShowNoLocation();
+                    }
+
+                } else {
+                    ShowNoLocation();
+                }
+
+            }
+        });
+
+        AnimationSet set = new AnimationSet(true);
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(50);
+        set.addAnimation(animation);
+        animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
+        animation.setDuration(100);
+        set.addAnimation(animation);
+        controller = new LayoutAnimationController(
+                set, 0.5f);
+
 
         myApplication = (MyApplication) getApplicationContext();
-        GetLocationPermission();
+
+        TextSearch = (TextView) findViewById(R.id.TextSearch);
+
+        TextSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start,
+                                          int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start,
+                                      int before, int count) {
+                if (s.length() != 0) {
+                    GetStores(true);
+                } else {
+
+//                    if (Backup.size() > 0) {
+//                        StoreList = Backup;
+//                        GridViewAdapter = new StoreGridviewAdapter(MainActivity.this, StoreList, frameLayout);
+//                        Gridview.setExpanded(true);
+//                        Gridview.setAdapter(GridViewAdapter);
+//                    }
+                }
+
+            }
+        });
 
 
         StoreList = new ArrayList<>();
@@ -108,7 +202,18 @@ public class MainActivity extends AppCompatActivity
         frameLayout = (FrameLayout) findViewById(R.id.containerForFragments);
 
 
-        GetStores();
+        if (GetLocationPermission()) {
+            if (AppUtils.isLocationEnabled(getApplicationContext())) {
+                GetStores(false);
+                HideNoLocation();
+            } else {
+                ShowNoLocation();
+            }
+
+        } else {
+            ShowNoLocation();
+        }
+
 
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.SwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -119,6 +224,34 @@ public class MainActivity extends AppCompatActivity
 
 
         Gridview = (ExpandableHeightGridView) findViewById(R.id.gridview);
+        Gridview.setLayoutAnimation(controller);
+        Gridview.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScroll(AbsListView view,
+                                 int firstVisibleItem, int visibleItemCount,
+                                 int totalItemCount) {
+                //Algorithm to check if the last item is visible or not
+                final int lastItem = firstVisibleItem + visibleItemCount;
+                if (lastItem == end) {
+                    end = end + 10;
+                    if (TextSearch.getText().toString().length() != 0)
+                        GetStores(true);
+                    else GetStores(false);
+                    EasyToast.success(MainActivity.this, "Loading.");
+                }
+                if (totalItemCount < end && totalItemCount > 10) {
+                    findViewById(R.id.Progress).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.Progress).setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                //blank, not required in your case
+            }
+        });
 
         GridViewAdapter = new StoreGridviewAdapter(MainActivity.this, StoreList, frameLayout);
         Gridview.setExpanded(true);
@@ -150,19 +283,18 @@ public class MainActivity extends AppCompatActivity
                             case R.id.MyCart:
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").commit();
-
-
+                                        .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
                                 break;
                             case R.id.Profile:
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.containerForFragments, new ProfileFragment(), "Profile").commit();
+                                        .replace(R.id.containerForFragments, new ProfileFragment(), "Profile").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
                                 break;
                             case R.id.Chat:
+
                                 frameLayout.setVisibility(View.VISIBLE);
                                 getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").commit();
+                                        .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
                                 break;
 
                         }
@@ -188,7 +320,12 @@ public class MainActivity extends AppCompatActivity
 
         itemView.addView(badge);
 
+
+        Bandge(myApplication.getCartQuantity());
+
     }
+
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     public void onBackPressed() {
@@ -196,7 +333,35 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            int Count2 = getSupportFragmentManager().getBackStackEntryCount();
+
+            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                if (doubleBackToExitPressedOnce) {
+                    super.onBackPressed();
+                    return;
+                }
+
+                this.doubleBackToExitPressedOnce = true;
+                EasyToast.info(getApplicationContext(), "Please click BACK again to exit");
+
+                new Handler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            } else {
+
+                if (getSupportFragmentManager().getBackStackEntryCount() == 1)
+                    ShowHome();
+                else {
+                    getSupportFragmentManager().popBackStack();
+
+                }
+
+
+            }
         }
     }
 
@@ -212,14 +377,14 @@ public class MainActivity extends AppCompatActivity
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new MyOrders(), "Orders").commit();
+                    .replace(R.id.containerForFragments, new MyOrders(), "Orders").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
 
         }
         if (id == R.id.MChat) {
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").commit();
+                    .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
 
         }
         if (id == R.id.MHome) {
@@ -232,17 +397,16 @@ public class MainActivity extends AppCompatActivity
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").commit();
+                    .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
 
         }
         if (id == R.id.MProfile) {
 
             frameLayout.setVisibility(View.VISIBLE);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new ProfileFragment(), "ProfileFragment").commit();
+                    .replace(R.id.containerForFragments, new ProfileFragment(), "ProfileFragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -259,17 +423,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void ShowHome() {
-
+        android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+        for (int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
         frameLayout.setVisibility(View.GONE);
         findViewById(R.id.container1).setVisibility(View.VISIBLE);
     }
 
-
     @Override
     public void onRefresh() {
+
         mSwipeRefreshLayout.setRefreshing(true);
-        mSwipeRefreshLayout.setRefreshing(false);
-        GetStores();
+        star = 0;
+        end = 10;
+        if (GetLocationPermission()) {
+            if (TextSearch.getText().toString().length() != 0)
+                GetStores(true);
+            else GetStores(false);
+        } else {
+
+            ShowNoLocation();
+        }
     }
 
     @Override
@@ -280,98 +455,189 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void GetStores() {
+    private void GetStores(Boolean Check) {
 
-        if (Progress != null && !Progress.isShowing()) {
-            Progress.show();
-        }
+        String URL = "";
 
+        if (Check) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                ServerData.GetStores, new Response.Listener<String>() {
+            URL = ServerData.SearchStore + TextSearch.getText().toString() + "/" + String.valueOf(star) + "/" + String.valueOf(end);
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL
+                    , new Response.Listener<String>() {
 
-            @Override
-            public void onResponse(String response) {
+                @Override
+                public void onResponse(String response) {
 
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    StoreList.clear();
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray jsonArray = jsonObject.getJSONArray("success");
 
-                StoreList.clear();
-                try {
-                    Gson gson = new Gson();
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray jsonArray = jsonObject.getJSONArray("success");
+                        for (int i = 0; i < jsonArray.length(); i++) {
 
-                    for (int i = 0; i < jsonArray.length(); i++) {
+                            String Object = jsonArray.getString(i);
+                            Store store = new Store();
+                            store = gson.fromJson(Object, Store.class);
+                            StoreList.add(store);
 
-                        String Object = jsonArray.getString(i);
-                        Store store = new Store();
-                        store = gson.fromJson(Object, Store.class);
-                        StoreList.add(store);
+                        }
+
+                        findViewById(R.id.Progress).setVisibility(View.GONE);
+                        GridViewAdapter = new StoreGridviewAdapter(MainActivity.this, StoreList, frameLayout);
+                        Gridview.setExpanded(true);
+                        Gridview.setAdapter(GridViewAdapter);
+
+                    } catch (JSONException e) {
+
+                        Log.d("GetCartError", e.getMessage());
                     }
 
-                    GridViewAdapter = new StoreGridviewAdapter(MainActivity.this, StoreList, frameLayout);
-                    Gridview.setExpanded(true);
-                    Gridview.setAdapter(GridViewAdapter);
 
-                } catch (JSONException e) {
-
-                    Log.d("GetCartError", e.getMessage());
+                }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            EasyToast.error(getApplicationContext(), "Something Went Wrong!!");
+                            if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
+                                ShowNoConnection();
+                            } else if (error instanceof AuthFailureError) {
+//                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ServerError) {
+//                            Toast.makeText(getActivity(), "Server Side Error!", Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof NetworkError) {
+//                            Toast.makeText(getActivity(), "Network Error!", Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ParseError) {
+//                            Toast.makeText(getActivity(), "Parse Error!", Toast.LENGTH_SHORT).show();
+                            }
+//                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }) {
+                @Override
+                public Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("origin", "33.525550,73.112831");
+                    return map;
                 }
 
-                Progress.dismiss();
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", StaticData.DummyAuthentication);
+
+                    return headers;
+                }
 
 
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Progress.dismiss();
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                            LinearLayout MessageView = (LinearLayout) findViewById(R.id.MessageView);
-//                            Gridview.setEmptyView(MessageView);
-//                            Toast.makeText(getApplicationContext(), "Communication Error!", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof AuthFailureError) {
-                            Toast.makeText(getApplicationContext(), "Authentication Error!", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ServerError) {
-                            Toast.makeText(getApplicationContext(), "Server Side Error!", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof NetworkError) {
-                            Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ParseError) {
-                            Toast.makeText(getApplicationContext(), "Parse Error!", Toast.LENGTH_SHORT).show();
+                @Override
+                public String getBodyContentType() {
+
+                    return "application/x-www-form-urlencoded; charset=UTF-8";
+                }
+            };
+
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+            requestQueue.add(stringRequest);
+
+        } else {
+
+
+            URL = ServerData.GetStores + "/" + String.valueOf(star) + "/" + String.valueOf(end);
+            ;
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL
+                    , new Response.Listener<String>() {
+
+                @Override
+                public void onResponse(String response) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    StoreList.clear();
+                    try {
+                        Gson gson = new Gson();
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray jsonArray = jsonObject.getJSONArray("success");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            String Object = jsonArray.getString(i);
+                            Store store = new Store();
+                            store = gson.fromJson(Object, Store.class);
+                            StoreList.add(store);
                         }
-                        Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG).show();
+                        Backup = StoreList;
+                        GridViewAdapter.notifyDataSetChanged();
+                        findViewById(R.id.Progress).setVisibility(View.GONE);
+
+
+                    } catch (JSONException e) {
+
+                        Log.d("GetCartError", e.getMessage());
                     }
-                }) {
-            @Override
-            public Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                map.put("origin", "33.525550,73.112831");
-                return map;
-            }
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Authorization", StaticData.DummyAuthentication);
+                    mSwipeRefreshLayout.setRefreshing(false);
 
-                return headers;
-            }
+                }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            EasyToast.error(getApplicationContext(), "Something Went Wrong!!");
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
+                                ShowNoConnection();
+                            } else if (error instanceof AuthFailureError) {
+//                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ServerError) {
+//                            Toast.makeText(getActivity(), "Server Side Error!", Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof NetworkError) {
+//                            Toast.makeText(getActivity(), "Network Error!", Toast.LENGTH_SHORT).show();
+                            } else if (error instanceof ParseError) {
+//                            Toast.makeText(getActivity(), "Parse Error!", Toast.LENGTH_SHORT).show();
+                            }
+//                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    }) {
+                @Override
+                public Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("origin", "33.525550,73.112831");
+                    return map;
+                }
+
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", StaticData.DummyAuthentication);
+
+                    return headers;
+                }
 
 
-            @Override
-            public String getBodyContentType() {
+                @Override
+                public String getBodyContentType() {
 
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
-        };
+                    return "application/x-www-form-urlencoded; charset=UTF-8";
+                }
+            };
 
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
-        requestQueue.add(stringRequest);
+            RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+            requestQueue.add(stringRequest);
+
+        }
     }
 
 
@@ -390,12 +656,45 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    public void GetLocationPermission() {
+    public boolean GetLocationPermission() {
         if (ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-            return;
+//            ActivityCompat.requestPermissions(MainActivity.this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            return false;
         } else {
             // Write you code here if permission already given.
+            return true;
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+
+    public void ShowNoLocation() {
+        findViewById(R.id.NoLocation).setVisibility(View.VISIBLE);
+    }
+
+    public void HideNoLocation() {
+        findViewById(R.id.NoLocation).setVisibility(View.GONE);
+    }
+
+    public void ShowNoConnection() {
+        findViewById(R.id.NoInterent).setVisibility(View.VISIBLE);
+    }
+
+    public void HideNoConnection() {
+        findViewById(R.id.NoInterent).setVisibility(View.GONE);
     }
 }

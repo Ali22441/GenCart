@@ -23,6 +23,7 @@
         android:layout_weight="1">
 
         <LinearLayout
+            android:id="@+id/Toaste"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -122,7 +123,9 @@
                             android:background="@android:color/transparent"
                             android:lines="1"
                             android:paddingStart="10dp"
-                            android:textSize="12sp" />
+                            android:textColor="@android:color/white"
+                            android:textColorHighlight="@android:color/white"
+                            android:textSize="15sp" />
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -158,38 +161,40 @@
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/SwipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
 
                 <!--<include android:visibility="gone" layout="@layout/no_internet_layout"></include>-->
 
 
-                <ScrollView
-                    android:id="@+id/Scroll"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                <com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView
+                    android:id="@+id/gridview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_weight="7"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
                     android:background="#f4f4f4"
-                    android:paddingTop="10dp">
+                    android:horizontalSpacing="@dimen/_5sdp"
+                    android:isScrollContainer="false"
+                    android:numColumns="2"
+                    android:scrollIndicators="right"
+                    android:scrollbars="vertical"
+                    android:smoothScrollbar="true"
+                    android:stretchMode="columnWidth"
+                    android:verticalSpacing="@dimen/_5sdp" />
 
-
-                    <com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView
-                        android:id="@+id/gridview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_5sdp"
-                        android:background="#f4f4f4"
-                        android:horizontalSpacing="@dimen/_5sdp"
-                        android:isScrollContainer="false"
-                        android:numColumns="2"
-                        android:stretchMode="columnWidth"
-                        android:verticalSpacing="@dimen/_5sdp" />
-
-                </ScrollView>
 
             </android.support.v4.widget.SwipeRefreshLayout>
+
+            <ProgressBar
+                android:id="@+id/Progress"
+                android:layout_width="45dp"
+                style="@style/MyProgressBarRectangle"
+                android:visibility="gone"
+                android:layout_height="45dp"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 

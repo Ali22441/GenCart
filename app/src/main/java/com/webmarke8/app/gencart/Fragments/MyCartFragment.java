@@ -4,20 +4,27 @@ package com.webmarke8.app.gencart.Fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.medialablk.easytoast.EasyToast;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Adapters.CartAdapter;
 import com.webmarke8.app.gencart.Objects.CartGroup;
+import com.webmarke8.app.gencart.Objects.SendCart;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -77,6 +84,18 @@ public class MyCartFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
+                SendCart sendCart = new SendCart();
+
+                sendCart.setStores(myApplication.getCartGroupList());
+                sendCart.setAddress_id("72.213123,87.1213");
+                sendCart.setAmount("10000");
+                sendCart.setCustomer_id("12");
+
+                Gson gson = new Gson();
+                String Json = gson.toJson(sendCart);
+                Log.d("JSonData", Json);
+
                 if (myApplication.getCartGroupList().size() != 0) {
                     Fragment fragment = null;
                     Class fragmentClass = null;
@@ -91,11 +110,11 @@ public class MyCartFragment extends Fragment {
                         e.printStackTrace();
                     }
                     FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").commit();
+                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                            .addToBackStack(null).commit();
                 } else {
                     EasyToast.error(getActivity(), "No Item in Cart");
                 }
-
 
             }
         });
@@ -131,10 +150,9 @@ public class MyCartFragment extends Fragment {
         simpleExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
             @Override
             public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
-                //get the group header
-//                CartGroup headerInfo = deptList.get(groupPosition);
-                //display it or do something with it
+
                 return false;
+
             }
         });
 
@@ -149,5 +167,6 @@ public class MyCartFragment extends Fragment {
         }
     }
 
+    int previousGroup = -1;
 
 }

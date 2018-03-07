@@ -7,47 +7,57 @@ import java.io.Serializable;
  */
 
 public class Chat_Object implements Serializable {
-    String sendermailid, message, receciveremailid, rececieverusername;
 
-    public Chat_Object() {
-    }
 
-    public Chat_Object(String sendermailid, String message, String receciveremailid, String rececieverusername) {
-        this.sendermailid = sendermailid;
-        this.message = message;
-        this.receciveremailid = receciveremailid;
-        this.rececieverusername = rececieverusername;
-    }
-
-    public String getSendermailid() {
-        return sendermailid;
-    }
-
-    public void setSendermailid(String sendermailid) {
-        this.sendermailid = sendermailid;
-    }
+    private String SenderEmail, SenderName, SendTime;
+    private String ReciverEmail, ReciverName;
+    private String Message;
 
     public String getMessage() {
-        return message;
+        return Message;
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        Message = message;
     }
 
-    public String getRececiveremailid() {
-        return receciveremailid;
+    public String getSenderEmail() {
+        return SenderEmail;
     }
 
-    public void setRececiveremailid(String receciveremailid) {
-        this.receciveremailid = receciveremailid;
+    public void setSenderEmail(String senderEmail) {
+        SenderEmail = senderEmail;
     }
 
-    public String getRececieverusername() {
-        return rececieverusername;
+    public String getSenderName() {
+        return SenderName;
     }
 
-    public void setRececieverusername(String rececieverusername) {
-        this.rececieverusername = rececieverusername;
+    public void setSenderName(String senderName) {
+        SenderName = senderName;
+    }
+
+    public String getSendTime() {
+        return SendTime;
+    }
+
+    public void setSendTime(String sendTime) {
+        SendTime = sendTime;
+    }
+
+    public String getReciverEmail() {
+        return ReciverEmail;
+    }
+
+    public void setReciverEmail(String reciverEmail) {
+        ReciverEmail = reciverEmail;
+    }
+
+    public String getReciverName() {
+        return ReciverName;
+    }
+
+    public void setReciverName(String reciverName) {
+        ReciverName = reciverName;
     }
 }

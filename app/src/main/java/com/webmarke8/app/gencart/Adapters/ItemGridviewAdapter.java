@@ -125,7 +125,6 @@ public class ItemGridviewAdapter extends BaseAdapter {
                     finalViewHolder.Quantity.setText(String.valueOf(Integer.parseInt(finalViewHolder.Quantity.getText().toString()) + 1));
 
                     if (finalViewHolder.Quantity.getText().equals("1")) {
-
                         myApp.AddCartItem(productsList[position], productStore.getName());
                     } else {
                         myApp.IncreaseQuantity(productsList[position].getId(), productStore.getName());
@@ -179,7 +178,9 @@ public class ItemGridviewAdapter extends BaseAdapter {
         final Dialog dialog = new Dialog(context);
         // inflate the layout
         dialog.setContentView(R.layout.dialog_product_details);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogTheme;
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
 
         image1 = (ImageView) dialog.findViewById(R.id.Image);

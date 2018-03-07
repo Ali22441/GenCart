@@ -10,7 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +37,8 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.medialablk.easytoast.EasyToast;
+import com.squareup.picasso.Picasso;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView;
 import com.webmarke8.app.gencart.Adapters.ItemGridviewAdapter;
@@ -53,19 +63,24 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener {
 
 
+    private int currentFirstVisibleItem;
+    private int currentVisibleItemCount;
+    private int currentScrollState;
     private ExpandableHeightGridView Gridview;
     private ItemGridviewAdapter GridViewAdapter;
     ProductStore productStore;
     Dialog Progress;
     Store store;
-    FrameLayout Detail;
     ScrollView Scroll;
     SwipeRefreshLayout mSwipeRefreshLayout;
     TextView StoreName;
 
+
+    LayoutAnimationController controller;
+    ImageView StoreImage;
 
     public ItemFragment() {
         // Required empty public constructor
@@ -78,8 +93,28 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         View view = inflater.inflate(R.layout.fragment_item, container, false);
 
 
+        StoreImage = (ImageView) view.findViewById(R.id.Image);
+
+        AnimationSet set = new AnimationSet(true);
+        Animation animation = new AlphaAnimation(0.0f, 1.0f);
+        animation.setDuration(50);
+        set.addAnimation(animation);
+        animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f,
+                Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f);
+        animation.setDuration(100);
+        set.addAnimation(animation);
+        controller = new LayoutAnimationController(
+                set, 0.5f);
+
+
         store = (Store) getArguments().getSerializable("Store");
         StoreName = (TextView) view.findViewById(R.id.StoreName);
+
+        Picasso.with(getActivity())
+                .load(ServerData.UrlImage + store.getBanner())
+                .into(StoreImage);
 
         StoreName.setText(store.getName());
 
@@ -113,6 +148,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
         Scroll = (ScrollView) view.findViewById(R.id.Scroll);
         Gridview = (ExpandableHeightGridView) view.findViewById(R.id.gridview);
+        Gridview.setOnScrollListener(this);
 
         GetStores();
         return view;
@@ -120,15 +156,12 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     @Override
     public void onRefresh() {
+
         mSwipeRefreshLayout.setRefreshing(true);
-        mSwipeRefreshLayout.setRefreshing(false);
         GetStores();
     }
 
-
     private void GetStores() {
-
-        Progress.show();
 
         String Url = ServerData.GetStoresByID + store.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
@@ -146,14 +179,19 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     product = gson.fromJson(Object, ProductStore.class);
 
                     productStore = product;
-                    if (product.getProducts() != null) {
-                        GridViewAdapter = new ItemGridviewAdapter(getActivity(), product, Scroll);
-                        GridViewAdapter.setMyApp(getActivity().getApplication());
-                        Gridview.setExpanded(true);
-                        Gridview.setAdapter(GridViewAdapter);
+                    try {
+                        if (product.getProducts() != null) {
 
-                    } else {
-                        //show no product at store
+                            Gridview.setLayoutAnimation(controller);
+                            GridViewAdapter = new ItemGridviewAdapter(getActivity(), product, Scroll);
+                            GridViewAdapter.setMyApp(getActivity().getApplication());
+                            Gridview.setExpanded(true);
+                            Gridview.setAdapter(GridViewAdapter);
+
+                        }
+                    } catch (Exception a) {
+                        ((MainActivity) getActivity()).ShowHome();
+                        EasyToast.info(getActivity(), "Something Wrong with Store");
                     }
 
 
@@ -161,7 +199,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                     Log.d("GetCartError", e.getMessage());
                 }
-                Progress.dismiss();
+                mSwipeRefreshLayout.setRefreshing(false);
 
 
             }
@@ -169,7 +207,9 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Progress.dismiss();
+                        EasyToast.error(getActivity(), "Something Went Wrong!!");
+                        mSwipeRefreshLayout.setRefreshing(false);
+
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
 //                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
 
@@ -201,7 +241,6 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 return headers;
             }
 
-
             @Override
             public String getBodyContentType() {
                 return "application/x-www-form-urlencoded; charset=UTF-8";
@@ -217,4 +256,29 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
 
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+        this.currentScrollState = scrollState;
+        this.isScrollCompleted();
+
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+
+        this.currentFirstVisibleItem = firstVisibleItem;
+        this.currentVisibleItemCount = visibleItemCount;
+    }
+
+    private void isScrollCompleted() {
+        if (this.currentVisibleItemCount > 0 && this.currentScrollState == SCROLL_STATE_IDLE) {
+            /*** In this way I detect if there's been a scroll which has completed ***/
+            /*** do the work for load more date! ***/
+            EasyToast.success(getActivity(), "Wah Bhai");
+
+        }
+
+    }
 }

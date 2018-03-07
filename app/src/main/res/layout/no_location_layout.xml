@@ -37,6 +37,14 @@
             android:text="Please allow location of your device this \n will make everything easier."
             android:textColor="#72b65b"
             android:textSize="16dp" />
+        <Button
+            android:id="@+id/RetryLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_gravity="center"
+            android:text="Retry" />
+
 
     </LinearLayout>
 

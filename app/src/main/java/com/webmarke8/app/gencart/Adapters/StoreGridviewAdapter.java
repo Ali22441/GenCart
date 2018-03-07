@@ -121,7 +121,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
                         e.printStackTrace();
                     }
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "Items").commit();
+                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "ItemFragment").addToBackStack(null).commit();
 
                     frameLayout.setVisibility(View.VISIBLE);
                 } else {
@@ -139,7 +139,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
                         e.printStackTrace();
                     }
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "Items").commit();
+                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "ItemFragment").addToBackStack(null).commit();
 
                     frameLayout.setVisibility(View.VISIBLE);
 

@@ -53,6 +53,11 @@ dependencies {
     //route on map
 //    compile 'com.github.ar-android:DrawRouteMaps:1.0.0'
     compile 'com.github.IsPra94:EasyToast:1.0.0'
+    compile 'com.github.johnpersano:supertoasts:2.0'
+
+
+    compile 'com.github.aarsy.googlemapsanimations:googlemapsanimations:1.0.5'
+
 
 
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'

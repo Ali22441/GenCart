@@ -14,7 +14,9 @@
         android:background="@drawable/notification_bandage"
         android:gravity="center"
         android:text=" 9 "
-        android:padding="3dp"
+        android:padding="@dimen/_1sdp"
+        android:paddingLeft="@dimen/_3sdp"
+        android:paddingRight="@dimen/_3sdp"
         android:textColor="@android:color/white"
         android:textSize="11sp" />
 </FrameLayout>

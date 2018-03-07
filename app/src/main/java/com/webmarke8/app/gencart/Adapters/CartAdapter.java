@@ -1,18 +1,23 @@
 package com.webmarke8.app.gencart.Adapters;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.medialablk.easytoast.EasyToast;
+import com.squareup.picasso.Picasso;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.Objects.Products;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
+import com.webmarke8.app.gencart.Utils.AppUtils;
+import com.webmarke8.app.gencart.Utils.ServerData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +68,12 @@ public class CartAdapter extends BaseExpandableListAdapter {
         ProductName.setText(products.getName());
         final TextView Quantity = (TextView) view.findViewById(R.id.Quantity);
         Quantity.setText(String.valueOf(products.getQuantityInCart()));
+        ImageView Image = (ImageView) view.findViewById(R.id.Image);
+        Picasso.with(context)
+                .load(ServerData.UrlImage + products.getImage())
+                .error(R.drawable.picturestore)
+                .transform(AppUtils.GetTransForm())
+                .into(Image);
 
         view.findViewById(R.id.Decrease).setOnClickListener(new View.OnClickListener() {
             @Override
