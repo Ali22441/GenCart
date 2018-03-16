@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class CartGroup implements Serializable {
 
     private String name;
-    private String StoreOrderPrice="10000";
+    private String StoreOrderPrice="";
     private ArrayList<Products> ProductList = new ArrayList<Products>();
 
     public String getName() {
@@ -26,5 +26,28 @@ public class CartGroup implements Serializable {
 
     public void setProductList(ArrayList<Products> productList) {
         ProductList = productList;
+    }
+
+    public int getPriceOfSingleStore() {
+        int Price = 0;
+        for (Products products : ProductList) {
+
+            int withQuantity = Integer.parseInt(products.getPrice()) * products.getQuantityInCart();
+
+            Price = Price + withQuantity;
+        }
+        return Price;
+    }
+    public void  setPrice()
+    {
+        setStoreOrderPrice(String.valueOf(getPriceOfSingleStore()));
+    }
+
+    public String getStoreOrderPrice() {
+        return StoreOrderPrice;
+    }
+
+    public void setStoreOrderPrice(String storeOrderPrice) {
+        StoreOrderPrice = storeOrderPrice;
     }
 }

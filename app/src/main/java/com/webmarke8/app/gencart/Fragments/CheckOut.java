@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.webmarke8.app.gencart.Objects.SendCart;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.GPSTracker;
 
@@ -53,7 +56,11 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
 
     TextView DetectAddress;
     GPSTracker gpsTracker;
+    Dialog Progress;
 
+    SendCart sendCart;
+    MyApplication myApplication;
+    LatLng lat_long;
 
     public CheckOut() {
         // Required empty public constructor
@@ -66,11 +73,31 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_check_out, container, false);
 
+        myApplication = (MyApplication) getActivity().getApplicationContext();
         gpsTracker = new GPSTracker(getActivity());
         DetectAddress = (TextView) view.findViewById(R.id.DetectAddress);
+        Progress = AppUtils.LoadingSpinner(getActivity());
+        Progress.show();
+        sendCart = (SendCart) getArguments().getSerializable("Orders");
 
-        DetectAddress.setText(AppUtils.getCompleteAddressString(gpsTracker.getLatitude(), gpsTracker.getLongitude(), getActivity()));
-        gpsTracker.stopUsingGPS();
+        TextView Quantity = (TextView) view.findViewById(R.id.Quantity
+        );
+        TextView TotalPrice = (TextView) view.findViewById(R.id.TotalPrice);
+        TotalPrice.setText(sendCart.getAmount() + " SAR");
+        Quantity.setText(myApplication.getCartQuantity());
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                DetectAddress.setText("Detect Address: " + AppUtils.getCompleteAddressString(gpsTracker.getLatitude(), gpsTracker.getLongitude(), getActivity()));
+                lat_long = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
+                gpsTracker.stopUsingGPS();
+                Progress.dismiss();
+
+            }
+        }, 1000);
+
 
         view.findViewById(R.id.NewDelivery).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +112,6 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
             @Override
             public void onClick(View v) {
 
-//                Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.containerForFragments);
                 getActivity().getSupportFragmentManager().popBackStack();
 
             }
@@ -126,7 +152,6 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
     private static final String OUT_JSON = "/json";
     AutoCompleteTextView edtAddress;
 
-    LatLng lat_long;
 
     public void UpdateLocation() {
 

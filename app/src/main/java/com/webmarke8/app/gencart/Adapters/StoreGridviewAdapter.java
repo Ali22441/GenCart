@@ -84,7 +84,6 @@ public class StoreGridviewAdapter extends BaseAdapter {
         Picasso.with(context)
                 .load(ServerData.UrlImage + StoreList.get(position).getLogo())
                 .transform(AppUtils.GetTransForm())
-                .placeholder(R.drawable.progress)
                 .error(R.drawable.picturestore)
                 .into(Holder.StoreImage);
 

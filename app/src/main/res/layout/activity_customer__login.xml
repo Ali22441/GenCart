@@ -4,22 +4,6 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Customer_Login">
 
-    <RelativeLayout
-        android:id="@+id/Progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:alpha="0.8"
-        android:background="@android:color/white"
-      >
-
-        <ProgressBar
-            style="@style/MyProgressBarRectangle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" />
-    </RelativeLayout>
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -105,6 +89,7 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="#fff"
                         android:ems="10"
+                        android:text="asifclient@gmail.com"
                         android:hint="Email"
                         android:inputType="textEmailAddress"
                         android:textColor="#fff"
@@ -120,6 +105,7 @@
                     <EditText
                         android:id="@+id/password"
                         android:layout_width="match_parent"
+                        android:text="client1234"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:backgroundTint="#fff"
@@ -140,12 +126,13 @@
                 <ImageView
                     android:id="@+id/login"
                     android:layout_width="match_parent"
-                    android:layout_height="70dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginTop="15dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/login_button"
+
                     android:textAllCaps="false"
                     android:textColor="#000" />
 

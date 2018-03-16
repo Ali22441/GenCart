@@ -1,10 +1,12 @@
 package com.webmarke8.app.gencart.Objects;
 
+import java.io.Serializable;
+
 /**
  * Created by GeeksEra on 2/27/2018.
  */
 
-public class Pivot {
+public class Pivot  implements Serializable {
     private String category_id;
 
     private String store_id;

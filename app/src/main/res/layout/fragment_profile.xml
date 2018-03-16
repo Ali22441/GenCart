@@ -102,7 +102,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvUserName"
+                    android:id="@+id/Name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
@@ -147,7 +147,7 @@
                     android:textSize="20dp" />
 
                 <TextView
-                    android:id="@+id/tvPhone"
+                    android:id="@+id/Phone"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="10dp"
@@ -190,19 +190,14 @@
                         android:src="@drawable/address_icon" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:id="@+id/Address"
+                        android:layout_width="170dp"
                         android:layout_height="wrap_content"
-                        android:hint="Address:"
-                        android:textAlignment="center"
+                        android:background="@drawable/capsuleboundary"
+                        android:gravity="center"
+                        android:text="Address:"
                         android:textColorHint="#6e6262" />
 
-                    <EditText
-                        android:id="@+id/EditTextAddress"
-                        android:layout_width="115dp"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:textAlignment="center"
-                        android:textColorHint="#6e6262" />
 
                 </LinearLayout>
 

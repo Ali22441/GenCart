@@ -45,6 +45,7 @@ import android.widget.Toast;
 
 import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Transformation;
+import com.wang.avi.AVLoadingIndicatorView;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
 
@@ -549,19 +550,32 @@ public class AppUtils {
 
 
     public static Dialog LoadingSpinner(Context mContext) {
-        Dialog pd = new Dialog(mContext, android.R.style.Theme_Black);
+        Dialog pd = new Dialog(mContext, android.R.style.Theme);
         View view = LayoutInflater.from(mContext).inflate(R.layout.progress, null);
+        AVLoadingIndicatorView avi = (AVLoadingIndicatorView) view.findViewById(R.id.avi);
+        avi.show();
+        pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        pd.setContentView(view);
+        return pd;
+    }
+    public static Dialog LoadingSpinnerDialog(Context mContext) {
+        Dialog pd = new Dialog(mContext, android.R.style.Theme);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.progress, null);
+        AVLoadingIndicatorView avi = (AVLoadingIndicatorView) view.findViewById(R.id.avi);
+        avi.show();
         pd.requestWindowFeature(Window.FEATURE_NO_TITLE);
         pd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         pd.setContentView(view);
         return pd;
     }
 
+
     public static Transformation GetTransForm() {
         return new RoundedTransformationBuilder()
                 .borderColor(Color.TRANSPARENT)
-                .borderWidthDp(2)
-                .cornerRadiusDp(1)
+                .borderWidthDp(5)
+                .cornerRadiusDp(5)
                 .oval(false)
                 .build();
     }
@@ -658,11 +672,12 @@ public class AppUtils {
         }
         return inetAddress != null && !inetAddress.equals("");
     }
+
     public static boolean isLocationEnabled(Context context) {
         int locationMode = 0;
         String locationProviders;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
                 locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
 
@@ -673,7 +688,7 @@ public class AppUtils {
 
             return locationMode != Settings.Secure.LOCATION_MODE_OFF;
 
-        }else{
+        } else {
             locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
             return !TextUtils.isEmpty(locationProviders);
         }

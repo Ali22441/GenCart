@@ -1,5 +1,6 @@
 package com.webmarke8.app.gencart.Objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,19 @@ import java.util.List;
  * Created by GeeksEra on 3/6/2018.
  */
 
-public class SendCart {
+public class SendCart implements Serializable {
     String customer_id;
-    String address_id;
+    String address_lat_lng;
     String amount;
+    String order_id="";
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
+    }
 
     List<CartGroup> Stores=new ArrayList<>();
 
@@ -23,11 +33,11 @@ public class SendCart {
     }
 
     public String getAddress_id() {
-        return address_id;
+        return address_lat_lng;
     }
 
     public void setAddress_id(String address_id) {
-        this.address_id = address_id;
+        this.address_lat_lng = address_id;
     }
 
     public String getAmount() {

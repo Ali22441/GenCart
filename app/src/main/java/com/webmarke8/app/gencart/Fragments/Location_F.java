@@ -3,7 +3,9 @@ package com.webmarke8.app.gencart.Fragments;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -29,6 +31,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //import com.ahmadrosid.lib.drawroutemap.DrawMarker;
 //import com.ahmadrosid.lib.drawroutemap.DrawRouteMaps;
@@ -45,12 +48,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.medialablk.easytoast.EasyToast;
 import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.GPSTracker;
 
 import org.json.JSONArray;
@@ -86,6 +91,7 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
     MapRipple mapRipple;
     GPSTracker gpsTracker;
     LatLng latLng;
+    Dialog dialog;
 
 
     private static final String API_KEY = "AIzaSyCWSJNo4sQfVonDPjn0CVhWmK07aypSebA";
@@ -112,6 +118,16 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
         View view = inflater.inflate(R.layout.fragment_location_, container, false);
 
         gpsTracker = new GPSTracker(getActivity());
+        dialog = AppUtils.LoadingSpinnerDialog(getActivity());
+        dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+
+                EasyToast.info(getActivity(), "We are Searching... Your Rider");
+//                show();
+
+            }
+        });
 
         try {
 
@@ -170,22 +186,23 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
             @Override
             public void onClick(View v) {
 
-                LatLng latLng = new LatLng(gpsTracker.getLatitude(),
-                        gpsTracker.getLongitude());
-
-                if (mapRipple == null)
-                    mapRipple = new MapRipple(mMap, latLng, getActivity());
-                mapRipple.withNumberOfRipples(3);
-                mapRipple.withFillColor(Color.parseColor("#FFA3D2E4"));
-                mapRipple.withStrokeColor(Color.BLACK);
-                mapRipple.withStrokewidth(0);      // 10dp
-                mapRipple.withDistance(2000);      // 2000 metres radius
-                mapRipple.withRippleDuration(12000);    //12000ms
-                mapRipple.withTransparency(0.5f);
-
-                if (!mapRipple.isAnimationRunning()) {
-                    mapRipple.startRippleMapAnimation();
-                }
+                dialog.show();
+//                LatLng latLng = new LatLng(gpsTracker.getLatitude(),
+//                        gpsTracker.getLongitude());
+//
+//                if (mapRipple == null)
+//                    mapRipple = new MapRipple(mMap, latLng, getActivity());
+//                mapRipple.withNumberOfRipples(3);
+//                mapRipple.withFillColor(Color.parseColor("#FFA3D2E4"));
+//                mapRipple.withStrokeColor(Color.BLACK);
+//                mapRipple.withStrokewidth(0);      // 10dp
+//                mapRipple.withDistance(2000);      // 2000 metres radius
+//                mapRipple.withRippleDuration(12000);    //12000ms
+//                mapRipple.withTransparency(0.5f);
+//
+//                if (!mapRipple.isAnimationRunning()) {
+//                    mapRipple.startRippleMapAnimation();
+//                }
             }
         });
 
@@ -202,6 +219,21 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
 
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = mMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            getActivity(), R.raw.style));
+
+            if (!success) {
+                Log.e("MapsActivityRaw", "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("MapsActivityRaw", "Can't find style.", e);
+        }
 
         try {
             mMap.addMarker(new MarkerOptions()
@@ -406,22 +438,29 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        String address = (String) adapterView.getItemAtPosition(position);
-        Log.d("address>>>", address);
-        Geocoder coder = new Geocoder(getActivity());
-        List<Address> addressList = null;
-        try {
-            // May throw an IOException
-            addressList = coder.getFromLocationName(address, 5);
-            Address location = addressList.get(0);
-            latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        } catch (IOException ex) {
-            ex.printStackTrace();
+        try
+        {
+            String address = (String) adapterView.getItemAtPosition(position);
+            Log.d("address>>>", address);
+            Geocoder coder = new Geocoder(getActivity());
+            List<Address> addressList = null;
+            try {
+                // May throw an IOException
+                addressList = coder.getFromLocationName(address, 5);
+                Address location = addressList.get(0);
+                latLng = new LatLng(location.getLatitude(), location.getLongitude());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            LocationAddress.setText(address);
+            edtAddress.setText("");
+            edtAddress.setText(address);
+            edtAddress.setSelection(edtAddress.getText().toString().length());
+        }catch (Exception Ex)
+        {
+
         }
-        LocationAddress.setText(address);
-        edtAddress.setText("");
-        edtAddress.setText(address);
-        edtAddress.setSelection(edtAddress.getText().toString().length());
+
     }
 
     class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {
@@ -521,6 +560,10 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
         }
 
         return resultList;
+    }
+
+    public void show() {
+        dialog.show();
     }
 
 }

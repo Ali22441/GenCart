@@ -1,7 +1,6 @@
 package com.webmarke8.app.gencart.Activities;
 
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
@@ -107,11 +107,12 @@ public class MainActivity extends AppCompatActivity
     List<Store> Backup = new ArrayList<>();
     LayoutAnimationController controller;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         findViewById(R.id.RetryConection).setOnClickListener(new View.OnClickListener() {
@@ -183,13 +184,8 @@ public class MainActivity extends AppCompatActivity
                 if (s.length() != 0) {
                     GetStores(true);
                 } else {
+                    GetStores(false);
 
-//                    if (Backup.size() > 0) {
-//                        StoreList = Backup;
-//                        GridViewAdapter = new StoreGridviewAdapter(MainActivity.this, StoreList, frameLayout);
-//                        Gridview.setExpanded(true);
-//                        Gridview.setAdapter(GridViewAdapter);
-//                    }
                 }
 
             }
@@ -238,7 +234,6 @@ public class MainActivity extends AppCompatActivity
                     if (TextSearch.getText().toString().length() != 0)
                         GetStores(true);
                     else GetStores(false);
-                    EasyToast.success(MainActivity.this, "Loading.");
                 }
                 if (totalItemCount < end && totalItemCount > 10) {
                     findViewById(R.id.Progress).setVisibility(View.VISIBLE);
@@ -281,20 +276,35 @@ public class MainActivity extends AppCompatActivity
 //                                        .replace(R.id.container, new StoreFragment(),"Home").commit();
                                 break;
                             case R.id.MyCart:
-                                frameLayout.setVisibility(View.VISIBLE);
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+
+                                if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("MyCartFragment")) {
+                                    break;
+                                } else {
+                                    frameLayout.setVisibility(View.VISIBLE);
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
+                                }
                                 break;
                             case R.id.Profile:
-                                frameLayout.setVisibility(View.VISIBLE);
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.containerForFragments, new ProfileFragment(), "Profile").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+
+
+                                if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Profile")) {
+                                    break;
+                                } else {
+                                    frameLayout.setVisibility(View.VISIBLE);
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.containerForFragments, new ProfileFragment(), "Profile").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
+                                }
                                 break;
                             case R.id.Chat:
 
-                                frameLayout.setVisibility(View.VISIBLE);
-                                getSupportFragmentManager().beginTransaction()
-                                        .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+                                if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Chat_Fragment")) {
+                                    break;
+                                } else {
+                                    frameLayout.setVisibility(View.VISIBLE);
+                                    getSupportFragmentManager().beginTransaction()
+                                            .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
+                                }
                                 break;
 
                         }
@@ -323,6 +333,16 @@ public class MainActivity extends AppCompatActivity
 
         Bandge(myApplication.getCartQuantity());
 
+    }
+
+    private Fragment getCurrentFragment() {
+        FragmentManager fragmentManager = MainActivity.this.getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment.getUserVisibleHint())
+                return fragment;
+        }
+        return null;
     }
 
     boolean doubleBackToExitPressedOnce = false;
@@ -375,16 +395,22 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.MOrder) {
 
-            frameLayout.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new MyOrders(), "Orders").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+            if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Orders")) {
+            } else {
+                frameLayout.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containerForFragments, new MyOrders(), "Orders").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
+            }
+
 
         }
         if (id == R.id.MChat) {
-
-            frameLayout.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+            if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Chat_Fragment")) {
+            } else {
+                frameLayout.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
+            }
 
         }
         if (id == R.id.MHome) {
@@ -395,16 +421,26 @@ public class MainActivity extends AppCompatActivity
         }
         if (id == R.id.MMyCart) {
 
-            frameLayout.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+
+            if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("MyCartFragment")) {
+            } else {
+                frameLayout.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containerForFragments, new MyCartFragment(), "MyCartFragment").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
+            }
+
 
         }
         if (id == R.id.MProfile) {
 
-            frameLayout.setVisibility(View.VISIBLE);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.containerForFragments, new ProfileFragment(), "ProfileFragment").setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).addToBackStack(null).commit();
+
+            if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("ProfileFragment")) {
+            } else {
+                frameLayout.setVisibility(View.VISIBLE);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.containerForFragments, new ProfileFragment(), "ProfileFragment").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
+            }
+
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -458,11 +494,12 @@ public class MainActivity extends AppCompatActivity
     private void GetStores(Boolean Check) {
 
         String URL = "";
+        Progress.show();
 
         if (Check) {
 
             URL = ServerData.SearchStore + TextSearch.getText().toString() + "/" + String.valueOf(star) + "/" + String.valueOf(end);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL
                     , new Response.Listener<String>() {
 
                 @Override
@@ -494,12 +531,14 @@ public class MainActivity extends AppCompatActivity
                         Log.d("GetCartError", e.getMessage());
                     }
 
+                    Progress.dismiss();
 
                 }
             },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
+                            Progress.dismiss();
                             mSwipeRefreshLayout.setRefreshing(false);
                             EasyToast.error(getApplicationContext(), "Something Went Wrong!!");
                             if (error instanceof TimeoutError || error instanceof NoConnectionError) {
@@ -528,7 +567,7 @@ public class MainActivity extends AppCompatActivity
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("Accept", "application/json");
-                    headers.put("Authorization", StaticData.DummyAuthentication);
+                    headers.put("Authorization", "Bearer " + myApplication.getLoginSessionCustomer().getSuccess().getToken());
 
                     return headers;
                 }
@@ -560,6 +599,8 @@ public class MainActivity extends AppCompatActivity
                 public void onResponse(String response) {
                     mSwipeRefreshLayout.setRefreshing(false);
                     StoreList.clear();
+                    Progress.dismiss();
+
                     try {
                         Gson gson = new Gson();
                         JSONObject jsonObject = new JSONObject(response);
@@ -578,6 +619,7 @@ public class MainActivity extends AppCompatActivity
 
 
                     } catch (JSONException e) {
+                        Progress.dismiss();
 
                         Log.d("GetCartError", e.getMessage());
                     }
@@ -591,6 +633,8 @@ public class MainActivity extends AppCompatActivity
                         public void onErrorResponse(VolleyError error) {
                             EasyToast.error(getApplicationContext(), "Something Went Wrong!!");
                             mSwipeRefreshLayout.setRefreshing(false);
+                            Progress.dismiss();
+
                             if (error instanceof TimeoutError || error instanceof NoConnectionError) {
 //                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
                                 ShowNoConnection();
@@ -617,7 +661,7 @@ public class MainActivity extends AppCompatActivity
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<>();
                     headers.put("Accept", "application/json");
-                    headers.put("Authorization", StaticData.DummyAuthentication);
+                    headers.put("Authorization", "Bearer " + myApplication.getLoginSessionCustomer().getSuccess().getToken());
 
                     return headers;
                 }
@@ -647,7 +691,7 @@ public class MainActivity extends AppCompatActivity
             NumberBandage.setVisibility(View.GONE);
 
         } else {
-            NumberBandage.setText(" " + String.valueOf(Number) + " ");
+            NumberBandage.setText("  " + String.valueOf(Number) + "  ");
             NumberBandage.setVisibility(View.VISIBLE);
 
         }
@@ -691,7 +735,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void ShowNoConnection() {
-        findViewById(R.id.NoInterent).setVisibility(View.VISIBLE);
+//        findViewById(R.id.NoInterent).setVisibility(View.VISIBLE);
     }
 
     public void HideNoConnection() {

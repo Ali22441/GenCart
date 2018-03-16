@@ -162,6 +162,10 @@
                 android:id="@+id/SwipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_7sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:layout_weight="1">
 
                 <!--<include android:visibility="gone" layout="@layout/no_internet_layout"></include>-->
@@ -171,8 +175,6 @@
                     android:id="@+id/gridview"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="@dimen/_5sdp"
                     android:layout_marginRight="@dimen/_5sdp"
                     android:background="#f4f4f4"

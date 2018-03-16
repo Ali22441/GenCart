@@ -41,9 +41,8 @@ public class MyApplication extends Application {
         editor = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE).edit();
         sharedPreferences = getSharedPreferences(MYPREFERENCES, MODE_PRIVATE);
         CartGroupList = new EasySave(getApplicationContext()).retrieveList("Cart", CartGroup[].class);
-        if (CartGroupList==null)
-        {
-            CartGroupList=new ArrayList<>();
+        if (CartGroupList == null) {
+            CartGroupList = new ArrayList<>();
         }
 
     }
@@ -61,7 +60,8 @@ public class MyApplication extends Application {
     }
 
     public void logoutUser() {
-        // Clearing all data from Shared Preferences
+
+        new EasySave(getApplicationContext()).saveModel("customer", null);
         editor.clear();
         editor.commit();
     }
@@ -78,25 +78,10 @@ public class MyApplication extends Application {
         editor.apply();
     }
 
-    public void createLoginSessionOwner(Owner owner) {
-        editor.putBoolean(IS_LOGIN, true);
-        editor.putString("Type", "owner");
-        new EasySave(getApplicationContext()).saveModel("owner", owner);
-        editor.apply();
-    }
-
-
-    public Owner getLoginSessionOwner() {
-
-        return new EasySave(getApplicationContext()).retrieveModel("owner", Owner.class);
-
-    }
-
 
     public Customer getLoginSessionCustomer() {
 
-//        return new EasySave(getApplicationContext()).retrieveModel("customer", Customer.class);
-        return new Customer();
+        return new EasySave(getApplicationContext()).retrieveModel("customer", Customer.class);
 
     }
 
@@ -128,7 +113,17 @@ public class MyApplication extends Application {
             CartGroup cartGroup = new CartGroup();
             cartGroup.setName(StoreName);
             cartGroup.getProductList().add(products);
-            CartGroupList.add(cartGroup);
+
+            List<CartGroup> idea = new ArrayList<>();
+            idea.add(cartGroup);
+            try {
+                CartGroupList.addAll(idea);
+
+            } catch (Exception Ex) {
+                CartGroupList.add(cartGroup);
+            }
+
+//            CartGroupList.add(cartGroup);
         }
 
         new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);
@@ -267,7 +262,12 @@ public class MyApplication extends Application {
         for (int i = 0; i < CartGroupList.size(); i++) {
 
             if (CartGroupList.get(i).getProductList().size() == 0) {
-                CartGroupList.remove(i);
+                try {
+                    CartGroupList.remove(i);
+
+                } catch (Exception e) {
+
+                }
             }
         }
         new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);

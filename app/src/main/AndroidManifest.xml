@@ -33,31 +33,23 @@
             android:value="@string/facebook_app_id" />
 
         <activity
-            android:name=".Activities.SelectUserActivity"
+            android:name=".Activities.Splash"
             android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <activity
             android:name=".Activities.Customer_Login"
             android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme" />
         <activity
-            android:name=".Activities.Owner_Login"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppFullScreenTheme" />
-        <activity
             android:name=".Activities.Customer_Signup"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppFullScreenTheme" />
-        <activity
-            android:name=".Activities.Owner_Signup"
             android:screenOrientation="portrait"
             android:theme="@style/AppFullScreenTheme" />
         <activity
@@ -66,12 +58,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <meta-data

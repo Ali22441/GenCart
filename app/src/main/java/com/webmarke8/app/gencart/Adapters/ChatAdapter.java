@@ -33,7 +33,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
     public ChatAdapter(List<Chat_Object> list, Context context) {
         this.MyMessageList = list;
         this.context = context;
-        myApplication = (MyApplication) context.getApplicationContext();
+        myApplication = (MyApplication) this.context.getApplicationContext();
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
         final Chat_Object mylist = MyMessageList.get(position);
         senderMessage.setText(mylist.getMessage().toString());
         String sender = mylist.getSenderEmail().toString();
-        String email = myApplication.getLoginSessionCustomer().getEmail();
+        String email = myApplication.getLoginSessionCustomer().getSuccess().getUser().getEmail();
 
         ReciverName.setText(mylist.getReciverName());
         SenderName.setText(mylist.getSenderName());

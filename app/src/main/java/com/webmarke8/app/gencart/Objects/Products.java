@@ -2,11 +2,13 @@ package com.webmarke8.app.gencart.Objects;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by GeeksEra on 2/27/2018.
  */
 
-public class Products {
+public class Products implements Serializable {
 
 
     int QuantityInCart;

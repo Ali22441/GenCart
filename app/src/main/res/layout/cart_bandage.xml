@@ -4,19 +4,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <!--<TextView-->
+        <!--android:id="@+id/Number"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="top|center_horizontal"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginStart="10dp"-->
+        <!--android:background="@drawable/notification_bandage"-->
+        <!--android:gravity="center"-->
+        <!--android:text=" 9 "-->
+        <!--android:padding="@dimen/_1sdp"-->
+        <!--android:paddingLeft="@dimen/_3sdp"-->
+        <!--android:paddingRight="@dimen/_3sdp"-->
+        <!--android:textColor="@android:color/white"-->
+        <!--android:textSize="11sp" />-->
+
+    <com.libRG.CustomTextView
         android:id="@+id/Number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|center_horizontal"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:background="@drawable/notification_bandage"
         android:gravity="center"
-        android:text=" 9 "
+        android:text="  1  "
+        android:background="@color/colorPrimary"
         android:padding="@dimen/_1sdp"
-        android:paddingLeft="@dimen/_3sdp"
-        android:paddingRight="@dimen/_3sdp"
         android:textColor="@android:color/white"
-        android:textSize="11sp" />
+        android:textSize="11sp"
+        app:lib_setRadius="30dp"
+        app:lib_setRoundedBorderColor="@color/colorPrimary"
+        app:lib_setRoundedView="true"
+        app:lib_setStrokeWidth="2dp"
+        app:lib_setRoundedBGColor="@color/colorPrimary"
+        app:lib_setActionTextColor="@color/colorPrimary"
+        app:lib_setShape="oval" />
 </FrameLayout>

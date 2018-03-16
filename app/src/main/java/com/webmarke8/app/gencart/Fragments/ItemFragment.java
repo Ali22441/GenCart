@@ -46,6 +46,7 @@ import com.webmarke8.app.gencart.Adapters.StoreGridviewAdapter;
 import com.webmarke8.app.gencart.Objects.ProductStore;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.ServerData;
 import com.webmarke8.app.gencart.Utils.StaticData;
@@ -77,6 +78,8 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ScrollView Scroll;
     SwipeRefreshLayout mSwipeRefreshLayout;
     TextView StoreName;
+    MyApplication myApplication;
+    Dialog dialog;
 
 
     LayoutAnimationController controller;
@@ -94,6 +97,9 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
         StoreImage = (ImageView) view.findViewById(R.id.Image);
+        myApplication=(MyApplication)getActivity().getApplicationContext();
+        dialog=AppUtils.LoadingSpinnerDialog(getActivity());
+        dialog.show();
 
         AnimationSet set = new AnimationSet(true);
         Animation animation = new AlphaAnimation(0.0f, 1.0f);
@@ -163,6 +169,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     private void GetStores() {
 
+
         String Url = ServerData.GetStoresByID + store.getId();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 Url, new Response.Listener<String>() {
@@ -170,6 +177,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onResponse(String response) {
                 try {
+                    dialog.dismiss();
 
                     Gson gson = new Gson();
                     JSONObject jsonObject = new JSONObject(response);
@@ -187,6 +195,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                             GridViewAdapter.setMyApp(getActivity().getApplication());
                             Gridview.setExpanded(true);
                             Gridview.setAdapter(GridViewAdapter);
+
 
                         }
                     } catch (Exception a) {
@@ -207,6 +216,8 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+
                         EasyToast.error(getActivity(), "Something Went Wrong!!");
                         mSwipeRefreshLayout.setRefreshing(false);
 
@@ -236,8 +247,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("Authorization", StaticData.DummyAuthentication);
-
+                headers.put("Authorization","Bearer "+ myApplication.getLoginSessionCustomer().getSuccess().getToken());
                 return headers;
             }
 

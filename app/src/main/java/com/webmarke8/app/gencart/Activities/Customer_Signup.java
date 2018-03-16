@@ -1,5 +1,6 @@
 package com.webmarke8.app.gencart.Activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.medialablk.easytoast.EasyToast;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -56,6 +58,7 @@ public class Customer_Signup extends AppCompatActivity {
 
     CallbackManager callbackManager;
     TwitterAuthClient mTwitterAuthClient;
+    Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,21 +68,16 @@ public class Customer_Signup extends AppCompatActivity {
         setContentView(R.layout.activity_customer__signup);
 
 
-            callbackManager = CallbackManager.Factory.create();
-            mTwitterAuthClient= new TwitterAuthClient();
-
-
-
-
-
-
+        callbackManager = CallbackManager.Factory.create();
+        mTwitterAuthClient = new TwitterAuthClient();
+        dialog = AppUtils.LoadingSpinnerDialog(Customer_Signup.this);
 
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                AppUtils.StartActivity(getApplicationContext(), Owner_Login.class);
+                AppUtils.StartActivity(getApplicationContext(), Customer_Login.class);
                 finish();
             }
         });
@@ -89,6 +87,7 @@ public class Customer_Signup extends AppCompatActivity {
             public void onClick(View v) {
 
 
+                dialog.show();
                 registerApiCall();
 
             }
@@ -110,7 +109,7 @@ public class Customer_Signup extends AppCompatActivity {
 
                             @Override
                             public void onCancel() {
-                                Toast.makeText(Customer_Signup.this, "Login Cancel", Toast.LENGTH_LONG).show();
+                                EasyToast.custom(getApplicationContext(), "Login Cancel");
                             }
 
                             @Override
@@ -146,63 +145,59 @@ public class Customer_Signup extends AppCompatActivity {
         });
     }
 
-    private void registerApiCall()
-    {
+    private void registerApiCall() {
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                ServerData.CustomerSignup,  new Response.Listener<String>() {
+                ServerData.CustomerSignup, new Response.Listener<String>() {
 
             @Override
             public void onResponse(String response) {
-                if(response.trim().equals("success")){
-                    Toast.makeText(Customer_Signup.this, "Success", Toast.LENGTH_SHORT).show();
-                    //  finish();
-                    //  progress.hide();
-                }else{
-                    Toast.makeText(Customer_Signup.this,response,Toast.LENGTH_LONG).show();
-                }
+                dialog.dismiss();
+
+
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            Toast.makeText(getApplicationContext(), "Communication Error!", Toast.LENGTH_SHORT).show();
-
+                            EasyToast.error(getApplicationContext(), "Please check your internet Connection");
                         } else if (error instanceof AuthFailureError) {
-                            Toast.makeText(getApplicationContext(), "Authentication Error!", Toast.LENGTH_SHORT).show();
+                            EasyToast.error(getApplicationContext(), "Authentication Error!");
                         } else if (error instanceof ServerError) {
-                            Toast.makeText(getApplicationContext(), "Server Side Error!", Toast.LENGTH_SHORT).show();
+                            EasyToast.error(getApplicationContext(), "Server Side Error!");
                         } else if (error instanceof NetworkError) {
-                            Toast.makeText(getApplicationContext(), "Network Error!", Toast.LENGTH_SHORT).show();
+                            EasyToast.error(getApplicationContext(), "Network Error!");
                         } else if (error instanceof ParseError) {
-                            Toast.makeText(getApplicationContext(), "Parse Error!", Toast.LENGTH_SHORT).show();
+                            EasyToast.error(getApplicationContext(), "Parse Error!");
                         }
-                        Toast.makeText(Customer_Signup.this,error.toString(),Toast.LENGTH_LONG ).show();
                     }
-                }){
+                }) {
             @Override
             public Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> map = new HashMap<String,String>();
-                map.put("email","fazal@gmail.com");
-                map.put("name","Fazli Mola Jan");
-                map.put("lat","12.3456");
-                map.put("lng","123.456");
-                map.put("role","Customer");
-                map.put("address","Islamabad");
-                map.put("lat_lng","123.456");
-                map.put("password","123456");
-                map.put("id","78789789789");
-                map.put("zipcode","123456");
-                map.put("password_confirmation","123456");
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("email", "fazal@gmail.com");
+                map.put("name", "Fazli Mola Jan");
+                map.put("lat", "12.3456");
+                map.put("lng", "123.456");
+                map.put("role", "Customer");
+                map.put("address", "Islamabad");
+                map.put("lat_lng", "123.456");
+                map.put("password", "123456");
+                map.put("id", "78789789789");
+                map.put("zipcode", "123456");
+                map.put("password_confirmation", "123456");
                 return map;
             }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/x-www-form-urlencoded");
                 return headers;
             }
+
             @Override
             public String getBodyContentType() {
                 // TODO Auto-generated method stub
@@ -249,15 +244,18 @@ public class Customer_Signup extends AppCompatActivity {
         data_request.executeAsync();
 
     }
+
     protected void onResume() {
         super.onResume();
         AppEventsLogger.activateApp(this);
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         AppEventsLogger.deactivateApp(this);
     }
+
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
