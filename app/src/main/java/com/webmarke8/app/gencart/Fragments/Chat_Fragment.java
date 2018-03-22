@@ -518,6 +518,7 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback, Locat
     }
 
     @Override
+
     public void onProviderDisabled(String provider) {
 
     }
