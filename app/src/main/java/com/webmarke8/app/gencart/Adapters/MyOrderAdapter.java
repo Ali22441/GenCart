@@ -15,13 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.Objects.Order;
+import com.webmarke8.app.gencart.Objects.OrderGroup;
 import com.webmarke8.app.gencart.Objects.Products;
+import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -29,16 +35,15 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
 
     Context context;
     List<Order> models;
-
+    List<OrderGroup> OrderList = new ArrayList<OrderGroup>();
 
 
     MyOrderDetailsAdapter listAdapter;
     ExpandableListView simpleExpandableListView;
 
 
-    private LinkedHashMap<String, CartGroup> subjects = new LinkedHashMap<String, CartGroup>();
-    private ArrayList<CartGroup> deptList = new ArrayList<CartGroup>();
-
+    private LinkedHashMap<String, OrderGroup> List = new LinkedHashMap<String, OrderGroup>();
+    private ArrayList<Order.ProductsObject> deptList = new ArrayList<Order.ProductsObject>();
 
 
     // Provide a reference to the views for each data item
@@ -46,13 +51,16 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     // you provide access to all the views for a data item in a view holder
     public class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        CardView cv;
         ImageView Open;
+        TextView OrderName, TotalPrice, Date;
 
         public ViewHolder(View v) {
             super(v);
-            //    cv = (CardView) itemView.findViewById(R.id.cv);
             Open = (ImageView) itemView.findViewById(R.id.Open);
+            OrderName = (TextView) itemView.findViewById(R.id.OrderName);
+            TotalPrice = (TextView) itemView.findViewById(R.id.TotalPrice);
+            Date = (TextView) itemView.findViewById(R.id.Date);
+
 
         }
     }
@@ -79,25 +87,31 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
 
-//        holder.personName.setText(models.get(position).name);
-//
-//     /*   final int itemPosition = position;
-//        Log.d("zma position", String.valueOf(itemPosition));*/
+        String date_s = models.get(position).getCreated_at();
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");
+        Date date = null;
+        try {
+            date = dt.parse(date_s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        SimpleDateFormat dt1 = new SimpleDateFormat("yyyy-mm-dd");
+        holder.TotalPrice.setText(models.get(position).getAmount() + " SAR");
+        holder.Date.setText(dt1.format(date));
+        holder.OrderName.setText("Order No. " + models.get(position).getId());
         holder.Open.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                OpenDetails();
+                OpenDetails(models.get(position));
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return models.size();
     }
 
     @Override
@@ -106,9 +120,7 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     }
 
 
-    public void OpenDetails() {
-
-
+    public void OpenDetails(Order order) {
 
 
         final Dialog dialog = new Dialog(context);
@@ -117,12 +129,11 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-
-        loadData();
+        loadData(order);
         //get reference of the ExpandableListView
         simpleExpandableListView = (ExpandableListView) dialog.findViewById(R.id.simpleExpandableListView);
         // create the adapter by passing your ArrayList data
-        listAdapter = new MyOrderDetailsAdapter(context, deptList);
+        listAdapter = new MyOrderDetailsAdapter(context, OrderList);
         // attach the adapter to the expandable list view
         simpleExpandableListView.setAdapter(listAdapter);
 
@@ -150,8 +161,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
         });
 
 
-
-
         // Set the dialog text -- this is better done in the XML
         final ImageView Cross = (ImageView) dialog.findViewById(R.id.Cross);
         Cross.setOnClickListener(new View.OnClickListener() {
@@ -166,8 +175,6 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     }
 
 
-
-
     private void expandAll() {
         int count = listAdapter.getGroupCount();
         for (int i = 0; i < count; i++) {
@@ -176,49 +183,34 @@ public class MyOrderAdapter extends RecyclerView.Adapter<MyOrderAdapter.ViewHold
     }
 
 
-    //here we maintain our products in various departments
-    private int addProduct(String department, String product) {
+    private void loadData(Order storesObjects) {
 
-        int groupPosition = 0;
 
-        //check the hash map if the group already exists
-        CartGroup headerInfo = subjects.get(department);
-        //add the group if doesn't exists
-        if (headerInfo == null) {
-            headerInfo = new CartGroup();
-            headerInfo.setName(department);
-            subjects.put(department, headerInfo);
-            deptList.add(headerInfo);
+        OrderGroup orderGroup = new OrderGroup();
+
+        for (Order.StoresObject store : storesObjects.getStores()) {
+            orderGroup.setStoreName(store.getName());
+
+            for (Order.ProductsObject productsObject : storesObjects.getProducts()) {
+
+                if (GetStoreName(productsObject.getStore_id(), storesObjects).equals(orderGroup.getStoreName())) {
+                    productsObject.setOrderDate(storesObjects.getCreated_at());
+                    orderGroup.getProductsObject().add(productsObject);
+                }
+            }
+            OrderList.add(orderGroup);
         }
 
-        //get the children for the group
-        ArrayList<Products> productList = headerInfo.getProductList();
-        //size of the children list
-        int listSize = productList.size();
-        //add to the counter
-        listSize++;
 
-        //create a new child and add that to the group
-        Products detailInfo = new Products();
-        productList.add(detailInfo);
-        headerInfo.setProductList(productList);
-
-        //find the group position inside the list
-        groupPosition = deptList.indexOf(headerInfo);
-        return groupPosition;
     }
 
-    private void loadData() {
-
-        addProduct("Mr.Person's Grocery Store", "Spray");
-        addProduct("Mr.Person's Grocery Store", "Spray");
-
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-        addProduct("Mr.Person's Grocery Store1", "Spray");
-
+    public String GetStoreName(int id, Order order) {
+        for (Order.StoresObject store : order.getStores()) {
+            if (store.getId() == id) {
+                return store.getName();
+            }
+        }
+        return "Store(Name?)";
     }
 
 }

@@ -21,6 +21,7 @@ import com.webmarke8.app.gencart.Fragments.Resturent_Fragemt;
 import com.webmarke8.app.gencart.Objects.Store;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Utils.AppUtils;
+import com.webmarke8.app.gencart.Utils.DecimalUtils;
 import com.webmarke8.app.gencart.Utils.ServerData;
 
 import java.util.List;
@@ -86,13 +87,13 @@ public class StoreGridviewAdapter extends BaseAdapter {
                 .transform(AppUtils.GetTransForm())
                 .error(R.drawable.picturestore)
                 .into(Holder.StoreImage);
+        Holder.StoreRatting.setText(StoreList.get(position).getRating() + "/5");
 
         Holder.StoreName.setText(StoreList.get(position).getName());
-        String[] Split = StoreList.get(position).getDistance().split("\\.");
 
-        Holder.StoreDistance.setText(Split[0] + " miles");
+        Holder.StoreDistance.setText(String.valueOf(DecimalUtils.round(StoreList.get(position).getDistance(), 0)) + " miles");
 
-        if (StoreList.get(position).getStatus().equals(true)) {
+        if (StoreList.get(position).isStore_status()) {
 
             Holder.StoreStatus.setText("Open");
 

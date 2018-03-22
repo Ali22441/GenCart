@@ -42,6 +42,7 @@
                         android:layout_alignParentTop="true"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
+                        android:padding="@dimen/_2sdp"
                         android:src="@drawable/images" />
 
                     <TextView

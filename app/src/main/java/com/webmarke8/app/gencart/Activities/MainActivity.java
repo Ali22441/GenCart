@@ -1,6 +1,7 @@
 package com.webmarke8.app.gencart.Activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -276,6 +277,7 @@ public class MainActivity extends AppCompatActivity
 //                                        .replace(R.id.container, new StoreFragment(),"Home").commit();
                                 break;
                             case R.id.MyCart:
+                                HideNoConnection();
 
                                 if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("MyCartFragment")) {
                                     break;
@@ -291,6 +293,8 @@ public class MainActivity extends AppCompatActivity
                                 if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Profile")) {
                                     break;
                                 } else {
+                                    HideNoConnection();
+
                                     frameLayout.setVisibility(View.VISIBLE);
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.containerForFragments, new ProfileFragment(), "Profile").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
@@ -298,9 +302,13 @@ public class MainActivity extends AppCompatActivity
                                 break;
                             case R.id.Chat:
 
+                                HideNoConnection();
+
                                 if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Chat_Fragment")) {
                                     break;
                                 } else {
+                                    HideNoConnection();
+
                                     frameLayout.setVisibility(View.VISIBLE);
                                     getSupportFragmentManager().beginTransaction()
                                             .replace(R.id.containerForFragments, new Chat_Fragment(), "Chat_Fragment").setTransition(FragmentTransaction.TRANSIT_ENTER_MASK).addToBackStack(null).commit();
@@ -394,6 +402,8 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.MOrder) {
+            HideNoConnection();
+
 
             if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Orders")) {
             } else {
@@ -405,6 +415,8 @@ public class MainActivity extends AppCompatActivity
 
         }
         if (id == R.id.MChat) {
+            HideNoConnection();
+
             if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("Chat_Fragment")) {
             } else {
                 frameLayout.setVisibility(View.VISIBLE);
@@ -421,6 +433,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (id == R.id.MMyCart) {
 
+            HideNoConnection();
 
             if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("MyCartFragment")) {
             } else {
@@ -433,6 +446,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (id == R.id.MProfile) {
 
+            HideNoConnection();
 
             if (getCurrentFragment() != null && getCurrentFragment().getTag().equals("ProfileFragment")) {
             } else {
@@ -442,6 +456,13 @@ public class MainActivity extends AppCompatActivity
             }
 
 
+        }
+        if (id == R.id.MLogout) {
+
+
+            myApplication.logoutUser();
+            startActivity(new Intent(getApplicationContext(), Customer_Login.class));
+            finish();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -504,6 +525,7 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void onResponse(String response) {
+                    HideNoConnection();
 
                     mSwipeRefreshLayout.setRefreshing(false);
                     StoreList.clear();
@@ -597,6 +619,7 @@ public class MainActivity extends AppCompatActivity
 
                 @Override
                 public void onResponse(String response) {
+                    HideNoConnection();
                     mSwipeRefreshLayout.setRefreshing(false);
                     StoreList.clear();
                     Progress.dismiss();
@@ -674,9 +697,10 @@ public class MainActivity extends AppCompatActivity
                 }
             };
 
-            stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(1000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
 
             RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
             requestQueue.add(stringRequest);
@@ -691,8 +715,14 @@ public class MainActivity extends AppCompatActivity
             NumberBandage.setVisibility(View.GONE);
 
         } else {
-            NumberBandage.setText("  " + String.valueOf(Number) + "  ");
-            NumberBandage.setVisibility(View.VISIBLE);
+            if (String.valueOf(Number).length() == 1) {
+                NumberBandage.setText("  " + String.valueOf(Number) + "  ");
+                NumberBandage.setVisibility(View.VISIBLE);
+            } else {
+                NumberBandage.setText(" " + String.valueOf(Number) + " ");
+                NumberBandage.setVisibility(View.VISIBLE);
+            }
+
 
         }
 
@@ -735,7 +765,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void ShowNoConnection() {
-//        findViewById(R.id.NoInterent).setVisibility(View.VISIBLE);
+        findViewById(R.id.NoInterent).setVisibility(View.VISIBLE);
     }
 
     public void HideNoConnection() {

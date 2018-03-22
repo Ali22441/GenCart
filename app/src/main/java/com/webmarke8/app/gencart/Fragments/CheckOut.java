@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +31,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.webmarke8.app.gencart.Activities.MainActivity;
+import com.webmarke8.app.gencart.Adapters.MyCheckoutAdapter;
+import com.webmarke8.app.gencart.Adapters.MyOrderAdapter;
+import com.webmarke8.app.gencart.Objects.CartGroup;
+import com.webmarke8.app.gencart.Objects.Order;
 import com.webmarke8.app.gencart.Objects.SendCart;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
@@ -62,8 +70,11 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
     MyApplication myApplication;
     LatLng lat_long;
 
+    RecyclerView rvAllCategories;
+    private RecyclerView.Adapter mAdapter;
+    List<CartGroup> models;
+
     public CheckOut() {
-        // Required empty public constructor
     }
 
 
@@ -73,6 +84,7 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_check_out, container, false);
 
+
         myApplication = (MyApplication) getActivity().getApplicationContext();
         gpsTracker = new GPSTracker(getActivity());
         DetectAddress = (TextView) view.findViewById(R.id.DetectAddress);
@@ -80,17 +92,29 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
         Progress.show();
         sendCart = (SendCart) getArguments().getSerializable("Orders");
 
+        models = new ArrayList<>();
+        models = sendCart.getStores();
+
+        rvAllCategories = view.findViewById(R.id.recycler);
+        RecyclerView.LayoutManager mLayoutManager;
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        rvAllCategories.setLayoutManager(mLayoutManager);
+        rvAllCategories.setHasFixedSize(true);
+        mAdapter = new MyCheckoutAdapter(getActivity(), models);
+        rvAllCategories.setAdapter(mAdapter);
+
+
         TextView Quantity = (TextView) view.findViewById(R.id.Quantity
         );
         TextView TotalPrice = (TextView) view.findViewById(R.id.TotalPrice);
-        TotalPrice.setText(sendCart.getAmount() + " SAR");
-        Quantity.setText(myApplication.getCartQuantity());
+        TotalPrice.setText(String.valueOf(sendCart.getAmount()) + " SAR");
+        Quantity.setText(String.valueOf(myApplication.getCartQuantity()));
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                DetectAddress.setText("Detect Address: " + AppUtils.getCompleteAddressString(gpsTracker.getLatitude(), gpsTracker.getLongitude(), getActivity()));
+                DetectAddress.setText(AppUtils.getCompleteAddressString(gpsTracker.getLatitude(), gpsTracker.getLongitude(), getActivity()));
                 lat_long = new LatLng(gpsTracker.getLatitude(), gpsTracker.getLongitude());
                 gpsTracker.stopUsingGPS();
                 Progress.dismiss();
@@ -107,6 +131,13 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
 
             }
         });
+        view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).OpenOpenOrCloseDrawer();
+            }
+        });
+
 
         view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,14 +160,14 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
                     Bundle bundle = new Bundle();
                     bundle.putDouble("lat", lat_long.latitude);
                     bundle.putDouble("long", lat_long.longitude);
+                    bundle.putSerializable("Orders", sendCart);
                     bundle.putString("address", edtAddress.getText().toString());
-//                    bundle.putSerializable("Product", CProduct);
                     fragment.setArguments(bundle);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                fragmentManager.beginTransaction().setCustomAnimations(R.anim.enter_anim, R.anim.exit_anim).replace(R.id.containerForFragments, fragment, "Location").addToBackStack(null).commit();
+                fragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_UNSET).replace(R.id.containerForFragments, fragment, "Location").addToBackStack(null).commit();
 
             }
         });
@@ -171,6 +202,7 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
                 if (!edtAddress.getText().toString().equals("")) {
                     DetectAddress.setText(edtAddress.getText().toString());
                 }
+                dialog.hide();
 
             }
         });
@@ -197,6 +229,8 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+        Progress.show();
         String address = (String) adapterView.getItemAtPosition(position);
         Log.d("address>>>", address);
         Geocoder coder = new Geocoder(getActivity());
@@ -206,12 +240,13 @@ public class CheckOut extends Fragment implements AdapterView.OnItemClickListene
             addressList = coder.getFromLocationName(address, 5);
             Address location = addressList.get(0);
             lat_long = new LatLng(location.getLatitude(), location.getLongitude());
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         edtAddress.setText("");
         edtAddress.setText(address);
         edtAddress.setSelection(edtAddress.getText().toString().length());
+        Progress.dismiss();
     }
 
     class GooglePlacesAutocompleteAdapter extends ArrayAdapter<String> implements Filterable {

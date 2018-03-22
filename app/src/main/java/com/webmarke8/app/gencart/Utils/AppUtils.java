@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.Snackbar;
@@ -574,8 +576,8 @@ public class AppUtils {
     public static Transformation GetTransForm() {
         return new RoundedTransformationBuilder()
                 .borderColor(Color.TRANSPARENT)
-                .borderWidthDp(5)
-                .cornerRadiusDp(5)
+                .borderWidthDp(3)
+                .cornerRadiusDp(3)
                 .oval(false)
                 .build();
     }
@@ -695,4 +697,19 @@ public class AppUtils {
 
 
     }
+
+    public static void setFirebaseInstanceId(Context context, String InstanceId) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor;
+        editor = sharedPreferences.edit();
+        editor.putString("Token", InstanceId);
+        editor.apply();
+    }
+    public static String getFirebaseInstanceId(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String key = "Token";
+        String default_value = "";
+        return sharedPreferences.getString(key, default_value);
+    }
+
 }

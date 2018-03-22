@@ -6,32 +6,33 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by GeeksEra on 2/22/2018.
+ * Created by GeeksEra on 3/21/2018.
  */
 
-public class Order implements Serializable {
+public class RideResponse implements Serializable{
+
 
     /**
-     * id : 1
+     * id : 202
      * customer_id : 9
      * shopper_id : 0
-     * driver_id : null
+     * driver_id : 11
      * address_lat_lng : null
-     * amount : 109000
+     * amount : 83000
      * delivery_charge : 0
-     * status : Initiated
-     * created_at : 2018-03-15 20:10:06
-     * updated_at : 2018-03-16 15:00:20
-     * stores : [{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":1,"store_id":1}}]
-     * products : [{"id":8,"name":"Product 5","image":"products/8.png","quantity":50,"price":5000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:45:24","updated_at":"2018-03-15 15:45:24","slug":"product-5","category_id":1,"pivot":{"order_id":1,"product_id":8}},{"id":9,"name":"Product 6","image":"products/9.png","quantity":50,"price":6000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:45:58","updated_at":"2018-03-15 15:45:58","slug":"product-6","category_id":1,"pivot":{"order_id":1,"product_id":9}},{"id":10,"name":"Product 7","image":"products/10.png","quantity":50,"price":7000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":2,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:46:46","updated_at":"2018-03-15 15:46:46","slug":"product-7","category_id":1,"pivot":{"order_id":1,"product_id":10}},{"id":8,"name":"Product 5","image":"products/8.png","quantity":50,"price":5000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:45:24","updated_at":"2018-03-15 15:45:24","slug":"product-5","category_id":1,"pivot":{"order_id":1,"product_id":8}},{"id":9,"name":"Product 6","image":"products/9.png","quantity":50,"price":6000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:45:58","updated_at":"2018-03-15 15:45:58","slug":"product-6","category_id":1,"pivot":{"order_id":1,"product_id":9}},{"id":10,"name":"Product 7","image":"products/10.png","quantity":50,"price":7000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":2,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:46:46","updated_at":"2018-03-15 15:46:46","slug":"product-7","category_id":1,"pivot":{"order_id":1,"product_id":10}},{"id":8,"name":"Product 5","image":"products/8.png","quantity":50,"price":5000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:45:24","updated_at":"2018-03-15 15:45:24","slug":"product-5","category_id":1,"pivot":{"order_id":1,"product_id":8}},{"id":9,"name":"Product 6","image":"products/9.png","quantity":50,"price":6000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:45:58","updated_at":"2018-03-15 15:45:58","slug":"product-6","category_id":1,"pivot":{"order_id":1,"product_id":9}},{"id":10,"name":"Product 7","image":"products/10.png","quantity":50,"price":7000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":2,"brand_id":1,"unit":"pcs","tax":50,"status":"available","created_at":"2018-03-15 15:46:46","updated_at":"2018-03-15 15:46:46","slug":"product-7","category_id":1,"pivot":{"order_id":1,"product_id":10}}]
-     * customer : {"id":9,"country_code":"92","authy_id":"73366963","verified":0,"name":"AsifClient","email":"asifclient@gmail.com","phone":"03353888070","image":null,"address":"Gynastic Areena Behria Phase 7","zipcode":42000,"place_id":null,"referral_code":null,"lat_long":"33.525550,73.112831","role":"customer","fcm_token":"","login_type":"normal","created_at":"2018-03-15 11:04:55","updated_at":"2018-03-15 11:04:57","become_a_shopper":0,"cart_session_id":null}
-     * driver : null
+     * status : In Progress
+     * created_at : 2018-03-21 14:37:13
+     * updated_at : 2018-03-21 14:37:29
+     * stores : [{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":202,"store_id":1}},{"id":1,"name":"Store 1","logo":"logos/1.png","banner":"banners/1.png","type":"store","zipcode":"42200","address":"Sadar Rawalpindi","phone":"03064101261","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-1","created_at":"2018-03-15 14:52:51","updated_at":"2018-03-15 14:52:52","rating":"0.00","pivot":{"order_id":202,"store_id":1}},{"id":2,"name":"Store 2","logo":"logos/2.png","banner":"banners/2.png","type":"store","zipcode":"42200","address":"Commercial  Rawalpindi","phone":"03064101262","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-2","created_at":"2018-03-15 14:53:41","updated_at":"2018-03-15 14:53:41","rating":"0.00","pivot":{"order_id":202,"store_id":2}},{"id":2,"name":"Store 2","logo":"logos/2.png","banner":"banners/2.png","type":"store","zipcode":"42200","address":"Commercial  Rawalpindi","phone":"03064101262","status":1,"place_id":null,"lat_long":"33.572708,73.110080","slug":"store-2","created_at":"2018-03-15 14:53:41","updated_at":"2018-03-15 14:53:41","rating":"0.00","pivot":{"order_id":202,"store_id":2}}]
+     * products : [{"id":3,"name":"Product 1","image":"products/3.png","quantity":20,"price":5000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":5,"status":"available","created_at":"2018-03-15 15:42:41","updated_at":"2018-03-15 15:42:41","slug":"product-1","category_id":1,"pivot":{"order_id":202,"product_id":3}},{"id":4,"name":"P2","image":"products/4.png","quantity":50,"price":6000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":1,"department_id":1,"shelf_id":1,"brand_id":1,"unit":"pcs","tax":5,"status":"available","created_at":"2018-03-15 15:43:28","updated_at":"2018-03-15 15:43:28","slug":"p2","category_id":1,"pivot":{"order_id":202,"product_id":4}},{"id":17,"name":"St 2  Product 2","image":"products/17.png","quantity":500,"price":5000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":2,"department_id":2,"shelf_id":6,"brand_id":1,"unit":"pcs","tax":5,"status":"available","created_at":"2018-03-15 16:00:17","updated_at":"2018-03-15 16:00:17","slug":"st-2-product-2","category_id":1,"pivot":{"order_id":202,"product_id":17}},{"id":18,"name":"St 2 Product 3","image":"products/18.png","quantity":500,"price":3000,"promo_price":null,"description":"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.","total_sale":0,"store_id":2,"department_id":2,"shelf_id":6,"brand_id":1,"unit":"pcs","tax":3,"status":"available","created_at":"2018-03-15 16:01:31","updated_at":"2018-03-15 16:01:32","slug":"st-2-product-3","category_id":1,"pivot":{"order_id":202,"product_id":18}}]
+     * customer : {"id":9,"country_code":"92","authy_id":"73366963","verified":0,"name":"AsifClient","email":"asifclient@gmail.com","phone":"03353888070","image":null,"address":"Gynastic Areena Behria Phase 7","zipcode":42000,"place_id":null,"referral_code":null,"lat_long":"33.525550,73.112831","role":"customer","fcm_token":"c5Ixg70xp2w:APA91bHWGyWBGHGQEItRv6s0QRE2yEemZAXJ5MWVNwB3adr0itbt7ADMR3B8d9aEu0HuCC-UPy43ge0fcsjo5uomnyuX4z8ZxxFkvvBnvLP4RyvY13g__RiX6mCGzuWhNVBbPubc7N1y","login_type":"normal","created_at":"2018-03-15 11:04:55","updated_at":"2018-03-21 14:09:10","become_a_shopper":0,"cart_session_id":null,"status":0}
+     * driver : {"id":11,"country_code":"92","authy_id":"76064406","verified":1,"name":"kami","email":"kamiclient1@gmail.com","phone":"03353888079","image":null,"address":"Gynastic Areena Behria Phase 7","zipcode":42000,"place_id":null,"referral_code":null,"lat_long":"33.525550,73.112831","role":"driver","fcm_token":"dUQY-07dhdk:APA91bEf1DuG9sW_iMgkPFupxm02xkcmhv796rqDfX1U5x-RHCtxcz34LqXWNCoYzXBvuCKxBWbaQ5z3JDIKx701_M-i7aQVpcHNB8o0gq382bzdYxFQr_2H8K-9XtxRPREkoLZFoJ8T","login_type":"normal","created_at":"2018-03-19 15:14:36","updated_at":"2018-03-21 14:37:03","become_a_shopper":0,"cart_session_id":null,"status":1}
      */
 
     private int id;
     private int customer_id;
     private int shopper_id;
-    private Object driver_id;
+    private int driver_id;
     private Object address_lat_lng;
     private int amount;
     private int delivery_charge;
@@ -39,13 +40,22 @@ public class Order implements Serializable {
     private String created_at;
     private String updated_at;
     private CustomerObject customer;
-    private Object driver;
+    private DriverObject driver;
     private List<StoresObject> stores;
     private List<ProductsObject> products;
+    private String OrderID;
 
-    public static Order objectFromData(String str) {
+    public String getOrderID() {
+        return OrderID;
+    }
 
-        return new Gson().fromJson(str, Order.class);
+    public void setOrderID(String orderID) {
+        OrderID = orderID;
+    }
+
+    public static RideResponse objectFromData(String str) {
+
+        return new Gson().fromJson(str, RideResponse.class);
     }
 
     public int getId() {
@@ -72,11 +82,11 @@ public class Order implements Serializable {
         this.shopper_id = shopper_id;
     }
 
-    public Object getDriver_id() {
+    public int getDriver_id() {
         return driver_id;
     }
 
-    public void setDriver_id(Object driver_id) {
+    public void setDriver_id(int driver_id) {
         this.driver_id = driver_id;
     }
 
@@ -136,11 +146,11 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
-    public Object getDriver() {
+    public DriverObject getDriver() {
         return driver;
     }
 
-    public void setDriver(Object driver) {
+    public void setDriver(DriverObject driver) {
         this.driver = driver;
     }
 
@@ -160,7 +170,7 @@ public class Order implements Serializable {
         this.products = products;
     }
 
-    public static class CustomerObject {
+    public static class CustomerObject implements Serializable {
         /**
          * id : 9
          * country_code : 92
@@ -176,12 +186,13 @@ public class Order implements Serializable {
          * referral_code : null
          * lat_long : 33.525550,73.112831
          * role : customer
-         * fcm_token :
+         * fcm_token : c5Ixg70xp2w:APA91bHWGyWBGHGQEItRv6s0QRE2yEemZAXJ5MWVNwB3adr0itbt7ADMR3B8d9aEu0HuCC-UPy43ge0fcsjo5uomnyuX4z8ZxxFkvvBnvLP4RyvY13g__RiX6mCGzuWhNVBbPubc7N1y
          * login_type : normal
          * created_at : 2018-03-15 11:04:55
-         * updated_at : 2018-03-15 11:04:57
+         * updated_at : 2018-03-21 14:09:10
          * become_a_shopper : 0
          * cart_session_id : null
+         * status : 0
          */
 
         private int id;
@@ -204,6 +215,7 @@ public class Order implements Serializable {
         private String updated_at;
         private int become_a_shopper;
         private Object cart_session_id;
+        private int status;
 
         public static CustomerObject objectFromData(String str) {
 
@@ -369,9 +381,238 @@ public class Order implements Serializable {
         public void setCart_session_id(Object cart_session_id) {
             this.cart_session_id = cart_session_id;
         }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
     }
 
-    public static class StoresObject {
+    public static class DriverObject implements Serializable {
+        /**
+         * id : 11
+         * country_code : 92
+         * authy_id : 76064406
+         * verified : 1
+         * name : kami
+         * email : kamiclient1@gmail.com
+         * phone : 03353888079
+         * image : null
+         * address : Gynastic Areena Behria Phase 7
+         * zipcode : 42000
+         * place_id : null
+         * referral_code : null
+         * lat_long : 33.525550,73.112831
+         * role : driver
+         * fcm_token : dUQY-07dhdk:APA91bEf1DuG9sW_iMgkPFupxm02xkcmhv796rqDfX1U5x-RHCtxcz34LqXWNCoYzXBvuCKxBWbaQ5z3JDIKx701_M-i7aQVpcHNB8o0gq382bzdYxFQr_2H8K-9XtxRPREkoLZFoJ8T
+         * login_type : normal
+         * created_at : 2018-03-19 15:14:36
+         * updated_at : 2018-03-21 14:37:03
+         * become_a_shopper : 0
+         * cart_session_id : null
+         * status : 1
+         */
+
+        private int id;
+        private String country_code;
+        private String authy_id;
+        private int verified;
+        private String name;
+        private String email;
+        private String phone;
+        private Object image;
+        private String address;
+        private int zipcode;
+        private Object place_id;
+        private Object referral_code;
+        private String lat_long;
+        private String role;
+        private String fcm_token;
+        private String login_type;
+        private String created_at;
+        private String updated_at;
+        private int become_a_shopper;
+        private Object cart_session_id;
+        private int status;
+
+        public static DriverObject objectFromData(String str) {
+
+            return new Gson().fromJson(str, DriverObject.class);
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getCountry_code() {
+            return country_code;
+        }
+
+        public void setCountry_code(String country_code) {
+            this.country_code = country_code;
+        }
+
+        public String getAuthy_id() {
+            return authy_id;
+        }
+
+        public void setAuthy_id(String authy_id) {
+            this.authy_id = authy_id;
+        }
+
+        public int getVerified() {
+            return verified;
+        }
+
+        public void setVerified(int verified) {
+            this.verified = verified;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public Object getImage() {
+            return image;
+        }
+
+        public void setImage(Object image) {
+            this.image = image;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public int getZipcode() {
+            return zipcode;
+        }
+
+        public void setZipcode(int zipcode) {
+            this.zipcode = zipcode;
+        }
+
+        public Object getPlace_id() {
+            return place_id;
+        }
+
+        public void setPlace_id(Object place_id) {
+            this.place_id = place_id;
+        }
+
+        public Object getReferral_code() {
+            return referral_code;
+        }
+
+        public void setReferral_code(Object referral_code) {
+            this.referral_code = referral_code;
+        }
+
+        public String getLat_long() {
+            return lat_long;
+        }
+
+        public void setLat_long(String lat_long) {
+            this.lat_long = lat_long;
+        }
+
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role = role;
+        }
+
+        public String getFcm_token() {
+            return fcm_token;
+        }
+
+        public void setFcm_token(String fcm_token) {
+            this.fcm_token = fcm_token;
+        }
+
+        public String getLogin_type() {
+            return login_type;
+        }
+
+        public void setLogin_type(String login_type) {
+            this.login_type = login_type;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
+        }
+
+        public int getBecome_a_shopper() {
+            return become_a_shopper;
+        }
+
+        public void setBecome_a_shopper(int become_a_shopper) {
+            this.become_a_shopper = become_a_shopper;
+        }
+
+        public Object getCart_session_id() {
+            return cart_session_id;
+        }
+
+        public void setCart_session_id(Object cart_session_id) {
+            this.cart_session_id = cart_session_id;
+        }
+
+        public int getStatus() {
+            return status;
+        }
+
+        public void setStatus(int status) {
+            this.status = status;
+        }
+    }
+
+    public static class StoresObject implements Serializable{
         /**
          * id : 1
          * name : Store 1
@@ -388,7 +629,7 @@ public class Order implements Serializable {
          * created_at : 2018-03-15 14:52:51
          * updated_at : 2018-03-15 14:52:52
          * rating : 0.00
-         * pivot : {"order_id":1,"store_id":1}
+         * pivot : {"order_id":202,"store_id":1}
          */
 
         private int id;
@@ -541,9 +782,9 @@ public class Order implements Serializable {
             this.pivot = pivot;
         }
 
-        public static class PivotObject {
+        public static class PivotObject implements Serializable {
             /**
-             * order_id : 1
+             * order_id : 202
              * store_id : 1
              */
 
@@ -573,12 +814,12 @@ public class Order implements Serializable {
         }
     }
 
-    public static class ProductsObject {
+    public static class ProductsObject implements Serializable {
         /**
-         * id : 8
-         * name : Product 5
-         * image : products/8.png
-         * quantity : 50
+         * id : 3
+         * name : Product 1
+         * image : products/3.png
+         * quantity : 20
          * price : 5000
          * promo_price : null
          * description : Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
@@ -588,13 +829,13 @@ public class Order implements Serializable {
          * shelf_id : 1
          * brand_id : 1
          * unit : pcs
-         * tax : 50
+         * tax : 5
          * status : available
-         * created_at : 2018-03-15 15:45:24
-         * updated_at : 2018-03-15 15:45:24
-         * slug : product-5
+         * created_at : 2018-03-15 15:42:41
+         * updated_at : 2018-03-15 15:42:41
+         * slug : product-1
          * category_id : 1
-         * pivot : {"order_id":1,"product_id":8}
+         * pivot : {"order_id":202,"product_id":3}
          */
 
         private int id;
@@ -617,16 +858,6 @@ public class Order implements Serializable {
         private String slug;
         private int category_id;
         private PivotObjectX pivot;
-
-        public String getOrderDate() {
-            return OrderDate;
-        }
-
-        public void setOrderDate(String orderDate) {
-            OrderDate = orderDate;
-        }
-
-        private String OrderDate;
 
         public static ProductsObject objectFromData(String str) {
 
@@ -793,10 +1024,10 @@ public class Order implements Serializable {
             this.pivot = pivot;
         }
 
-        public static class PivotObjectX {
+        public static class PivotObjectX implements Serializable {
             /**
-             * order_id : 1
-             * product_id : 8
+             * order_id : 202
+             * product_id : 3
              */
 
             private int order_id;

@@ -89,6 +89,7 @@ public class MyCartFragment extends Fragment {
         AllStoreItemPrice = (TextView) view.findViewById(R.id.AllStoreItemPrice);
         // add data for displaying in expandable list view
         dialog = AppUtils.LoadingSpinnerDialog(getActivity());
+        dialog.show();
 
 
         view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
@@ -114,7 +115,6 @@ public class MyCartFragment extends Fragment {
             public void onClick(View v) {
 
 
-                dialog.show();
                 SendCart sendCart = new SendCart();
 
                 GPSTracker gpsTracker = new GPSTracker(getActivity());
@@ -125,13 +125,32 @@ public class MyCartFragment extends Fragment {
                 for (CartGroup cartGroup : sendCart.getStores()) {
                     cartGroup.setPrice();
                 }
-                Gson gson = new Gson();
-                String Json = gson.toJson(sendCart);
-                Log.d("JSonData", Json);
+
 
                 if (myApplication.getCartGroupList().size() != 0) {
 
-                    PlaceOrder(Json, sendCart);
+                    try {
+                        Fragment fragment = null;
+                        Class fragmentClass = null;
+
+                        fragmentClass = CheckOut.class;
+                        try {
+                            sendCart.setOrder_id("");
+                            fragment = (Fragment) fragmentClass.newInstance();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("Orders", sendCart);
+                            myApplication.SaveOrder(sendCart);
+                            fragment.setArguments(bundle);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").setTransition(FragmentTransaction.TRANSIT_UNSET)
+                                .addToBackStack(null).commit();
+                    } catch (Exception Ex) {
+                        EasyToast.error(getActivity(), "Something Went Wrong!!");
+
+                    }
 
                 } else {
                     EasyToast.error(getActivity(), "No Item in Cart");
@@ -187,105 +206,7 @@ public class MyCartFragment extends Fragment {
         for (int i = 0; i < count; i++) {
             simpleExpandableListView.expandGroup(i);
         }
-    }
-
-    int previousGroup = -1;
-
-
-    private void PlaceOrder(final String JsonRequest, final SendCart sendCart) {
-
-
-        String Url = ServerData.PlaceOrder;
-        StringRequest stringRequest = new StringRequest(Request.Method.POST,
-                Url, new Response.Listener<String>() {
-
-            @Override
-            public void onResponse(String response) {
-
-                dialog.dismiss();
-                if (response.contains("success")) {
-                    Fragment fragment = null;
-                    Class fragmentClass = null;
-
-                    fragmentClass = CheckOut.class;
-                    try {
-                        fragment = (Fragment) fragmentClass.newInstance();
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("Orders", sendCart);
-                        fragment.setArguments(bundle);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").setTransition(FragmentTransaction.TRANSIT_UNSET)
-                            .addToBackStack(null).commit();
-
-                } else {
-                    EasyToast.error(getActivity(), "Something Went Wrong!! Quantity issus");
-                }
-
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        dialog.dismiss();
-                        EasyToast.error(getActivity(), "Something Went Wrong!!");
-
-                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
-
-                        } else if (error instanceof AuthFailureError) {
-//                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ServerError) {
-//                            Toast.makeText(getActivity(), "Server Side Error!", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof NetworkError) {
-//                            Toast.makeText(getActivity(), "Network Error!", Toast.LENGTH_SHORT).show();
-                        } else if (error instanceof ParseError) {
-//                            Toast.makeText(getActivity(), "Parse Error!", Toast.LENGTH_SHORT).show();
-                        }
-//                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
-                    }
-                }) {
-            @Override
-            public Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = new HashMap<String, String>();
-                return map;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Accept", "application/json");
-                headers.put("Content-Type", "application/json");
-                headers.put("Authorization", "Bearer " + myApplication.getLoginSessionCustomer().getSuccess().getToken());
-                return headers;
-            }
-
-            @Override
-            public byte[] getBody() throws AuthFailureError {
-                try {
-                    return JsonRequest == null ? null : JsonRequest.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", JsonRequest, "utf-8");
-                    return null;
-                }
-            }
-
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-        };
-
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-        requestQueue.add(stringRequest);
+        dialog.dismiss();
     }
 
 }

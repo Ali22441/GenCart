@@ -40,7 +40,6 @@ public class Customer_Login extends AppCompatActivity {
 
     EditText Email, Password;
     MyApplication myApplication;
-
     Dialog dialog;
 
 
@@ -134,6 +133,8 @@ public class Customer_Login extends AppCompatActivity {
                 Map<String, String> map = new HashMap<String, String>();
                 map.put("email", Email.getText().toString().trim());
                 map.put("password", Password.getText().toString().trim());
+                map.put("fcm_token", AppUtils.getFirebaseInstanceId(getApplicationContext()));
+
                 return map;
             }
 

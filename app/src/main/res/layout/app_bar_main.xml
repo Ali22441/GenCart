@@ -7,46 +7,43 @@
     tools:context="com.webmarke8.app.gencart.Activities.MainActivity">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-
         <include
             android:id="@+id/one"
             layout="@layout/content_main"
             android:layout_width="match_parent"
+            android:layout_marginBottom="@dimen/_45sdp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
+        <FrameLayout
+            android:id="@+id/NoInterent"
+            android:layout_marginTop="170dp"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:layout_height="match_parent">
+            <include layout="@layout/no_internet_layout" />
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/NoLocation"
+            android:layout_marginTop="170dp"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <include layout="@layout/no_location_layout" />
+        </FrameLayout>
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/one"
             android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
             android:background="#fff"
             app:itemIconTint="@color/green"
             app:itemTextColor="@color/green"
             app:menu="@menu/bottom_navigation_items" />
-    </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/NoInterent"
-        android:layout_marginTop="170dp"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <include layout="@layout/no_internet_layout" />
-    </FrameLayout>
-    <FrameLayout
-        android:id="@+id/NoLocation"
-        android:layout_marginTop="170dp"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/no_location_layout" />
-    </FrameLayout>
 </RelativeLayout>

@@ -4,6 +4,7 @@ package com.webmarke8.app.gencart.Fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -13,11 +14,13 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -35,6 +38,20 @@ import android.widget.Toast;
 
 //import com.ahmadrosid.lib.drawroutemap.DrawMarker;
 //import com.ahmadrosid.lib.drawroutemap.DrawRouteMaps;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyLog;
+import com.android.volley.error.AuthFailureError;
+import com.android.volley.error.NetworkError;
+import com.android.volley.error.NoConnectionError;
+import com.android.volley.error.ParseError;
+import com.android.volley.error.ServerError;
+import com.android.volley.error.TimeoutError;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.arsy.maps_library.MapRipple;
 import com.github.johnpersano.supertoasts.library.Style;
 import com.github.johnpersano.supertoasts.library.SuperActivityToast;
@@ -46,17 +63,31 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.medialablk.easytoast.EasyToast;
 import com.webmarke8.app.gencart.Activities.MainActivity;
+import com.webmarke8.app.gencart.Objects.Chat_Object;
+import com.webmarke8.app.gencart.Objects.Driver;
+import com.webmarke8.app.gencart.Objects.Order;
+import com.webmarke8.app.gencart.Objects.RideResponse;
+import com.webmarke8.app.gencart.Objects.SendCart;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.GPSTracker;
+import com.webmarke8.app.gencart.Utils.ServerData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,11 +95,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -81,6 +114,7 @@ import java.util.concurrent.Executors;
 public class Location_F extends Fragment implements OnMapReadyCallback, AdapterView.OnItemClickListener {
 
 
+    FirebaseDatabase database;
     GoogleMap mMap;
     FusedLocationProviderClient mFusedLocationProviderClient;
     private static final int DEFAULT_ZOOM = 15;
@@ -88,10 +122,11 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
     private boolean mLocationPermissionGranted;
 
     TextView LocationAddress;
-    MapRipple mapRipple;
     GPSTracker gpsTracker;
     LatLng latLng;
     Dialog dialog;
+    MyApplication myApplication;
+    ;
 
 
     private static final String API_KEY = "AIzaSyCWSJNo4sQfVonDPjn0CVhWmK07aypSebA";
@@ -104,6 +139,7 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
     // The geographical location where the device is currently located. That is, the last-known
     // location retrieved by the Fused Location Provider.
     private Location mLastKnownLocation;
+    SendCart sendCart;
 
 
     public Location_F() {
@@ -119,12 +155,15 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
 
         gpsTracker = new GPSTracker(getActivity());
         dialog = AppUtils.LoadingSpinnerDialog(getActivity());
+
+        myApplication = (MyApplication) getActivity().getApplicationContext();
+
         dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
 
                 EasyToast.info(getActivity(), "We are Searching... Your Rider");
-//                show();
+                show();
 
             }
         });
@@ -137,6 +176,10 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
 
             latLng = new LatLng(12.12312, 12.12312);
         }
+
+
+        sendCart = myApplication.GetOrder();
+
 
         LocationAddress = (TextView) view.findViewById(R.id.LocationAddress);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -155,23 +198,6 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
         view.findViewById(R.id.Back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-//                if (mapRipple.isAnimationRunning()) {
-//                    SuperActivityToast.create(getActivity(), new Style(), Style.TYPE_BUTTON)
-//                            .setButtonText("Cancel")
-//                            .setOnButtonClickListener("good_tag_name", null, new SuperActivityToast.OnButtonClickListener() {
-//                                @Override
-//                                public void onClick(View view, Parcelable token) {
-//                                    getActivity().getSupportFragmentManager().popBackStack();
-//                                }
-//                            })
-//                            .setText("Do you want to cancel booking?")
-//                            .setDuration(Style.DURATION_LONG)
-//                            .setColor(PaletteUtils.getSolidColor(PaletteUtils.BLACK))
-//                            .setAnimations(Style.ANIMATIONS_POP).show();
-//                } else {
-//                    getActivity().getSupportFragmentManager().popBackStack();
-//                }
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -187,22 +213,9 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
             public void onClick(View v) {
 
                 dialog.show();
-//                LatLng latLng = new LatLng(gpsTracker.getLatitude(),
-//                        gpsTracker.getLongitude());
-//
-//                if (mapRipple == null)
-//                    mapRipple = new MapRipple(mMap, latLng, getActivity());
-//                mapRipple.withNumberOfRipples(3);
-//                mapRipple.withFillColor(Color.parseColor("#FFA3D2E4"));
-//                mapRipple.withStrokeColor(Color.BLACK);
-//                mapRipple.withStrokewidth(0);      // 10dp
-//                mapRipple.withDistance(2000);      // 2000 metres radius
-//                mapRipple.withRippleDuration(12000);    //12000ms
-//                mapRipple.withTransparency(0.5f);
-//
-//                if (!mapRipple.isAnimationRunning()) {
-//                    mapRipple.startRippleMapAnimation();
-//                }
+                Gson gson = new Gson();
+                String Json = gson.toJson(sendCart);
+                PlaceOrder(Json, sendCart);
             }
         });
 
@@ -279,6 +292,8 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
                     );
                 }
+                dialog.hide();
+
 
             }
         });
@@ -367,12 +382,16 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = (Location) task.getResult();
                             if (mLastKnownLocation != null) {
-//                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-//                                        new LatLng(mLastKnownLocation.getLatitude(),
-//                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-
 
                                 LatLng origin = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+
+                                mMap.moveCamera(CameraUpdateFactory
+                                        .newCameraPosition
+                                                (new CameraPosition.Builder()
+                                                        .target(origin)
+                                                        .zoom(15.5f)
+                                                        .build()));
+
                                 LatLng destination = new LatLng(33.5204652, 73.0801742);
                                 DrawPath(origin, destination);
 
@@ -438,8 +457,7 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-        try
-        {
+        try {
             String address = (String) adapterView.getItemAtPosition(position);
             Log.d("address>>>", address);
             Geocoder coder = new Geocoder(getActivity());
@@ -456,8 +474,7 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
             edtAddress.setText("");
             edtAddress.setText(address);
             edtAddress.setSelection(edtAddress.getText().toString().length());
-        }catch (Exception Ex)
-        {
+        } catch (Exception Ex) {
 
         }
 
@@ -562,8 +579,215 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
         return resultList;
     }
 
+
     public void show() {
         dialog.show();
     }
 
+
+    private void PlaceOrder(final String JsonRequest, final SendCart sendCart) {
+
+
+        String Url = ServerData.PlaceOrder;
+        StringRequest stringRequest = new StringRequest(Request.Method.POST,
+                Url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                dialog.dismiss();
+                if (response.contains("success")) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        GetRiderResponse(String.valueOf(jsonObject.getInt("success")));
+                        myApplication.ClearCart();
+                        ((MainActivity) getActivity()).Bandge(0);
+                    } catch (Exception Ex) {
+                        EasyToast.error(getActivity(), "Something Went Wrong!!");
+
+                    }
+
+
+                } else {
+                    EasyToast.error(getActivity(), "Something Went Wrong!! Quantity issus");
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        EasyToast.error(getActivity(), "Something Went Wrong!!");
+
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+//                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
+
+                        } else if (error instanceof AuthFailureError) {
+//                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ServerError) {
+//                            Toast.makeText(getActivity(), "Server Side Error!", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof NetworkError) {
+//                            Toast.makeText(getActivity(), "Network Error!", Toast.LENGTH_SHORT).show();
+                        } else if (error instanceof ParseError) {
+//                            Toast.makeText(getActivity(), "Parse Error!", Toast.LENGTH_SHORT).show();
+                        }
+//                        Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_LONG).show();
+                    }
+                }) {
+            @Override
+            public Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = new HashMap<String, String>();
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Accept", "application/json");
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", "Bearer " + myApplication.getLoginSessionCustomer().getSuccess().getToken());
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return JsonRequest == null ? null : JsonRequest.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", JsonRequest, "utf-8");
+                    return null;
+                }
+            }
+
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+    }
+
+    public void GetRiderResponse(final String OrderID) {
+        dialog.show();
+        database = FirebaseDatabase.getInstance();
+        database.getReference().child("OrderStatus").child(OrderID).setValue("0");
+        Query query = database.getReference().child("OrderStatus").child(OrderID);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String Status = dataSnapshot.getValue(String.class);
+
+                if (Status.equals("1")) {
+                    GetDetails(OrderID);
+                } else if (Status.equals("10")) {
+                    EasyToast.error(getActivity(), "Rider Not Available Try Again!");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("Hello", "Failed to read value.", error.toException());
+            }
+        });
+    }
+
+
+    private void GetDetails(final String OrderID) {
+
+
+        dialog.show();
+        String ServerUrl = ServerData.MakeConnection + OrderID;
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, ServerUrl
+                , new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    Gson gson = new Gson();
+                    RideResponse rideResponse = null;
+                    JSONArray jsonArray = new JSONArray(response);
+                    response = jsonArray.getJSONObject(0).toString();
+                    rideResponse = gson.fromJson(response, RideResponse.class);
+                    if (rideResponse != null) {
+                        rideResponse.setOrderID(OrderID);
+
+                        Fragment fragment = null;
+                        Class fragmentClass = null;
+                        fragmentClass = Chat_Fragment.class;
+                        try {
+                            fragment = (Fragment) fragmentClass.newInstance();
+                            sendCart.setOrder_id(OrderID);
+                            EasyToast.success(getActivity(), String.valueOf(sendCart.getOrder_id()));
+                            myApplication.SaveOrder(sendCart);
+                            myApplication.SaveWorkingOrder(rideResponse);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+                        fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").setTransition(FragmentTransaction.TRANSIT_UNSET).commit();
+                        dialog.dismiss();
+
+                    }
+                    dialog.dismiss();
+
+
+                } catch (Exception Ex) {
+                    EasyToast.error(getActivity(), "Server Side Error! Parsing");
+
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        dialog.dismiss();
+                        if (error instanceof TimeoutError || error instanceof NoConnectionError) {
+                            EasyToast.error(getActivity(), "Please check your internet Connection");
+                        } else if (error instanceof AuthFailureError) {
+                            EasyToast.error(getActivity(), "Authentication Error!");
+                        } else if (error instanceof ServerError) {
+                            EasyToast.error(getActivity(), "Server Side Error!");
+                        } else if (error instanceof NetworkError) {
+                            EasyToast.error(getActivity(), "Network Error!");
+                        } else if (error instanceof ParseError) {
+                            EasyToast.error(getActivity(), "Parse Error!");
+                        }
+                    }
+                }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + myApplication.getLoginSessionCustomer().getSuccess().getToken());
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+
+        };
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        requestQueue.add(stringRequest);
+    }
 }

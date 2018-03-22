@@ -188,6 +188,7 @@ public class Customer_Signup extends AppCompatActivity {
                 map.put("id", "78789789789");
                 map.put("zipcode", "123456");
                 map.put("password_confirmation", "123456");
+                map.put("fcm_token", AppUtils.getFirebaseInstanceId(getApplicationContext()));
                 return map;
             }
 

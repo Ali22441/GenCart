@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -53,9 +55,12 @@ import com.webmarke8.app.gencart.Activities.MainActivity;
 import com.webmarke8.app.gencart.Adapters.ChatAdapter;
 import com.webmarke8.app.gencart.Objects.Chat_Object;
 import com.webmarke8.app.gencart.Objects.Driver;
+import com.webmarke8.app.gencart.Objects.RideResponse;
 import com.webmarke8.app.gencart.R;
 import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
+import com.webmarke8.app.gencart.Utils.DecimalUtils;
+import com.webmarke8.app.gencart.Utils.DistanceCalculator;
 import com.webmarke8.app.gencart.Utils.GPSTracker;
 
 import java.text.DateFormat;
@@ -69,14 +74,15 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
+public class Chat_Fragment extends Fragment implements OnMapReadyCallback, LocationListener {
 
 
+    TextView Order, LocationStatus;
     EditText edtMessage;
     Button btnSendMessage;
     Dialog Progress;
     DatabaseReference databaseReference;
-    String receiverEmail = "jaani.asif0333@gmail.com";
+    String receiverEmail = "";
     FirebaseDatabase database;
     List<Chat_Object> AllMessagesList;
     RecyclerView recycle;
@@ -85,6 +91,10 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
     Marker mk;
     GPSTracker gpsTracker;
     MyApplication myApplication;
+    Driver driver;
+    RideResponse rideResponse;
+    Location Currentlocation;
+    LinearLayout NoMessageLayout, ChatLayout;
 
     public Chat_Fragment() {
         // Required empty public constructor
@@ -96,11 +106,11 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_chat_, container, false);
         myApplication = (MyApplication) getActivity().getApplicationContext();
-        recycle = (RecyclerView) view.findViewById(R.id.recycle);
-        gpsTracker = new GPSTracker(getActivity());
-
-
-
+        rideResponse = myApplication.GetWorkingOrder();
+        Order = (TextView) view.findViewById(R.id.Order);
+        LocationStatus = (TextView) view.findViewById(R.id.LocationStatus);
+        NoMessageLayout = (LinearLayout) view.findViewById(R.id.NoMessageLayout);
+        ChatLayout = (LinearLayout) view.findViewById(R.id.ChatLayout);
         view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,57 +127,84 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-        MapLayout = (FrameLayout) view.findViewById(R.id.MapLayout);
+        if (rideResponse == null) {
+            ChatLayout.setVisibility(View.GONE);
+            LocationStatus.setText("Messages");
+            NoMessageLayout.setVisibility(View.VISIBLE);
+        } else {
+            LocationStatus.setText("Driver Status..");
+            ChatLayout.setVisibility(View.VISIBLE);
+            NoMessageLayout.setVisibility(View.GONE);
+            Order.setText("Order No. " + rideResponse.getOrderID());
+            recycle = (RecyclerView) view.findViewById(R.id.recycle);
+            gpsTracker = new GPSTracker(getActivity());
+            Currentlocation = new Location("");
+            Currentlocation.setLatitude(gpsTracker.getLatitude());
+            Currentlocation.setLongitude(gpsTracker.getLongitude());
+            gpsTracker.stopUsingGPS();
+            driver = new Driver();
+            try {
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+                driver.setEmail(rideResponse.getDriver().getEmail());
+                driver.setUsername(rideResponse.getDriver().getName());
+            } catch (Exception Ex) {
+                driver.setEmail("kamiclient1@gmail.com");
+                driver.setUsername("Kami");
+            }
 
 
-        view.findViewById(R.id.ViewDriverOnMap).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            MapLayout = (FrameLayout) view.findViewById(R.id.MapLayout);
 
-                if (MapLayout.getVisibility() == View.GONE) {
-                    view.findViewById(R.id.ViewDriverOnMap).setVisibility(View.GONE);
-                    MapLayout.setVisibility(View.VISIBLE);
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
+
+
+            view.findViewById(R.id.ViewDriverOnMap).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (MapLayout.getVisibility() == View.GONE) {
+                        view.findViewById(R.id.ViewDriverOnMap).setVisibility(View.GONE);
+                        MapLayout.setVisibility(View.VISIBLE);
+                    }
+
+
                 }
+            });
 
-
-            }
-        });
-
-        view.findViewById(R.id.Cross).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (MapLayout.getVisibility() == View.VISIBLE) {
-                    MapLayout.setVisibility(View.GONE);
-                    view.findViewById(R.id.ViewDriverOnMap).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.Cross).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MapLayout.getVisibility() == View.VISIBLE) {
+                        MapLayout.setVisibility(View.GONE);
+                        view.findViewById(R.id.ViewDriverOnMap).setVisibility(View.VISIBLE);
+                    }
                 }
-            }
-        });
+            });
 
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
-        edtMessage = (EditText) view.findViewById(R.id.edtMessage);
-        btnSendMessage = (Button) view.findViewById(R.id.btnSendMessage);
-        Progress = AppUtils.LoadingSpinner(getActivity());
-        Progress.show();
-
-
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        btnSendMessage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Upload(view);
-            }
-        });
+            edtMessage = (EditText) view.findViewById(R.id.edtMessage);
+            btnSendMessage = (Button) view.findViewById(R.id.btnSendMessage);
+            Progress = AppUtils.LoadingSpinner(getActivity());
+            Progress.show();
 
 
-        receiverEmail = "jaani.asif0333@gmail.com";
-        LoadMessages(view);
+            databaseReference = FirebaseDatabase.getInstance().getReference();
+
+            btnSendMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Upload(view);
+                }
+            });
+
+
+            receiverEmail = driver.getEmail();
+            LoadMessages(view);
+
+        }
 
         return view;
 
@@ -184,17 +221,16 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
 
             Progress.show();
 
-            databaseReference = FirebaseDatabase.getInstance().getReference().child("SessionID123");
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat").child(rideResponse.getOrderID());
 
             String Message = edtMessage.getText().toString();
-            String receiverName = "Jaani";
-            receiverName = "jaani.asif0333@gmail.com";
+            String receiverName = driver.getUsername();
             Chat_Object chat_object = new Chat_Object();
             chat_object.setMessage(Message);
             chat_object.setReciverEmail(receiverEmail);
             chat_object.setReciverName(receiverName);
             chat_object.setSenderEmail(myApplication.getLoginSessionCustomer().getSuccess().getUser().getEmail());
-            chat_object.setSenderName("Jimi");
+            chat_object.setSenderName(myApplication.getLoginSessionCustomer().getSuccess().getUser().getName());
             DateFormat df = new SimpleDateFormat("HH:mm");
             String Time = df.format(Calendar.getInstance().getTime());
             chat_object.setSendTime(Time);
@@ -215,7 +251,7 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
         database = FirebaseDatabase.getInstance();
         // myRef = database.getReference("Messages");
 
-        Query query = database.getReference("SessionID123");
+        Query query = database.getReference().child("Chat").child(rideResponse.getOrderID());
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -261,7 +297,6 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
         verticalLayoutmanager.setStackFromEnd(true);
         recycle.setItemAnimator(new DefaultItemAnimator());
         recycle.setAdapter(chatAdapter);
-
     }
 
 
@@ -304,7 +339,7 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
         database = FirebaseDatabase.getInstance();
         // myRef = database.getReference("Messages");
 
-        Query query = database.getReference("LocationOFDrivers");
+        Query query = database.getReference().child("DriversLocation").child(driver.getEmail().replaceAll("[^A-Za-z]", ""));
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -312,45 +347,55 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
 
                 Driver driver = dataSnapshot.getValue(Driver.class);
 
-//                Location location = new Location(LocationManager.GPS_PROVIDER);
-//                location.setLatitude(driver.getLat());
-//                location.setLatitude(driver.getLong());
-                startLatitude = Double.valueOf(driver.getLat());
-                startLongitude = Double.valueOf(driver.getLong());
+                if (driver != null) {
+                    startLatitude = driver.getLatitude();
+                    startLongitude = driver.getLongitude();
 
 
+                    if (Currentlocation != null) {
 
-                if (isFirstPosition) {
-                    startPosition = new LatLng(startLatitude, startLongitude);
+                        LatLng Driver = new LatLng(startLatitude, startLongitude);
+                        LatLng User = new LatLng(Currentlocation.getLatitude(), Currentlocation.getLongitude());
+                        Location location = new Location("");
+                        location.setLatitude(startLatitude);
+                        location.setLongitude(startLongitude);
+                        LocationStatus.setText(String.valueOf(DecimalUtils.round(GetDistance(location), 2)) + " Miles Away");
 
-                    carMarker = googleMap.addMarker(new MarkerOptions().position(startPosition).
-                            flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.new_car_small)));
-                    carMarker.setAnchor(0.5f, 0.5f);
+                    }
 
-                    googleMap.moveCamera(CameraUpdateFactory
-                            .newCameraPosition
-                                    (new CameraPosition.Builder()
-                                            .target(startPosition)
-                                            .zoom(15.5f)
-                                            .build()));
+                    if (isFirstPosition) {
+                        startPosition = new LatLng(startLatitude, startLongitude);
 
-                    isFirstPosition = false;
+                        carMarker = googleMap.addMarker(new MarkerOptions().position(startPosition).
+                                flat(true).icon(BitmapDescriptorFactory.fromResource(R.mipmap.new_car_small)));
+                        carMarker.setAnchor(0.5f, 0.5f);
 
-                } else {
-                    endPosition = new LatLng(startLatitude, startLongitude);
+                        googleMap.moveCamera(CameraUpdateFactory
+                                .newCameraPosition
+                                        (new CameraPosition.Builder()
+                                                .target(startPosition)
+                                                .zoom(15.5f)
+                                                .build()));
 
-                    Log.d(TAG, startPosition.latitude + "--" + endPosition.latitude + "--Check --" + startPosition.longitude + "--" + endPosition.longitude);
-
-                    if ((startPosition.latitude != endPosition.latitude) || (startPosition.longitude != endPosition.longitude)) {
-
-                        Log.e(TAG, "NOT SAME");
-                        startBikeAnimation(startPosition, endPosition);
+                        isFirstPosition = false;
 
                     } else {
+                        endPosition = new LatLng(startLatitude, startLongitude);
 
-                        Log.e(TAG, "SAMME");
+                        Log.d(TAG, startPosition.latitude + "--" + endPosition.latitude + "--Check --" + startPosition.longitude + "--" + endPosition.longitude);
+
+                        if ((startPosition.latitude != endPosition.latitude) || (startPosition.longitude != endPosition.longitude)) {
+
+                            Log.e(TAG, "NOT SAME");
+                            startBikeAnimation(startPosition, endPosition);
+
+                        } else {
+
+                            Log.e(TAG, "SAMME");
+                        }
                     }
                 }
+
             }
 
             @Override
@@ -411,8 +456,8 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
                 carMarker.setPosition(newPos);
                 carMarker.setAnchor(0.5f, 0.5f);
                 CameraPosition cameraPosition = CameraPosition.builder()
-                        .target(new LatLng(lat,lng))
-                        .zoom(13)
+                        .target(new LatLng(lat, lng))
+                        .zoom(15f)
                         .bearing(90)
                         .build();
 
@@ -455,6 +500,33 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback {
     }
 
 
+    @Override
+    public void onLocationChanged(Location location) {
 
+        Currentlocation = location;
 
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    public Double GetDistance(Location location) {
+        return getMiles(Double.parseDouble(String.valueOf(Currentlocation.distanceTo(location))));
+    }
+
+    public Double getMiles(Double i) {
+        return i * 0.000621371192;
+    }
 }

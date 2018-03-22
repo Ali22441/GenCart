@@ -54,6 +54,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyHoder> {
         senderMessage.setText(mylist.getMessage().toString());
         String sender = mylist.getSenderEmail().toString();
         String email = myApplication.getLoginSessionCustomer().getSuccess().getUser().getEmail();
+        SenderName.setText(myApplication.getLoginSessionCustomer().getSuccess().getUser().getName());
 
         ReciverName.setText(mylist.getReciverName());
         SenderName.setText(mylist.getSenderName());

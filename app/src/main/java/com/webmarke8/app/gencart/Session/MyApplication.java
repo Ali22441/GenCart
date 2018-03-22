@@ -10,6 +10,8 @@ import com.webmarke8.app.gencart.Objects.CartGroup;
 import com.webmarke8.app.gencart.Objects.Customer;
 import com.webmarke8.app.gencart.Objects.Owner;
 import com.webmarke8.app.gencart.Objects.Products;
+import com.webmarke8.app.gencart.Objects.RideResponse;
+import com.webmarke8.app.gencart.Objects.SendCart;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +30,7 @@ public class MyApplication extends Application {
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
     private static final String IS_LOGIN = "IsLoggedIn";
+    private static final String IS_ORDER = "IsOrderIn";
 
 
     List<CartGroup> CartGroupList = new ArrayList<>();
@@ -273,4 +276,49 @@ public class MyApplication extends Application {
         new EasySave(getApplicationContext()).saveModel("Cart", CartGroupList);
 
     }
+
+    public void SaveOrder(SendCart sendCart) {
+        editor.putBoolean(IS_ORDER, true);
+        new EasySave(getApplicationContext()).saveModel("Order", sendCart);
+        editor.apply();
+    }
+
+
+    public SendCart GetOrder() {
+
+        return new EasySave(getApplicationContext()).retrieveModel("Order", SendCart.class);
+
+    }
+
+
+    public void logoutOrder() {
+
+        new EasySave(getApplicationContext()).saveModel("Order", null);
+        editor.clear();
+        editor.commit();
+    }
+
+    public boolean isOrderIn() {
+        return sharedPreferences.getBoolean(IS_ORDER, false);
+    }
+
+
+    public void SaveWorkingOrder(RideResponse rideResponse) {
+        editor.putBoolean(IS_ORDER, true);
+        new EasySave(getApplicationContext()).saveModel("rideResponse", rideResponse);
+        editor.apply();
+    }
+
+
+    public RideResponse GetWorkingOrder() {
+
+        return new EasySave(getApplicationContext()).retrieveModel("rideResponse", RideResponse.class);
+
+    }
+
+    public void ClearCart() {
+        CartGroupList = new ArrayList<>();
+    }
+
+
 }

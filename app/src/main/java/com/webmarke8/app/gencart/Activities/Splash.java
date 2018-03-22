@@ -13,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Services.MyFirebaseInstanceIDService;
+import com.webmarke8.app.gencart.Services.MyFirebaseMessagingService;
 import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
 import com.webmarke8.app.gencart.Utils.StaticData;
@@ -34,6 +36,16 @@ public class Splash extends AppCompatActivity {
         setPermissionForAPP();
 
 
+        MyFirebaseInstanceIDService myFirebaseInstanceIdService = new MyFirebaseInstanceIDService();
+        Intent intent = new Intent(getApplicationContext(), myFirebaseInstanceIdService.getClass());
+        startService(intent); //invoke onCreate
+
+
+        MyFirebaseMessagingService myFirebaseMessagingService = new MyFirebaseMessagingService();
+        Intent intent1 = new Intent(getApplicationContext(), myFirebaseMessagingService.getClass());
+        startService(intent1); //invoke onCreate
+
+
     }
 
     private void setPermissionForAPP() {
@@ -44,7 +56,7 @@ public class Splash extends AppCompatActivity {
         };
         if (!CheckPermisson()) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, 1);
-        }else {
+        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
