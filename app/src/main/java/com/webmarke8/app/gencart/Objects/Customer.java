@@ -23,7 +23,7 @@ public class Customer implements Serializable {
         this.success = success;
     }
 
-    public class Success {
+    public static class Success {
 
         @SerializedName("token")
         @Expose
@@ -50,7 +50,7 @@ public class Customer implements Serializable {
 
     }
 
-    public class User {
+    public static class User {
 
         @SerializedName("id")
         @Expose
@@ -60,10 +60,10 @@ public class Customer implements Serializable {
         private String countryCode;
         @SerializedName("authy_id")
         @Expose
-        private String authyId;
+        private int authyId;
         @SerializedName("verified")
         @Expose
-        private Integer verified;
+        private int verified;
         @SerializedName("name")
         @Expose
         private String name;
@@ -129,19 +129,19 @@ public class Customer implements Serializable {
             this.countryCode = countryCode;
         }
 
-        public String getAuthyId() {
+        public int getAuthyId() {
             return authyId;
         }
 
-        public void setAuthyId(String authyId) {
+        public void setAuthyId(int authyId) {
             this.authyId = authyId;
         }
 
-        public Integer getVerified() {
+        public int getVerified() {
             return verified;
         }
 
-        public void setVerified(Integer verified) {
+        public void setVerified(int verified) {
             this.verified = verified;
         }
 

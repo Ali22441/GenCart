@@ -61,8 +61,13 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (myApplication.isLoggedIn()) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
+                        if (myApplication.getLoginSessionCustomer().getSuccess().getUser().getVerified()==1) {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), Code_Verify.class));
+                            finish();
+                        }
                     } else {
                         startActivity(new Intent(getApplicationContext(), Customer_Login.class));
                         finish();
@@ -91,8 +96,14 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void run() {
                     if (myApplication.isLoggedIn()) {
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                        finish();
+                        if (myApplication.getLoginSessionCustomer().getSuccess().getUser().getVerified()==1) {
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
+                        } else {
+                            startActivity(new Intent(getApplicationContext(), Code_Verify.class));
+                            finish();
+                        }
+
                     } else {
                         startActivity(new Intent(getApplicationContext(), Customer_Login.class));
                         finish();

@@ -87,7 +87,7 @@ public class StoreGridviewAdapter extends BaseAdapter {
                 .transform(AppUtils.GetTransForm())
                 .error(R.drawable.picturestore)
                 .into(Holder.StoreImage);
-        Holder.StoreRatting.setText(StoreList.get(position).getRating() + "/5");
+        Holder.StoreRatting.setText(String.valueOf(DecimalUtils.round(Double.parseDouble(StoreList.get(position).getRating()),1)) + "/5");
 
         Holder.StoreName.setText(StoreList.get(position).getName());
 

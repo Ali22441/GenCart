@@ -9,7 +9,11 @@ public class ServerData {
     public static String Server = "http://ihtiajati.com/goexpert8/api/";
 
     public static String CustomerLogin = Server + "login";
-    public static String OwnerLogin = Server + "login";
+    public static String CodeVerify= Server + "verifycode";
+
+    public static String AgainCodeVerify= Server + "verifyResend";
+
+
 
     public static String CustomerSignup = Server + "register";
     public static String OwnerSignup = Server + "register";

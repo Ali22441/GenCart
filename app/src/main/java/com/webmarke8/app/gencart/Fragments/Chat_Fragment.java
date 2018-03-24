@@ -214,8 +214,7 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback, Locat
 
     public void Upload(View view) {
 
-        if (edtMessage.equals("")) {
-            edtMessage.setError("Cant Empty");
+        if (edtMessage.getText().equals("")) {
         } else {
 
 
@@ -223,7 +222,7 @@ public class Chat_Fragment extends Fragment implements OnMapReadyCallback, Locat
 
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Chat").child(rideResponse.getOrderID());
 
-            String Message = edtMessage.getText().toString();
+            String Message = edtMessage.getText().toString().trim();
             String receiverName = driver.getUsername();
             Chat_Object chat_object = new Chat_Object();
             chat_object.setMessage(Message);

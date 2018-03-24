@@ -165,6 +165,15 @@
         </LinearLayout>
     </RelativeLayout>
 
+
+    <FrameLayout
+        android:id="@+id/NoItem"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="match_parent">
+        <include layout="@layout/no_itemin_cart_layout" />
+    </FrameLayout>
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/SwipeRefreshLayout"
         android:layout_width="match_parent"
@@ -186,6 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:orientation="vertical">
+
 
                 <com.webmarke8.app.gencart.Adapters.ExpandableHeightGridView
                     android:id="@+id/gridview"

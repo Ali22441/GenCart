@@ -90,8 +90,6 @@ public class MyCartFragment extends Fragment {
         // add data for displaying in expandable list view
         dialog = AppUtils.LoadingSpinnerDialog(getActivity());
         dialog.show();
-
-
         view.findViewById(R.id.navigation).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,93 +107,110 @@ public class MyCartFragment extends Fragment {
             }
         });
 
-
-        view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                SendCart sendCart = new SendCart();
-
-                GPSTracker gpsTracker = new GPSTracker(getActivity());
-                sendCart.setStores(myApplication.getCartGroupList());
-                sendCart.setAddress_id(String.valueOf(gpsTracker.getLatitude()) + "," + String.valueOf(gpsTracker.getLongitude()));
-                sendCart.setAmount(String.valueOf(myApplication.getPriceOfAllStore()));
-                sendCart.setCustomer_id(String.valueOf(myApplication.getLoginSessionCustomer().getSuccess().getUser().getId()));
-                for (CartGroup cartGroup : sendCart.getStores()) {
-                    cartGroup.setPrice();
-                }
-
-
-                if (myApplication.getCartGroupList().size() != 0) {
-
-                    try {
-                        Fragment fragment = null;
-                        Class fragmentClass = null;
-
-                        fragmentClass = CheckOut.class;
-                        try {
-                            sendCart.setOrder_id("");
-                            fragment = (Fragment) fragmentClass.newInstance();
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("Orders", sendCart);
-                            myApplication.SaveOrder(sendCart);
-                            fragment.setArguments(bundle);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").setTransition(FragmentTransaction.TRANSIT_UNSET)
-                                .addToBackStack(null).commit();
-                    } catch (Exception Ex) {
-                        EasyToast.error(getActivity(), "Something Went Wrong!!");
-
-                    }
-
-                } else {
-                    EasyToast.error(getActivity(), "No Item in Cart");
-                }
-
-
-            }
-        });
-
-
 //        loadData();
         myApplication = (MyApplication) getActivity().getApplicationContext();
 
         CartList = myApplication.getCartGroupList();
-        //get reference of the ExpandableListView
-        simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
-        // create the adapter by passing your ArrayList data
-        listAdapter = new CartAdapter(getActivity(), CartList, AllStoreItemPrice);
-        // attach the adapter to the expandable list view
-        simpleExpandableListView.setAdapter(listAdapter);
+        if (CartList.size() < 1 || myApplication.getPriceOfAllStore() == 0) {
+            dialog.dismiss();
+            view.findViewById(R.id.pay).setVisibility(View.GONE);
+            AllStoreItemPrice.setVisibility(View.INVISIBLE);
+            view.findViewById(R.id.NoCartLayout).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.simpleExpandableListView).setVisibility(View.GONE);
 
-        //expand all the Groups
-        expandAll();
 
-        // setOnChildClickListener listener for child row click
-        simpleExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                //get the group header
+        } else {
+
+            view.findViewById(R.id.NoCartLayout).setVisibility(View.GONE);
+            view.findViewById(R.id.simpleExpandableListView).setVisibility(View.VISIBLE);
+
+            view.findViewById(R.id.pay).setVisibility(View.VISIBLE);
+            AllStoreItemPrice.setVisibility(View.VISIBLE);
+            view.findViewById(R.id.pay).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    SendCart sendCart = new SendCart();
+
+                    GPSTracker gpsTracker = new GPSTracker(getActivity());
+                    sendCart.setStores(myApplication.getCartGroupList());
+                    sendCart.setAddress_id(String.valueOf(gpsTracker.getLatitude()) + "," + String.valueOf(gpsTracker.getLongitude()));
+                    sendCart.setAmount(String.valueOf(myApplication.getPriceOfAllStore()));
+                    sendCart.setCustomer_id(String.valueOf(myApplication.getLoginSessionCustomer().getSuccess().getUser().getId()));
+                    for (CartGroup cartGroup : sendCart.getStores()) {
+                        cartGroup.setPrice();
+                    }
+
+
+                    if (myApplication.getCartGroupList().size() != 0) {
+
+                        try {
+                            Fragment fragment = null;
+                            Class fragmentClass = null;
+
+                            fragmentClass = CheckOut.class;
+                            try {
+                                sendCart.setOrder_id("");
+                                fragment = (Fragment) fragmentClass.newInstance();
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("Orders", sendCart);
+                                myApplication.SaveOrder(sendCart);
+                                fragment.setArguments(bundle);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            FragmentManager fragmentManager = ((AppCompatActivity) getActivity()).getSupportFragmentManager();
+                            fragmentManager.beginTransaction().replace(R.id.containerForFragments, fragment, "CheckOut").setTransition(FragmentTransaction.TRANSIT_UNSET)
+                                    .addToBackStack(null).commit();
+                        } catch (Exception Ex) {
+                            EasyToast.error(getActivity(), "Something Went Wrong!!");
+
+                        }
+
+                    } else {
+                        EasyToast.error(getActivity(), "No Item in Cart");
+                    }
+
+
+                }
+            });
+
+
+            //get reference of the ExpandableListView
+            simpleExpandableListView = (ExpandableListView) view.findViewById(R.id.simpleExpandableListView);
+            // create the adapter by passing your ArrayList data
+            listAdapter = new CartAdapter(getActivity(), CartList, AllStoreItemPrice);
+            // attach the adapter to the expandable list view
+            simpleExpandableListView.setAdapter(listAdapter);
+
+            //expand all the Groups
+            expandAll();
+
+            // setOnChildClickListener listener for child row click
+            simpleExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                    //get the group header
 //                CartGroup headerInfo = deptList.get(groupPosition);
-                //get the child info
+                    //get the child info
 //                Cart detailInfo = headerInfo.getProductList().get(childPosition);
-                //display it or do something with it
-                return false;
-            }
-        });
-        // setOnGroupClickListener listener for group heading click
-        simpleExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
-            @Override
-            public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
+                    //display it or do something with it
+                    return false;
+                }
+            });
+            // setOnGroupClickListener listener for group heading click
+            simpleExpandableListView.setOnGroupClickListener(new ExpandableListView.OnGroupClickListener() {
+                @Override
+                public boolean onGroupClick(ExpandableListView parent, View v, int groupPosition, long id) {
 
-                return false;
+                    return false;
 
-            }
-        });
+                }
+            });
+
+
+        }
 
 
         return view;

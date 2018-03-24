@@ -562,9 +562,8 @@ public class MainActivity extends AppCompatActivity
                         public void onErrorResponse(VolleyError error) {
                             Progress.dismiss();
                             mSwipeRefreshLayout.setRefreshing(false);
-                            EasyToast.error(getApplicationContext(), "Something Went Wrong!!");
                             if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
+                                EasyToast.error(getApplicationContext(), "No internet Connection");
                                 ShowNoConnection();
                             } else if (error instanceof AuthFailureError) {
 //                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();
@@ -654,12 +653,11 @@ public class MainActivity extends AppCompatActivity
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            EasyToast.error(getApplicationContext(), "Something Went Wrong!!");
                             mSwipeRefreshLayout.setRefreshing(false);
                             Progress.dismiss();
 
                             if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-//                            Toast.makeText(getActivity(), "Communication Error!", Toast.LENGTH_SHORT).show();
+                                EasyToast.error(getApplicationContext(), "No internet Connection");
                                 ShowNoConnection();
                             } else if (error instanceof AuthFailureError) {
 //                            Toast.makeText(getActivity(), "Authentication Error!", Toast.LENGTH_SHORT).show();

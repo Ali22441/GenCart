@@ -760,7 +760,7 @@ public class Location_F extends Fragment implements OnMapReadyCallback, AdapterV
                     public void onErrorResponse(VolleyError error) {
                         dialog.dismiss();
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            EasyToast.error(getActivity(), "Please check your internet Connection");
+                            EasyToast.error(getActivity(), "No internet Connection");
                         } else if (error instanceof AuthFailureError) {
                             EasyToast.error(getActivity(), "Authentication Error!");
                         } else if (error instanceof ServerError) {

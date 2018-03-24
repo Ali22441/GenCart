@@ -80,6 +80,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     TextView StoreName;
     MyApplication myApplication;
     Dialog dialog;
+    FrameLayout NoItem;
 
 
     LayoutAnimationController controller;
@@ -94,11 +95,11 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_item, container, false);
-
+        NoItem = (FrameLayout) view.findViewById(R.id.NoItem);
 
         StoreImage = (ImageView) view.findViewById(R.id.Image);
-        myApplication=(MyApplication)getActivity().getApplicationContext();
-        dialog=AppUtils.LoadingSpinnerDialog(getActivity());
+        myApplication = (MyApplication) getActivity().getApplicationContext();
+        dialog = AppUtils.LoadingSpinnerDialog(getActivity());
         dialog.show();
 
         AnimationSet set = new AnimationSet(true);
@@ -198,6 +199,11 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
                         }
+                        if (product.getProducts().length < 1) {
+                            NoItem.setVisibility(View.VISIBLE);
+                        } else {
+                            NoItem.setVisibility(View.GONE);
+                        }
                     } catch (Exception a) {
                         ((MainActivity) getActivity()).ShowHome();
                         EasyToast.info(getActivity(), "Something Wrong with Store");
@@ -247,7 +253,7 @@ public class ItemFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
                 Map<String, String> headers = new HashMap<>();
                 headers.put("Accept", "application/json");
-                headers.put("Authorization","Bearer "+ myApplication.getLoginSessionCustomer().getSuccess().getToken());
+                headers.put("Authorization", "Bearer " + myApplication.getLoginSessionCustomer().getSuccess().getToken());
                 return headers;
             }
 

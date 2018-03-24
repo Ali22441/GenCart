@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.gson.Gson;
 import com.medialablk.easytoast.EasyToast;
 import com.squareup.picasso.Picasso;
 import com.twitter.sdk.android.core.Callback;
@@ -44,9 +46,14 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.twitter.sdk.android.core.identity.TwitterLoginButton;
+import com.webmarke8.app.gencart.Objects.Customer;
+import com.webmarke8.app.gencart.Objects.Customer_New;
 import com.webmarke8.app.gencart.R;
+import com.webmarke8.app.gencart.Session.MyApplication;
 import com.webmarke8.app.gencart.Utils.AppUtils;
+import com.webmarke8.app.gencart.Utils.GPSTracker;
 import com.webmarke8.app.gencart.Utils.ServerData;
+import com.webmarke8.app.gencart.Utils.Validations;
 
 import org.json.JSONObject;
 
@@ -59,6 +66,9 @@ public class Customer_Signup extends AppCompatActivity {
     CallbackManager callbackManager;
     TwitterAuthClient mTwitterAuthClient;
     Dialog dialog;
+    EditText Name, Phone, Password, Email;
+    GPSTracker gpsTracker;
+    MyApplication myApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +76,14 @@ public class Customer_Signup extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         Twitter.initialize(this);
         setContentView(R.layout.activity_customer__signup);
+        myApplication = (MyApplication) getApplicationContext();
+        gpsTracker = new GPSTracker(this);
+
+
+        Name = (EditText) findViewById(R.id.name);
+        Phone = (EditText) findViewById(R.id.phone);
+        Email = (EditText) findViewById(R.id.email);
+        Password = (EditText) findViewById(R.id.password);
 
 
         callbackManager = CallbackManager.Factory.create();
@@ -87,8 +105,13 @@ public class Customer_Signup extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                dialog.show();
-                registerApiCall();
+                if (Validations.isValidEmail(Email, "Email is not Valid") && Validations.isEmpity(Password, "Password is not Valid") && Validations.isEmpity(Phone, "Phone  is not Valid") && Validations.isEmpity(Name, "Name is not Valid")) {
+                    dialog.show();
+                    registerApiCall();
+                } else {
+                    return;
+                }
+
 
             }
         });
@@ -152,6 +175,33 @@ public class Customer_Signup extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
+
+                if (response.contains("success")) {
+
+                    Gson gson = new Gson();
+                    Customer_New customer = new Customer_New();
+                    customer = gson.fromJson(response, Customer_New.class);
+                    Customer customer1 = new Customer();
+                    Customer.Success success = new Customer.Success();
+
+                    success.setToken(customer.getSuccess().getToken());
+                    Customer.User user = new Customer.User();
+                    user.setAuthyId(customer.getSuccess().getData().getAuthy_id());
+                    user.setEmail(customer.getSuccess().getData().getEmail());
+                    user.setPhone(customer.getSuccess().getData().getPhone());
+                    user.setAddress(customer.getSuccess().getData().getAddress());
+                    user.setName(customer.getSuccess().getData().getName());
+                    user.setVerified(0);
+
+                    success.setUser(user);
+                    customer1.setSuccess(success);
+                    myApplication.createLoginSessionCustomer(customer1);
+                    startActivity(new Intent(getApplicationContext(), Code_Verify.class));
+                    finish();
+                } else {
+                    Email.setError("invalid info");
+                }
+
                 dialog.dismiss();
 
 
@@ -162,7 +212,7 @@ public class Customer_Signup extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         dialog.dismiss();
                         if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            EasyToast.error(getApplicationContext(), "Please check your internet Connection");
+                            EasyToast.error(getApplicationContext(), "No internet Connection");
                         } else if (error instanceof AuthFailureError) {
                             EasyToast.error(getApplicationContext(), "Authentication Error!");
                         } else if (error instanceof ServerError) {
@@ -177,17 +227,17 @@ public class Customer_Signup extends AppCompatActivity {
             @Override
             public Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<String, String>();
-                map.put("email", "fazal@gmail.com");
-                map.put("name", "Fazli Mola Jan");
-                map.put("lat", "12.3456");
-                map.put("lng", "123.456");
-                map.put("role", "Customer");
-                map.put("address", "Islamabad");
-                map.put("lat_lng", "123.456");
-                map.put("password", "123456");
-                map.put("id", "78789789789");
-                map.put("zipcode", "123456");
-                map.put("password_confirmation", "123456");
+                map.put("email", Email.getText().toString().trim());
+                map.put("phone", Phone.getText().toString().trim());
+                map.put("name", Name.getText().toString().trim());
+                map.put("role", "customer");
+                map.put("country_code", "92");
+                map.put("place_id", "");
+                map.put("address", AppUtils.getCompleteAddressString(gpsTracker.getLatitude(), gpsTracker.getLongitude(), Customer_Signup.this));
+                map.put("lat_lng", String.valueOf(gpsTracker.getLongitude() + "," + String.valueOf(gpsTracker.getLongitude())));
+                map.put("password", Password.getText().toString().trim());
+                map.put("zipcode", "42000");
+                map.put("password_confirmation", Password.getText().toString().trim());
                 map.put("fcm_token", AppUtils.getFirebaseInstanceId(getApplicationContext()));
                 return map;
             }
@@ -195,15 +245,10 @@ public class Customer_Signup extends AppCompatActivity {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Accept", "application/json");
                 return headers;
             }
 
-            @Override
-            public String getBodyContentType() {
-                // TODO Auto-generated method stub
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
         };
 
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
